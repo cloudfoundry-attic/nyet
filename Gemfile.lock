@@ -9,7 +9,11 @@ GEM
       multipart-post (~> 1.1)
       rubyzip (~> 0.9)
     diff-lcs (1.2.1)
+    httparty (0.10.2)
+      multi_json (~> 1.0)
+      multi_xml (>= 0.5.2)
     multi_json (1.6.1)
+    multi_xml (0.5.3)
     multipart-post (1.2.0)
     rake (10.0.3)
     rspec (2.13.0)
@@ -27,5 +31,6 @@ PLATFORMS
 
 DEPENDENCIES
   cfoundry
+  httparty
   rake
   rspec (~> 2.13)
