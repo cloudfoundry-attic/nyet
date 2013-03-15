@@ -82,8 +82,12 @@ describe 'App CRUD' do
       #update the app by scaling instances to two
       app.total_instances = 2
       app.update!
-      expect(app.total_instances).to eq(2)
-      expect(app.instances.map(&:state).uniq).to eq(['RUNNING'])
+      Timeout::timeout(90) do
+        until app.total_instances == 2 &&
+              app.instances.map(&:state).uniq == ['RUNNING']
+          sleep 0.5
+        end
+      end
     end
 
     def delete
