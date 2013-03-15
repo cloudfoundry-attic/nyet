@@ -43,12 +43,16 @@ describe 'App CRUD' do
       end
     end
 
-    HTTParty.get("http://#{route.host}.#{route.domain.name}").body.should == 'hi'
+    expect(HTTParty.get("http://#{route.host}.#{route.domain.name}").body).to eq('hi')
 
     #update the app by scaling instances to two
+    app.total_instances = 2
+    app.update!
+    expect(app.total_instances).to eq(2)
+    expect(app.instances.map(&:state).uniq).to eq(['RUNNING'])
 
     app.delete!
-    HTTParty.get("http://#{route.host}.#{route.domain.name}").should_not be_success
+    expect(HTTParty.get("http://#{route.host}.#{route.domain.name}")).not_to be_success
     route.delete!
   end
 end
