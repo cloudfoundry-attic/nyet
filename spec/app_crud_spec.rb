@@ -69,7 +69,7 @@ describe 'App CRUD' do
 
       Timeout::timeout(90) do
         until app.instances.first.state == 'RUNNING'
-          sleep .5
+          sleep 0.5
         end
       end
     end
