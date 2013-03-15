@@ -1,9 +1,11 @@
-require 'spec_helper'
 require 'timeout'
+require 'nyet_helpers'
 
 Bundler.require(:default)
 
 describe 'App CRUD' do
+  include NyetHelpers
+
   let(:client) { logged_in_client }
   let(:app_name) { 'crud' }
 
@@ -16,25 +18,18 @@ describe 'App CRUD' do
   end
 
   around do |example|
-    app = client.app_by_name(app_name)
-    app.delete! if app
-
-    route = client.route_by_host(app_name)
-    route.delete! if route
+    clean_up_previous_run(client, app_name)
 
     org = client.organization
     org.name = org_name
-    org.create!
-
-    space = client.space
-    space.name = space_name
-    space.organization = org
-    space.create!
-
-    example.run
-
-    space.delete!
-    org.delete!
+    with_model(org) do
+      space = client.space
+      space.name = space_name
+      space.organization = org
+      with_model(space) do
+        example.run
+      end
+    end
 
     expect(client.organization_by_name(org_name)).to be_nil
     expect(client.space_by_name(space_name)).to be_nil
