@@ -3,14 +3,22 @@ require 'bundler'
 Bundler.require(:default)
 
 def logged_in_client
-  username = ENV['NY_USERNAME']
-  password = ENV['NY_PASSWORD']
-  target = ENV['NY_TARGET']
+  username = ENV['NYET_USERNAME']
+  password = ENV['NYET_PASSWORD']
+  target = ENV['NYET_TARGET']
 
   client = CFoundry::Client.new(target)
   client.login(username, password)
 
   client
+end
+
+def org_name
+  ENV['NYET_ORG']
+end
+
+def space_name
+  ENV['NYET_SPACE']
 end
 
 def app_path(*parts)
