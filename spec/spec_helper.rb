@@ -13,14 +13,6 @@ def logged_in_client
   client
 end
 
-def org_name
-  ENV['NYET_ORG']
-end
-
-def space_name
-  ENV['NYET_SPACE']
-end
-
 def app_path(*parts)
   File.expand_path(File.join(File.dirname(__FILE__), '..',  'apps', *parts))
 end
