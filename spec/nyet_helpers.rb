@@ -8,6 +8,8 @@ module NyetHelpers
     password = ENV['NYET_PASSWORD']
     target = ENV['NYET_TARGET']
 
+    raise 'Missing environment variables NYET_*' unless username && password && target
+
     client = CFoundry::Client.new(target)
     client.login(username, password)
 
