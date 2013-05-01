@@ -19,13 +19,10 @@ describe 'App CRUD' do
 
   around do |example|
     clean_up_previous_run(client, app_name)
-
-    org = client.organization
-    org.name = org_name
-    with_model(org) do
+    with_org(org_name) do
       space = client.space
       space.name = space_name
-      space.organization = org
+      space.organization = client.organization_by_name(org_name)
       with_model(space) do
         example.run
       end
