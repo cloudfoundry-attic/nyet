@@ -1,4 +1,5 @@
 require 'timeout'
+require 'spec_helper'
 require 'nyet_helpers'
 
 Bundler.require(:default)
