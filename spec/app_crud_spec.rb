@@ -35,10 +35,10 @@ describe 'App CRUD' do
 
   it 'can CRUD' do
     extend AppCrud
-    create
-    read
-    update
-    delete
+    with_timer(:create) { create }
+    with_timer(:read) { read }
+    with_timer(:update) { update }
+    with_timer(:delete) { delete }
   end
 
   module AppCrud
@@ -65,7 +65,7 @@ describe 'App CRUD' do
 
       app.start!(true)
 
-      Timeout::timeout(90) do
+      Timeout::timeout(120) do
         until app.instances.first.state == 'RUNNING'
           sleep 0.5
         end
