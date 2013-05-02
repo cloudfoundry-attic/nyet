@@ -45,7 +45,7 @@ describe 'App CRUD' do
     def create
       @app = client.app
       app.name = app_name
-      app.memory = 64
+      app.memory = 256
       app.total_instances = 1
       org = client.organization_by_name(org_name)
       app.space = org.space_by_name(space_name)

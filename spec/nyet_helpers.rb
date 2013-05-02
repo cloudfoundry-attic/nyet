@@ -86,6 +86,6 @@ module NyetHelpers
     return unless org_guid
     target_uri = URI(target)
     http = Net::HTTP.new(target_uri.host, target_uri.port)
-    response = http.delete("/v2/organizations/#{org_guid}", auth_token)
+    http.delete("/v2/organizations/#{org_guid}", auth_token)
   end
 end
