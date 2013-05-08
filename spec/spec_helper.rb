@@ -7,9 +7,10 @@ module CloudwatchHelper
     start_time = Time.now.to_f
     yield
     test_execution_time = (Time.now.to_f - start_time) * 1000
-    CloudWatch.add({ key: "a1.nyet.#{action}.response_time_ms", value: test_execution_time })
+    CloudWatch.add({key: "a1.nyet.#{action}.response_time_ms", value: test_execution_time})
   end
 end
+
 
 RSpec.configure do |config|
   config.include CloudwatchHelper
@@ -20,7 +21,11 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
-    CloudWatch.add({ key: "a1.nyet.status", value: (passed ? 1 : 0) })
-    CloudWatch.send_all
+    if ENV["AWS_ACCESS_KEY_ID"] && ENV["AWS_SECRET_ACCESS_KEY"] && ENV["DEPLOYMENT_NAME"]
+      CloudWatch.add({key: "a1.nyet.status", value: (passed ? 1 : 0)})
+      CloudWatch.send_all
+    else
+      warn "AWS Environment variables missing; not reporting time/status to Cloudwatch."
+    end
   end
 end
