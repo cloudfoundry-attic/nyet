@@ -43,6 +43,9 @@ describe 'App CRUD' do
 
   module AppCrud
     attr_accessor :app, :route
+    CHECK_DELAY = 0.5.freeze
+    CHECK_TIMEOUT = 120.freeze
+
     def create
       @app = client.app
       app.name = app_name
@@ -65,9 +68,18 @@ describe 'App CRUD' do
 
       app.start!(true)
 
-      Timeout::timeout(120) do
-        until app.instances.first.state == 'RUNNING'
-          sleep 0.5
+      Timeout::timeout(CHECK_TIMEOUT) do
+        begin
+          until app.instances.first.state == 'RUNNING'
+            sleep CHECK_DELAY
+          end
+        rescue CFoundry::APIError => e
+          if e.error_code == 170002 # app not yet staged
+            sleep CHECK_DELAY
+            retry
+          end
+
+          raise
         end
       end
     end
@@ -83,7 +95,7 @@ describe 'App CRUD' do
       Timeout::timeout(90) do
         until app.total_instances == 2 &&
               app.instances.map(&:state).uniq == ['RUNNING']
-          sleep 0.5
+          sleep CHECK_DELAY
         end
       end
     end
