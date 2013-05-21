@@ -11,7 +11,7 @@ describe 'App CRUD' do
   let(:app_name) { 'crud' }
 
   let(:org_name) do
-    "org-#{SecureRandom.uuid}"
+    org || "org-#{SecureRandom.uuid}"
   end
 
   let(:space_name) do
@@ -25,11 +25,12 @@ describe 'App CRUD' do
       space.name = space_name
       space.organization = client.organization_by_name(org_name)
       with_model(space) do
+        space.add_developer client.current_user if org
         example.run
       end
     end
 
-    expect(client.organization_by_name(org_name)).to be_nil
+    expect(client.organization_by_name(org_name)).to(be_nil) unless org
     expect(client.space_by_name(space_name)).to be_nil
   end
 

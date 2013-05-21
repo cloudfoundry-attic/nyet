@@ -27,15 +27,25 @@ module NyetHelpers
     ENV['NYET_TARGET']
   end
 
+  def org
+    ENV['NYET_ORG']
+  end
+
   def app_path(*parts)
     File.expand_path(File.join(File.dirname(__FILE__), '..',  'apps', *parts))
   end
 
   def with_org(org_name)
-    org_guid = create_org(org_name)
-    yield
-  ensure
-    delete_org(org_guid)
+    if org
+      yield
+    else
+      begin
+        org_guid = create_org(org_name)
+        yield
+      ensure
+        delete_org(org_guid)
+      end
+    end
   end
 
   def with_model(model)
