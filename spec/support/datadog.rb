@@ -38,6 +38,7 @@ module DataDogHelper
 end
 
 RSpec.configure do |config|
+  include DataDogHelper
   config.include DataDogHelper
   passed = true
 
