@@ -52,15 +52,15 @@ module NyetHelpers
     model.create!
     yield
   ensure
-    model.delete!
+    model.delete!(recursive: true)
   end
 
   def clean_up_previous_run(client, name)
     app = client.app_by_name(name)
-    app.delete! if app
+    app.delete!(recursive: true) if app
 
     route = client.route_by_host(name)
-    route.delete! if route
+    route.delete!(recursive: true) if route
   end
 
   def auth_token
