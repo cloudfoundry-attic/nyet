@@ -1,22 +1,25 @@
 require "dogapi"
 
 module DataDogHelper
-  DOG_TAGS = {role: 'core', }.freeze
+  DOG_TAGS = {
+    role: "core",
+    deployment: "cf-#{ENV["DEPLOYMENT_NAME"]}"
+  }.freeze
 
   def with_timer(action)
     start_time = Time.now.to_f
     yield
     test_execution_time = (Time.now.to_f - start_time) * 1000
-    if datadog
-      datadog.emit_point("#{deployment_name}.nyet.#{action}.response_time_ms", test_execution_time, DOG_TAGS)
+    if DataDogHelper.datadog
+      DataDogHelper.datadog.emit_point("#{ENV["DEPLOYMENT_NAME"]}.nyet.#{action}.response_time_ms", test_execution_time, DOG_TAGS)
     else
-      warn "Test #{action} took #{test_execution_time}."
+      warn "Test '#{action}' took #{test_execution_time} milliseconds."
     end
   end
 
-  def emit_pass_fail(passed)
-    if datadog
-      datadog.emit_point("#{deployment_name}.nyet.status", passed ? 1 : 0, DOG_TAGS)
+  def self.emit_pass_fail(passed)
+    if self.datadog
+      self.datadog.emit_point("#{ENV["DEPLOYMENT_NAME"]}.nyet.status", passed ? 1 : 0, DOG_TAGS)
     else
       warn "DataDog Environment variables missing; not reporting time/status to DataDog."
     end
@@ -24,11 +27,7 @@ module DataDogHelper
 
   private
 
-  def deployment_name
-    ENV["DEPLOYMENT_NAME"]
-  end
-
-  def datadog
+  def self.datadog
     @datadog ||= begin
       if ENV["DATADOG_API_KEY"] && ENV["DATADOG_APP_KEY"]
         Dogapi::Client.new(ENV["DATADOG_API_KEY"], ENV["DATADOG_APP_KEY"]).freeze
@@ -38,7 +37,6 @@ module DataDogHelper
 end
 
 RSpec.configure do |config|
-  include DataDogHelper
   config.include DataDogHelper
   passed = true
 
@@ -47,6 +45,6 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
-    emit_pass_fail(passed)
+    DataDogHelper.emit_pass_fail(passed)
   end
 end
