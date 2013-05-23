@@ -104,7 +104,7 @@ describe 'App CRUD' do
     def delete
       app.delete!
       Timeout::timeout(30) do
-        until HTTParty.get("http://#{route.host}.#{route.domain.name}").success?
+        while HTTParty.get("http://#{route.host}.#{route.domain.name}").success?
           sleep CHECK_DELAY
         end
       end
