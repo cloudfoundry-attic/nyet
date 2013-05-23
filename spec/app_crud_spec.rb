@@ -103,7 +103,11 @@ describe 'App CRUD' do
 
     def delete
       app.delete!
-      expect(HTTParty.get("http://#{route.host}.#{route.domain.name}")).not_to be_success
+      Timeout::timeout(30) do
+        until HTTParty.get("http://#{route.host}.#{route.domain.name}").success?
+          sleep CHECK_DELAY
+        end
+      end
       route.delete!
     end
   end
