@@ -38,13 +38,4 @@ end
 
 RSpec.configure do |config|
   config.include DataDogHelper
-  passed = true
-
-  config.after(:each) do
-    passed = false if example.exception
-  end
-
-  config.after(:suite) do
-    DataDogHelper.emit_pass_fail(passed)
-  end
 end
