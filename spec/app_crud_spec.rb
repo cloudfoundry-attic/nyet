@@ -45,7 +45,7 @@ describe 'App CRUD' do
   module AppCrud
     attr_accessor :app, :route
     CHECK_DELAY = 0.5.freeze
-    CHECK_TIMEOUT = 120.freeze
+    CHECK_TIMEOUT = 180.freeze
 
     def create
       @app = client.app
@@ -67,21 +67,34 @@ describe 'App CRUD' do
 
       app.upload(app_path('ruby', 'simple'))
 
-      app.start!(true)
-
-      Timeout::timeout(CHECK_TIMEOUT) do
-        begin
-          until app.instances.first.state == 'RUNNING'
-            sleep CHECK_DELAY
+      log = ""
+      app.start!(true) do |url|
+        if url
+          app.stream_update_log(url) do |chunk|
+            log << chunk
           end
-        rescue CFoundry::APIError => e
-          if e.error_code == 170002 # app not yet staged
-            sleep CHECK_DELAY
-            retry
-          end
-
-          raise
         end
+      end
+
+      begin
+        Timeout::timeout(CHECK_TIMEOUT) do
+          begin
+            until app.instances.first.state == 'RUNNING'
+              sleep CHECK_DELAY
+            end
+          rescue CFoundry::APIError => e
+            if e.error_code == 170002 # app not yet staged
+              sleep CHECK_DELAY
+              retry
+            end
+
+            puts log
+            raise
+          end
+        end
+      rescue Timeout::Error => e
+        puts log
+        raise e
       end
     end
 
