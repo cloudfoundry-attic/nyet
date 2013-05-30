@@ -16,3 +16,14 @@ CRUD: Nyet:
 - ensures the app is accessible (Read);
 - updates the app;
 - deletes the app.
+
+## DataDog Monitoring
+
+Several data points can be recorded to DataDog account. Provide following
+environment variables to turn it on:
+
+```
+NYET_DATADOG_API_KEY="api-key"
+NYET_DATADOG_APP_KEY="app-key"
+DEPLOYMENT_NAME="deployment-name"
+```

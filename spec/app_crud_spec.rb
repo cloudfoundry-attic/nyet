@@ -9,14 +9,8 @@ describe 'App CRUD' do
 
   let(:client) { logged_in_client }
   let(:app_name) { 'crud' }
-
-  let(:org_name) do
-    org || "org-#{SecureRandom.uuid}"
-  end
-
-  let(:space_name) do
-    "space-#{SecureRandom.uuid}"
-  end
+  let(:org_name) { org || "org-#{SecureRandom.uuid}" }
+  let(:space_name) { "space-#{SecureRandom.uuid}" }
 
   around do |example|
     clean_up_previous_run(client, app_name)
@@ -36,10 +30,10 @@ describe 'App CRUD' do
 
   it 'can CRUD' do
     extend AppCrud
-    with_timer(:create) { create }
-    with_timer(:read) { read }
-    with_timer(:update) { update }
-    with_timer(:delete) { delete }
+    monitoring.record_action(:create) { create }
+    monitoring.record_action(:read) { read }
+    monitoring.record_action(:update) { update }
+    monitoring.record_action(:delete) { delete }
   end
 
   module AppCrud
