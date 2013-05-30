@@ -6,4 +6,7 @@ gem 'rake'
 gem 'cfoundry'
 gem 'cf-uaa-lib'
 gem 'httparty'
-gem 'dogapi'
+
+group :monitoring do
+  gem 'dogapi'
+end
