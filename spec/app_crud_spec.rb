@@ -15,8 +15,10 @@ describe "App CRUD" do
     after { admin_user.delete_org }
   end
 
-  # Space is deleted when organization is deleted.
+  # - `after`s are done in reverse order!
+  # - failing in one after does not prevent execution of subsequent afters
   before { @space = regular_user.create_space(@org) }
+  after { @space.delete!(:recursive => true) }
 
   it "creates/updates/deletes an app" do
     monitoring.record_action(:create) do
