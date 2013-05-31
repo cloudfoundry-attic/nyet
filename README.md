@@ -1,21 +1,45 @@
-# Nyet: Not Yeti
+# Nyet: Not YETI
 
-CloudFoundry uses yeti test suite for broad functionality testing.
+CloudFoundry uses YETI test suite for broad functionality testing.
 
-Nyet stands for Not Yeti and is a fast and simple way to test whether
+Nyet stands for Not YETI and is a fast and simple way to test whether
 CloudFoundry deployment was successful.
 
 Nyet failure indicates a bad deployment.
 
-Nyet uses CRUD approach as applied to a single simple application pushed
-into the CloudFoundry deployment.
+Nyet CRUDs a single Sinatra application.
 
-CRUD: Nyet:
 
-- creates a simple Sinatra rackup app;
-- ensures the app is accessible (Read);
-- updates the app;
-- deletes the app.
+## Running Against an Existing Organization
+
+Provide existing organization and user.
+You do not have to provide admin credentials!
+(This is recommended way to run against production environment.)
+
+```
+NYET_TARGET="http://api.target.com"
+NYET_ORGANIZATION_NAME="some-org-name"
+
+NYET_REGULAR_USERNAME="username"
+NYET_REGULAR_PASSWORD="password"
+```
+
+
+## Running Without Existing Organization
+
+Provide admin credentials and regular user credentials. Admin credentials
+will be used to create and delete `nyet-org-*` organization for every test run.
+
+```
+NYET_TARGET="http://api.target.com"
+
+NYET_ADMIN_USERNAME="admin-username"
+NYET_ADMIN_PASSWORD="admin-password"
+
+NYET_REGULAR_USERNAME="username"
+NYET_REGULAR_PASSWORD="password"
+```
+
 
 ## DataDog Monitoring
 

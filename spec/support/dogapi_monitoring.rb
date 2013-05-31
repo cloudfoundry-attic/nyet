@@ -8,7 +8,7 @@ require "support/monitoring"
 
 class DogapiMonitoring < Monitoring
   def self.from_env
-    return nil unless Kernel.const_get(:Dogapi)
+    return unless defined?(::Dogapi)
 
     if ENV["NYET_DATADOG_API_KEY"] && ENV["NYET_DATADOG_APP_KEY"]
       new(*ENV.values_at("NYET_DATADOG_API_KEY", "NYET_DATADOG_APP_KEY", "DEPLOYMENT_NAME"))
@@ -30,7 +30,10 @@ class DogapiMonitoring < Monitoring
   private
 
   def record(name, value)
-    client.emit_point("#{@deployment_name}.nyet.#{name}", value, {
+    full_name = "#{@deployment_name}.nyet.#{name}"
+    puts "--- Dogapi record '#{full_name}' with #{value}"
+
+    client.emit_point(full_name, value, {
       role: "core",
       deployment: "cf-#{@deployment_name}",
     })

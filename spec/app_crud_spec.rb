@@ -1,121 +1,100 @@
-require 'timeout'
-require 'spec_helper'
-require 'nyet_helpers'
+require "spec_helper"
+require "timeout"
+require "net/http"
+require "support/admin_user"
+require "support/regular_user"
 
-Bundler.require(:default)
+describe "App CRUD" do
+  let(:admin_user) { AdminUser.from_env }
+  let(:regular_user) { RegularUser.from_env }
 
-describe 'App CRUD' do
-  include NyetHelpers
-
-  let(:client) { logged_in_client }
-  let(:app_name) { 'crud' }
-  let(:org_name) { org || "org-#{SecureRandom.uuid}" }
-  let(:space_name) { "space-#{SecureRandom.uuid}" }
-
-  around do |example|
-    clean_up_previous_run(client, app_name)
-    with_org(org_name) do
-      space = client.space
-      space.name = space_name
-      space.organization = client.organization_by_name(org_name)
-      with_model(space) do
-        space.add_developer client.current_user if org
-        example.run
-      end
-    end
-
-    expect(client.organization_by_name(org_name)).to(be_nil) unless org
-    expect(client.space_by_name(space_name)).to be_nil
+  if org_name = ENV["NYET_ORGANIZATION_NAME"]
+    before { @org = regular_user.find_organization_by_name(org_name) }
+  else
+    before { @org = admin_user.create_org(regular_user.user) }
+    after { admin_user.delete_org }
   end
 
-  it 'can CRUD' do
-    extend AppCrud
-    monitoring.record_action(:create) { create }
-    monitoring.record_action(:read) { read }
-    monitoring.record_action(:update) { update }
-    monitoring.record_action(:delete) { delete }
+  # Space is deleted when organization is deleted.
+  before { @space = regular_user.create_space(@org) }
+
+  it "creates/updates/deletes an app" do
+    monitoring.record_action(:create) do
+      app_name = "crud"
+
+      regular_user.clean_up_app_from_previous_run(app_name)
+      @app = regular_user.create_app(@space, app_name)
+
+      regular_user.clean_up_route_from_previous_run(app_name)
+      @route = regular_user.create_route(@app, app_name)
+    end
+
+    monitoring.record_action(:read) do
+      deploy_app(@app)
+      start_app(@app)
+      check_app_running(@route)
+    end
+
+    monitoring.record_action(:update) do
+      scale_app(@app)
+    end
+
+    monitoring.record_action(:delete) do
+      @route.delete!
+      @app.delete!
+      check_app_not_running(@route)
+    end
   end
 
-  module AppCrud
-    attr_accessor :app, :route
-    CHECK_DELAY = 0.5.freeze
-    CHECK_TIMEOUT = 180.freeze
+  CHECK_DELAY = 0.5
 
-    def create
-      @app = client.app
-      app.name = app_name
-      app.memory = 256
-      app.total_instances = 1
-      org = client.organization_by_name(org_name)
-      app.space = org.space_by_name(space_name)
-      app.create!
+  def deploy_app(app)
+    app.upload(File.expand_path("../../apps/ruby/simple", __FILE__))
+  end
 
-      @route = client.route
-      route.host = app_name
-      route.domain = app.space.domains.first
-      route.space = app.space
-
-      route.create!
-
-      app.add_route(route)
-
-      app.upload(app_path('ruby', 'simple'))
-
-      log = ""
-      app.start!(true) do |url|
-        if url
-          app.stream_update_log(url) do |chunk|
-            log << chunk
-          end
-        end
-      end
-
-      begin
-        Timeout::timeout(CHECK_TIMEOUT) do
-          begin
-            until app.instances.first.state == 'RUNNING'
-              sleep CHECK_DELAY
-            end
-          rescue CFoundry::APIError => e
-            if e.error_code == 170002 # app not yet staged
-              sleep CHECK_DELAY
-              retry
-            end
-
-            puts log
-            raise
-          end
-        end
-      rescue Timeout::Error => e
-        puts log
-        raise e
-      end
+  def start_app(app)
+    staging_log = ""
+    app.start!(true) do |url|
+      app.stream_update_log(url) do |chunk|
+        staging_log << chunk
+      end if url
     end
 
-    def read
-      expect(HTTParty.get("http://#{route.host}.#{route.domain.name}").body).to eq('hi')
+    Timeout.timeout(180) do
+      check_app_started(app)
     end
+  rescue
+    puts "Staging app log:\n#{staging_log}"
+    raise
+  end
 
-    def update
-      #update the app by scaling instances to two
-      app.total_instances = 2
-      app.update!
-      Timeout::timeout(90) do
-        until app.total_instances == 2 &&
-              app.instances.map(&:state).uniq == ['RUNNING']
-          sleep CHECK_DELAY
-        end
-      end
+  def check_app_started(app)
+    sleep(CHECK_DELAY) until app.running?
+  rescue CFoundry::NotStaged
+    sleep(CHECK_DELAY)
+    retry
+  end
+
+  def check_app_running(route)
+    app_uri = URI("http://#{route.host}.#{route.domain.name}")
+    expect(Net::HTTP.get(app_uri)).to eq("hi")
+  end
+
+  def scale_app(app)
+    app.total_instances = 2
+    app.update!
+
+    Timeout.timeout(90) do
+      sleep(CHECK_DELAY) until app.running?
     end
+  end
 
-    def delete
-      app.delete!
-      Timeout::timeout(30) do
-        while HTTParty.get("http://#{route.host}.#{route.domain.name}").success?
-          sleep CHECK_DELAY
-        end
+  def check_app_not_running(route)
+    app_uri = URI("http://#{route.host}.#{route.domain.name}")
+    Timeout.timeout(30) do
+      while Net::HTTP.get_response(app_uri).is_a?(Net::HTTPSuccess)
+        sleep(CHECK_DELAY)
       end
-      route.delete!
     end
   end
 end

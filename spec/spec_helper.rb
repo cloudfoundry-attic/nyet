@@ -1,3 +1,4 @@
+require "bundler/setup"
 require "support/monitoring"
 require "support/dogapi_monitoring"
 
