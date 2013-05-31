@@ -31,7 +31,10 @@ class AdminUser
   end
 
   def delete_org
-    debug(:delete, @org.delete!(:recursive => true)) if @org
+    if @org
+      debug(:delete, @org)
+      @org.delete!(:recursive => true)
+    end
   end
 
   private
