@@ -40,7 +40,7 @@ class AdminUser
   private
 
   def debug(action, object)
-    puts "--- #{action}: #{object.inspect} (*admin* user)"
+    puts "--- #{action}: #{object.inspect} (*admin* user: #{client.current_user.inspect})"
     object
   end
 

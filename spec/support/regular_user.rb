@@ -73,7 +73,7 @@ class RegularUser
   private
 
   def debug(action, object)
-    puts "--- #{action}: #{object.inspect} (regular user)"
+    puts "--- #{action}: #{object.inspect} (regular user: #{client.current_user.inspect})"
     object
   end
 
