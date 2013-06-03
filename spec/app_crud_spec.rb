@@ -5,6 +5,11 @@ require "support/admin_user"
 require "support/regular_user"
 
 describe "App CRUD" do
+  CHECK_DELAY = 0.5.freeze
+  APP_START_TIMEOUT = 180.freeze
+  APP_SCALE_TIMEOUT = 90.freeze
+  APP_DELETED_TIMEOUT = 60.freeze
+
   let(:admin_user) { AdminUser.from_env }
   let(:regular_user) { RegularUser.from_env }
 
@@ -48,8 +53,6 @@ describe "App CRUD" do
     end
   end
 
-  CHECK_DELAY = 0.5
-
   def deploy_app(app)
     app.upload(File.expand_path("../../apps/ruby/simple", __FILE__))
   end
@@ -62,7 +65,7 @@ describe "App CRUD" do
       end if url
     end
 
-    Timeout.timeout(180) do
+    Timeout.timeout(APP_START_TIMEOUT) do
       check_app_started(app)
     end
   rescue
@@ -86,14 +89,14 @@ describe "App CRUD" do
     app.total_instances = 2
     app.update!
 
-    Timeout.timeout(90) do
+    Timeout.timeout(APP_SCALE_TIMEOUT) do
       sleep(CHECK_DELAY) until app.running?
     end
   end
 
   def check_app_not_running(route)
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
-    Timeout.timeout(30) do
+    Timeout.timeout(APP_DELETED_TIMEOUT) do
       while Net::HTTP.get_response(app_uri).is_a?(Net::HTTPSuccess)
         sleep(CHECK_DELAY)
       end
