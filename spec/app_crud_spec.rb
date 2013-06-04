@@ -54,7 +54,7 @@ describe "App CRUD" do
   end
 
   def deploy_app(app)
-    app.upload(File.expand_path("../../apps/ruby/simple", __FILE__))
+    app.upload(File.expand_path("../../apps/java/JavaTinyApp-1.0.war", __FILE__))
   end
 
   def start_app(app)
@@ -82,7 +82,7 @@ describe "App CRUD" do
 
   def check_app_running(route)
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
-    expect(Net::HTTP.get(app_uri)).to eq("hi")
+    expect(Net::HTTP.get(app_uri)).to match(/^It just needed to be restarted!/)
   end
 
   def scale_app(app)
