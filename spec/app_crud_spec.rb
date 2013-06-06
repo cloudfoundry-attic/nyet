@@ -3,6 +3,7 @@ require "timeout"
 require "net/http"
 require "support/admin_user"
 require "support/regular_user"
+require "securerandom"
 
 describe "App CRUD" do
   CHECK_DELAY = 0.5.freeze
@@ -33,7 +34,7 @@ describe "App CRUD" do
       @app = regular_user.create_app(@space, app_name)
 
       regular_user.clean_up_route_from_previous_run(app_name)
-      @route = regular_user.create_route(@app, app_name)
+      @route = regular_user.create_route(@app, "#{app_name}-#{SecureRandom.uuid}")
     end
 
     monitoring.record_action(:read) do
@@ -95,10 +96,16 @@ describe "App CRUD" do
   end
 
   def check_app_not_running(route)
-    app_uri = URI("http://#{route.host}.#{route.domain.name}")
+    app_uri = URI("http://#{route.name}")
+
     Timeout.timeout(APP_DELETED_TIMEOUT) do
-      while Net::HTTP.get_response(app_uri).is_a?(Net::HTTPSuccess)
+      response = Net::HTTP.get_response(app_uri)
+      puts "--- GET #{app_uri}: #{response.class}"
+
+      while response.is_a?(Net::HTTPSuccess)
+        puts "--- GET #{app_uri}: #{response.class}"
         sleep(CHECK_DELAY)
+        response = Net::HTTP.get_response(app_uri)
       end
     end
   end
