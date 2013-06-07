@@ -39,7 +39,7 @@ class RegularUser
   def create_app(space, name)
     debug(:create, client.app.tap do |app|
       app.name = name
-      app.memory = 256
+      app.memory = 512
       app.total_instances = 1
       app.space = space
       app.create!
