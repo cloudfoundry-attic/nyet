@@ -7,8 +7,8 @@ require "securerandom"
 
 describe "App CRUD" do
   CHECK_DELAY = 0.5.freeze
-  APP_START_TIMEOUT = 180.freeze
-  APP_SCALE_TIMEOUT = 90.freeze
+  APP_START_TIMEOUT = 1800.freeze
+  APP_SCALE_TIMEOUT = 1800.freeze
   APP_DELETED_TIMEOUT = 60.freeze
 
   let(:admin_user) { AdminUser.from_env }
