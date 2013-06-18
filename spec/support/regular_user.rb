@@ -49,7 +49,7 @@ class RegularUser
   def create_service_instance(space, service_label, plan_name)
     service_plan = find_service_plan(service_label, plan_name)
     debug(:create, client.service_instance.tap do |service_instance|
-      service_instance.name = "#{service_plan.name}-#{SecureRandom.uuid}"
+      service_instance.name = "#{service_plan.name}-#{SecureRandom.hex(2)}"
       service_instance.service_plan = service_plan
       service_instance.space = space
       service_instance.create!
