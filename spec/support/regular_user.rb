@@ -84,6 +84,14 @@ class RegularUser
     find_service(service_label).service_plans.detect { |p| p.name == plan_name } or raise "No plan named #{plan_name.inspect}"
   end
 
+  def bind_service_to_app(service_instance, app)
+    client.service_binding.tap do |binding|
+      binding.service_instance = service_instance
+      binding.app = app
+      binding.create!
+    end
+  end
+
   private
   def debug(action, object)
     puts "--- #{action}: #{object.inspect} (regular user: #{client.current_user.inspect})"
