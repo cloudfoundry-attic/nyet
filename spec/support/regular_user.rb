@@ -46,6 +46,16 @@ class RegularUser
     end)
   end
 
+  def create_service_instance(space, service_label, plan_name)
+    service_plan = find_service_plan(service_label, plan_name)
+    debug(:create, client.service_instance.tap do |service_instance|
+      service_instance.name = "#{service_plan.name}-#{SecureRandom.uuid}"
+      service_instance.service_plan = service_plan
+      service_instance.space = space
+      service_instance.create!
+    end)
+  end
+
   def clean_up_app_from_previous_run(name)
     if app = client.app_by_name(name)
       debug(:delete, app)
@@ -70,8 +80,11 @@ class RegularUser
     end
   end
 
-  private
+  def find_service_plan(service_label, plan_name)
+    find_service(service_label).service_plans.detect { |p| p.name == plan_name } or raise "No plan named #{plan_name.inspect}"
+  end
 
+  private
   def debug(action, object)
     puts "--- #{action}: #{object.inspect} (regular user: #{client.current_user.inspect})"
     object
@@ -81,5 +94,9 @@ class RegularUser
     @client ||= CFoundry::Client.new(@target.to_s).tap do |c|
       c.login(@username, @password)
     end
+  end
+
+  def find_service(service_label)
+    client.services.detect { |s| s.label == service_label } or raise "No service named #{service_label.inspect}"
   end
 end

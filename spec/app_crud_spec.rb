@@ -1,8 +1,6 @@
 require "spec_helper"
 require "timeout"
 require "net/http"
-require "support/admin_user"
-require "support/regular_user"
 require "securerandom"
 
 describe "App CRUD" do
