@@ -76,6 +76,25 @@ get '/service/amqp/:service_name/:key' do
   value
 end
 
+post '/service/redis/:service_name/:key' do
+  value = request.env["rack.input"].read
+  client = load_redis(params[:service_name])
+
+  client.set(params[:key], value)
+
+  client.quit
+  value
+end
+
+get '/service/redis/:service_name/:key' do
+  client = load_redis(params[:service_name])
+
+  value = client.get(params[:key])
+
+  client.quit
+  value
+end
+
 class DatabaseCredentials
   extend Forwardable
   def_delegators :@uri, :host, :port, :user, :password
@@ -110,6 +129,11 @@ def load_amqp(service_name)
   amqp_service = load_service_by_name(service_name)
   amqp_uri = URI(amqp_service.fetch('uri'))
   Carrot.new(:host => amqp_uri.host, :port => amqp_uri.port, :user => amqp_uri.user, :pass => amqp_uri.password, :vhost => amqp_uri.path[1..-1])
+end
+
+def load_redis(service_name)
+  redis_service = load_service_by_name(service_name)
+  Redis.new(:host => redis_service['hostname'], :port => redis_service['port'].to_i, :password => redis_service['password'])
 end
 
 def load_service_by_name(service_name)
