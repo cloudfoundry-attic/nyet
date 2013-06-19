@@ -3,3 +3,4 @@ source "http://rubygems.org"
 #.. but may also be staged with mysql
 gem 'sinatra'
 gem 'pg'
+gem 'mysql2'

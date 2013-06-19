@@ -34,6 +34,27 @@ get '/service/pg/:service_name/:key' do
   value
 end
 
+get '/service/mysql/:service_name/:key' do
+  client = load_mysql(params[:service_name])
+  value = client.query("select data_value from data_values where id = '#{params[:key]}'").first['data_value']
+  client.close
+  value
+end
+
+post '/service/mysql/:service_name/:key' do
+  value = request.env["rack.input"].read
+  client = load_mysql(params[:service_name])
+
+  result = client.query("select * from data_values where id = '#{params[:key]}'")
+  if result.count > 0
+    client.query("update data_values set data_value='#{value}' where id = '#{params[:key]}'")
+  else
+    client.query("insert into data_values (id, data_value) values('#{params[:key]}','#{value}');")
+  end
+  client.close
+  value
+end
+
 class DatabaseCredentials
   extend Forwardable
   def_delegators :@uri, :host, :port, :user, :password
@@ -53,6 +74,14 @@ def load_postgresql(service_name)
   if client.query("select * from pg_catalog.pg_class where relname = 'data_values';").num_tuples() < 1
     client.query("create table data_values (id varchar(20), data_value varchar(20));")
   end
+  client
+end
+
+def load_mysql(service_name)
+  mysql_service = load_service_by_name(service_name)
+  client = Mysql2::Client.new(:host => mysql_service['hostname'], :username => mysql_service['username'], :port => mysql_service['port'].to_i, :password => mysql_service['password'], :database => mysql_service['name'])
+  result = client.query("SELECT table_name FROM information_schema.tables WHERE table_name = 'data_values'")
+  client.query("CREATE TABLE IF NOT EXISTS data_values ( id VARCHAR(20), data_value VARCHAR(20)); ") if result.count != 1
   client
 end
 
