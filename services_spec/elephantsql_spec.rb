@@ -14,7 +14,7 @@ describe 'Managing ElephantSQL' do
     end
   end
 
-  it 'allows users to create, bind, unbind, and delete ElephantSQL service' do
+  it 'allows users to create, bind, read, write, unbind, and delete the ElephantSQL service' do
     plan = user.find_service_plan('elephantsql-dev', 'turtle')
     plan.should be
 
@@ -36,7 +36,7 @@ describe 'Managing ElephantSQL' do
 
     test_app = TestApp.new(app, route.name, service_instance, 'pg')
     test_app.when_running do
-      test_app.insert_value('key', 'value')
+      test_app.insert_value('key', 'value').should be_a Net::HTTPSuccess
       test_app.get_value('key').should == 'value'
     end
 
