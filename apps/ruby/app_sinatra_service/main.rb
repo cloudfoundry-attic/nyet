@@ -101,12 +101,7 @@ post '/service/mongodb/:service_name/:key' do
 
   collection = db['my_collection']
   document = { '_id' => params[:key], 'value' => value }
-
-  if collection.find('_id' => params[:key]).to_a.empty?
-    collection.insert(document)
-  else
-    collection.update({ '_id' => params[:key] }, document)
-  end
+  collection.update({ '_id' => params[:key] }, document, :upsert => true)
 
   value
 end
