@@ -55,6 +55,27 @@ post '/service/mysql/:service_name/:key' do
   value
 end
 
+post '/service/amqp/:service_name/:key' do
+  value = request.env["rack.input"].read
+  client = load_amqp(params[:service_name])
+
+  queue = client.queue(params[:key])
+  queue.publish(value)
+
+  client.stop
+  value
+end
+
+get '/service/amqp/:service_name/:key' do
+  client = load_amqp(params[:service_name])
+
+  queue = client.queue(params[:key])
+  value = queue.pop
+
+  client.stop
+  value
+end
+
 class DatabaseCredentials
   extend Forwardable
   def_delegators :@uri, :host, :port, :user, :password
@@ -83,6 +104,12 @@ def load_mysql(service_name)
   result = client.query("SELECT table_name FROM information_schema.tables WHERE table_name = 'data_values'")
   client.query("CREATE TABLE IF NOT EXISTS data_values ( id VARCHAR(20), data_value VARCHAR(20)); ") if result.count != 1
   client
+end
+
+def load_amqp(service_name)
+  amqp_service = load_service_by_name(service_name)
+  amqp_uri = URI(amqp_service.fetch('uri'))
+  Carrot.new(:host => amqp_uri.host, :port => amqp_uri.port, :user => amqp_uri.user, :pass => amqp_uri.password, :vhost => amqp_uri.path[1..-1])
 end
 
 def load_service_by_name(service_name)

@@ -4,3 +4,4 @@ source "http://rubygems.org"
 gem 'sinatra'
 gem 'pg'
 gem 'mysql2'
+gem 'carrot'
