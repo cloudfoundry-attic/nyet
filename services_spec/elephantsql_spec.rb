@@ -25,7 +25,13 @@ class TestApp
   def when_running(&block)
     Timeout::timeout(WAITING_TIMEOUT) do
       printf "\nWaiting for app"
-      until app.running? do
+      loop do
+        begin
+          if app.running?
+            break
+          end
+        rescue CFoundry::NotStaged
+        end
         sleep 1
         printf '.'
       end
@@ -68,7 +74,7 @@ describe 'Managing ElephantSQL' do
     route = user.create_route(app, "#{app_name}-#{SecureRandom.hex(2)}")
     app.upload(File.expand_path("../../apps/ruby/app_sinatra_service", __FILE__))
     monitoring.record_action(:start) do
-      app.start!
+      app.start!(true)
     end
 
     test_app = TestApp.new(app, route.name, service_instance)
