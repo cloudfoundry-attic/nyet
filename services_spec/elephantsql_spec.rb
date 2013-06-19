@@ -65,7 +65,7 @@ describe 'Managing ElephantSQL' do
     monitoring.record_action(:create) do
       service_instance = user.create_service_instance(space, 'elephantsql-dev', 'turtle')
     end
-    service_instance.should be
+    service_instance.guid.should be
 
     app = user.create_app(space, app_name)
     binding = user.bind_service_to_app(service_instance, app)
