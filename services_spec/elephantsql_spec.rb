@@ -1,49 +1,6 @@
 require 'spec_helper'
 require 'net/http'
-require 'timeout'
-
-class TestApp
-  attr_reader :host_name, :service_instance, :app
-  WAITING_TIMEOUT = 300.freeze
-
-  def initialize(app, host_name, service_instance)
-    @app = app
-    @host_name = host_name
-    @service_instance = service_instance
-  end
-
-  def insert_value(key, value)
-    http = Net::HTTP.new(host_name)
-    http.post(key_path(key), value)
-  end
-
-  def get_value(key)
-    http = Net::HTTP.new(host_name)
-    http.get(key_path(key)).body
-  end
-
-  def when_running(&block)
-    Timeout::timeout(WAITING_TIMEOUT) do
-      printf "\nWaiting for app"
-      loop do
-        begin
-          if app.running?
-            break
-          end
-        rescue CFoundry::NotStaged
-        end
-        sleep 1
-        printf '.'
-      end
-    end
-    block.call
-  end
-
-  private
-  def key_path(key)
-    "/service/#{service_instance.name}/#{key}"
-  end
-end
+require 'support/test_app'
 
 describe 'Managing ElephantSQL' do
   let(:user) { RegularUser.from_env }
@@ -77,7 +34,7 @@ describe 'Managing ElephantSQL' do
       app.start!(true)
     end
 
-    test_app = TestApp.new(app, route.name, service_instance)
+    test_app = TestApp.new(app, route.name, service_instance, 'pg')
     test_app.when_running do
       test_app.insert_value('key', 'value')
       test_app.get_value('key').should == 'value'

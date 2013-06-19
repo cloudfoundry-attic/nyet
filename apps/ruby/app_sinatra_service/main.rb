@@ -12,7 +12,7 @@ get '/rack/env' do
   ENV['RACK_ENV']
 end
 
-post '/service/:service_name/:key' do
+post '/service/pg/:service_name/:key' do
   value = request.env["rack.input"].read
   client = load_postgresql(params[:service_name])
 
@@ -26,7 +26,7 @@ post '/service/:service_name/:key' do
   value
 end
 
-get '/service/:service_name/:key' do
+get '/service/pg/:service_name/:key' do
   client = load_postgresql(params[:service_name])
   value = client.query("select data_value from data_values where id = '#{params[:key]}'").first['data_value']
   client.close
