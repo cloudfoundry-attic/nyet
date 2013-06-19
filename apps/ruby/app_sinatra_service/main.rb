@@ -95,6 +95,32 @@ get '/service/redis/:service_name/:key' do
   value
 end
 
+post '/service/mongodb/:service_name/:key' do
+  value = request.env["rack.input"].read
+  db = load_mongodb(params[:service_name])
+
+  collection = db['my_collection']
+  document = { '_id' => params[:key], 'value' => value }
+
+  if collection.find('_id' => params[:key]).to_a.empty?
+    collection.insert(document)
+  else
+    collection.update({ '_id' => params[:key] }, document)
+  end
+
+  value
+end
+
+get '/service/mongodb/:service_name/:key' do
+  db = load_mongodb(params[:service_name])
+
+  collection = db['my_collection']
+  document = collection.find('_id' => params[:key]).to_a.first
+  value = document['value']
+
+  value
+end
+
 class DatabaseCredentials
   extend Forwardable
   def_delegators :@uri, :host, :port, :user, :password
@@ -134,6 +160,15 @@ end
 def load_redis(service_name)
   redis_service = load_service_by_name(service_name)
   Redis.new(:host => redis_service['hostname'], :port => redis_service['port'].to_i, :password => redis_service['password'])
+end
+
+def load_mongodb(service_name)
+  mongodb_service = load_service_by_name(service_name)
+  uri = URI(mongodb_service.fetch('uri'))
+  conn = Mongo::Connection.new(uri.host, uri.port)
+  db = conn[uri.path[1..-1]]
+  db.authenticate(uri.user, uri.password)
+  db
 end
 
 def load_service_by_name(service_name)

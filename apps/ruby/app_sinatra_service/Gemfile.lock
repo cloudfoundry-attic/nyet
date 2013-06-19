@@ -1,7 +1,10 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    bson (1.2.4)
     carrot (0.8.1)
+    mongo (1.2.4)
+      bson (>= 1.2.4)
     mysql2 (0.3.11)
     pg (0.11.0)
     rack (1.5.2)
@@ -19,6 +22,7 @@ PLATFORMS
 
 DEPENDENCIES
   carrot
+  mongo
   mysql2
   pg
   redis
