@@ -1,8 +1,9 @@
-require 'sinatra'
 require 'json'
 require 'uri'
-require 'pg'
 require 'forwardable'
+require 'bundler'
+
+Bundler.require
 
 get '/env' do
   ENV['VCAP_SERVICES']
