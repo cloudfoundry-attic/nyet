@@ -2,7 +2,9 @@ require 'timeout'
 
 class TestApp
   attr_reader :host_name, :service_instance, :app
-  WAITING_TIMEOUT = 300.freeze
+  # temporarily bumping this to 10mins
+  # sunset this after the HM fix
+  WAITING_TIMEOUT = 600
 
   def initialize(app, host_name, service_instance, namespace)
     @app = app
