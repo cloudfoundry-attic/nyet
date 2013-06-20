@@ -5,8 +5,8 @@ require "securerandom"
 
 describe "App CRUD" do
   CHECK_DELAY = 0.5.freeze
-  APP_START_TIMEOUT = 1800.freeze
-  APP_SCALE_TIMEOUT = 1800.freeze
+  APP_START_TIMEOUT = 120.freeze
+  APP_SCALE_TIMEOUT = 30.freeze
   APP_DELETED_TIMEOUT = 60.freeze
 
   let(:admin_user) { AdminUser.from_env }
@@ -22,7 +22,7 @@ describe "App CRUD" do
   # - `after`s are done in reverse order!
   # - failing in one after does not prevent execution of subsequent afters
   before { @space = regular_user.create_space(@org) }
-  after { @space.delete!(:recursive => true) }
+  after { @space.delete!(:recursive => true) if @space }
 
   it "creates/updates/deletes an app" do
     monitoring.record_action(:create) do
