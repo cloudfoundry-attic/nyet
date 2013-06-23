@@ -13,6 +13,16 @@ class TestApp
     @namespace = namespace
   end
 
+  def get_env
+    http = Net::HTTP.new(host_name)
+    path = "/env"
+    debug("GET from #{host_name} #{path}")
+    response = http.get(path)
+    debug("Response: #{response}")
+    debug("  Body: #{response.body}")
+    response.body
+  end
+
   def insert_value(key, value)
     http = Net::HTTP.new(host_name)
     key_path = key_path(key)
@@ -50,7 +60,7 @@ class TestApp
         sleep 2
       end
     end
-    block.call
+    block.call if block_given?
   end
 
   private
