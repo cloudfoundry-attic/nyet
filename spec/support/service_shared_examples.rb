@@ -43,9 +43,9 @@ shared_examples_for "A bindable service" do |app_name|
 
       test_app.insert_value('key', 'value').should be_a Net::HTTPSuccess
       test_app.get_value('key').should == 'value'
-      monitoring.record_metric("health", 1, dog_tags)
+      monitoring.record_metric("services.health", 1, dog_tags)
     rescue => e
-      monitoring.record_metric("health", 0, dog_tags)
+      monitoring.record_metric("services.health", 0, dog_tags)
       raise e
     end
 
