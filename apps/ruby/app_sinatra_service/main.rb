@@ -13,6 +13,10 @@ get '/rack/env' do
   ENV['RACK_ENV']
 end
 
+error do
+  "Error: #{env['sinatra.error']}\n#{env['sinatra.error'].backtrace.join("\n")}"
+end
+
 post '/service/pg/:service_name/:key' do
   value = request.env["rack.input"].read
   client = load_postgresql(params[:service_name])
