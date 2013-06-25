@@ -3,6 +3,7 @@ shared_examples_for "A bindable service" do |app_name|
   let!(:org) { user.find_organization_by_name(ENV.fetch("NYET_ORGANIZATION_NAME")) }
   let!(:space) { user.create_space(org) }
   let(:dog_tags) { {service: app_name} }
+  let(:test_app_path) { "../../../apps/ruby/app_sinatra_service" }
 
   after do
     monitoring.record_action(:delete, dog_tags) do
@@ -32,11 +33,15 @@ shared_examples_for "A bindable service" do |app_name|
         binding.guid.should be
       end
 
-      app.upload(File.expand_path("../../../apps/ruby/app_sinatra_service", __FILE__))
-      monitoring.record_action(:start, dog_tags) do
-        app.start!(true)
-        test_app = TestApp.new(app, route.name, service_instance, namespace)
-        test_app.when_running
+      begin
+        app.upload(File.expand_path(test_app_path, __FILE__))
+        monitoring.record_action(:start, dog_tags) do
+          app.start!(true)
+          test_app = TestApp.new(app, route.name, service_instance, namespace)
+          test_app.when_running
+        end
+      rescue => e
+        pending "Unable to push an app. Possibly backend issue, error #{e.inspect}"
       end
 
       test_app.get_env
@@ -44,6 +49,8 @@ shared_examples_for "A bindable service" do |app_name|
       test_app.insert_value('key', 'value').should be_a Net::HTTPSuccess
       test_app.get_value('key').should == 'value'
       monitoring.record_metric("services.health", 1, dog_tags)
+    rescue RSpec::Core::Pending::PendingDeclaredInExample => e
+      raise e
     rescue => e
       monitoring.record_metric("services.health", 0, dog_tags)
       raise e
