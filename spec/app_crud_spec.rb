@@ -6,6 +6,7 @@ require "securerandom"
 describe "App CRUD" do
   CHECK_DELAY = 0.5.freeze
   APP_START_TIMEOUT = 120.freeze
+  APP_ROUTE_TIMEOUT = 5.freeze
   APP_SCALE_TIMEOUT = 60.freeze
   APP_DELETED_TIMEOUT = 60.freeze
 
@@ -38,8 +39,12 @@ describe "App CRUD" do
 
       monitoring.record_action(:read) do
         deploy_app(@app)
+      end
+      monitoring.record_action(:start) do
         start_app(@app)
-        check_app_running(@route)
+      end
+      monitoring.record_action(:app_routable) do
+        check_app_routable(@route)
       end
 
       monitoring.record_action(:update) do
@@ -86,9 +91,13 @@ describe "App CRUD" do
     retry
   end
 
-  def check_app_running(route)
+  def check_app_routable(route)
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
-    expect(Net::HTTP.get(app_uri)).to match(/^It just needed to be restarted!/)
+    routable = nil
+    Timeout.timeout(APP_ROUTE_TIMEOUT) do
+      routable = Net::HTTP.get(app_uri).match /^It just needed to be restarted!/
+    end
+    expect(routable).not_to be_nil
   end
 
   def scale_app(app)
