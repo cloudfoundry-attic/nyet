@@ -2,6 +2,7 @@ require 'json'
 require 'uri'
 require 'forwardable'
 require 'bundler'
+require "mail"
 
 Bundler.require
 
@@ -120,6 +121,18 @@ get '/service/mongodb/:service_name/:key' do
   value
 end
 
+post '/service/smtp/:service_name' do
+  prms = params
+  load_smtp(prms[:service_name])
+  mail = Mail.deliver do
+    from "nyettests@cloudfoundry.com"
+    to prms[:to] or raise "Missing require form param 'to'"
+    subject prms[:subject] || "Default subject"
+    body prms[:body] || "Default body"
+  end
+  mail.inspect
+end
+
 class DatabaseCredentials
   extend Forwardable
   def_delegators :@uri, :host, :port, :user, :password
@@ -154,6 +167,19 @@ def load_amqp(service_name)
   amqp_service = load_service_by_name(service_name)
   amqp_uri = URI(amqp_service.fetch('uri'))
   Carrot.new(:host => amqp_uri.host, :port => amqp_uri.port, :user => amqp_uri.user, :pass => amqp_uri.password, :vhost => amqp_uri.path[1..-1])
+end
+
+def load_smtp(service_name)
+  sendgrid_service = load_service_by_name(service_name)
+  Mail.defaults do
+    delivery_method :smtp, { :address   => sendgrid_service.fetch('smtp_host'),
+                             :port      => 587,
+                             :domain    => "cloudfoundry.com",
+                             :user_name => sendgrid_service.fetch('username'),
+                             :password => sendgrid_service.fetch('password'),
+                             :authentication => 'plain',
+                             :enable_starttls_auto => true }
+  end
 end
 
 def load_redis(service_name)
