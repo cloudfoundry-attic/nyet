@@ -93,11 +93,11 @@ describe "App CRUD" do
 
   def check_app_routable(route)
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
-    routable = nil
+    content = nil
     Timeout.timeout(APP_ROUTE_TIMEOUT) do
-      routable = Net::HTTP.get(app_uri).match /^It just needed to be restarted!/
+      content = Net::HTTP.get(app_uri)
     end
-    expect(routable).not_to be_nil
+    expect(content).to match(/^It just needed to be restarted!/)
   end
 
   def scale_app(app)
