@@ -10,6 +10,11 @@ task :default => :spec
 namespace :spec do
   RSpec::Core::RakeTask.new(:services) do |c|
     c.pattern = 'services_spec/**/*_spec.rb'
+    c.rspec_opts = %w(--format documentation --color --tag ~only_in_staging)
+  end
+
+  RSpec::Core::RakeTask.new(:dummy_service) do |c|
+    c.pattern = 'services_spec/dummy_spec.rb'
     c.rspec_opts = %w(--format documentation --color)
   end
 end
