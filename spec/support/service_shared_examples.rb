@@ -1,15 +1,12 @@
 shared_examples_for "A bindable service" do |app_name|
   let(:user) { RegularUser.from_env }
   let!(:org) { user.find_organization_by_name(ENV.fetch("NYET_ORGANIZATION_NAME")) }
-  let!(:space) { user.create_space(org) }
+  let!(:space) do
+    SharedSpace.instance { user.create_space(org) }
+  end
+
   let(:dog_tags) { {service: app_name} }
   let(:test_app_path) { "../../../apps/ruby/app_sinatra_service" }
-
-  after do
-    monitoring.record_action(:delete, dog_tags) do
-      space.delete!(:recursive => true)
-    end
-  end
 
   it "allows users to create, bind, read, write, unbind, and delete the #{app_name} service" do
     plan = user.find_service_plan(service_name, plan_name)
