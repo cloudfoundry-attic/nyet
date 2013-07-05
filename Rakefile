@@ -8,9 +8,9 @@ end
 task :default => :spec
 
 namespace :spec do
-  RSpec::Core::RakeTask.new(:services) do |c|
+  RSpec::Core::RakeTask.new(:appdirect_services) do |c|
     c.pattern = 'services_spec/**/*_spec.rb'
-    c.rspec_opts = %w(--format documentation --color --tag ~only_in_staging)
+    c.rspec_opts = %w(--format documentation --color --tag ~only_in_staging --tag appdirect)
   end
 
   RSpec::Core::RakeTask.new(:dummy_service) do |c|

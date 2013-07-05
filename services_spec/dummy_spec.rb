@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'support/test_app'
 
-describe 'Managing Dummy', :only_in_staging => true do
+describe 'Managing Dummy', :only_in_staging => true, :appdirect => true do
   let(:namespace) { "dummy-dev" }
   let(:plan_name) { "small" }
   let(:service_name) { "dummy-dev" }

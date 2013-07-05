@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'net/http'
 require 'support/test_app'
 
-describe 'Managing ElephantSQL' do
+describe 'Managing ElephantSQL', :appdirect => true do
   let(:namespace) { "pg" }
   let(:plan_name) { "turtle" }
   let(:service_name) { "elephantsql-dev" }

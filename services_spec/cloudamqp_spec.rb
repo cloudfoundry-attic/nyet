@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'net/http'
 require 'support/test_app'
 
-describe 'Managing CloudAMQP' do
+describe 'Managing CloudAMQP', :appdirect => true do
   let(:namespace) { "amqp" }
   let(:plan_name) { "lemur" }
   let(:service_name) { "cloudamqp-dev" }

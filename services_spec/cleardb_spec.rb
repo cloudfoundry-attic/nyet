@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'net/http'
 require 'support/test_app'
 
-describe 'Managing ClearDB' do
+describe 'Managing ClearDB', :appdirect => true do
   let(:namespace) { "mysql" }
   let(:plan_name) { "spark" }
   let(:service_name) { "cleardb-dev" }
