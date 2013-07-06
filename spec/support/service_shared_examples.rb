@@ -9,32 +9,31 @@ module ManageServiceHelpers
     service_name = options[:service_name] || raise("Missing service_name")
 
     describe "manage service" do
-      let(:user) { RegularUser.from_env }
-      let!(:org) { user.find_organization_by_name(ENV.fetch("NYET_ORGANIZATION_NAME")) }
-      let!(:space) { SharedSpace.instance { user.create_space(org) } }
+      with_user_with_org
+      with_shared_space
 
       let(:dog_tags) { {service: app_name} }
       let(:test_app_path) { "../../../apps/ruby/app_sinatra_service" }
 
       it "allows users to create, bind, read, write, unbind, and delete the #{app_name} service" do
-        plan = user.find_service_plan(service_name, plan_name)
+        plan = regular_user.find_service_plan(service_name, plan_name)
         plan.should be
 
         service_instance = nil
         binding = nil
         test_app = nil
 
-        app = user.create_app(space, app_name)
-        route = user.create_route(app, "#{app_name}-#{SecureRandom.hex(2)}")
+        app = regular_user.create_app(space, app_name)
+        route = regular_user.create_route(app, "#{app_name}-#{SecureRandom.hex(2)}")
 
         begin
           monitoring.record_action("create_service", dog_tags) do
-            service_instance = user.create_service_instance(space, service_name, plan_name)
+            service_instance = regular_user.create_service_instance(space, service_name, plan_name)
             service_instance.guid.should be
           end
 
           monitoring.record_action("bind_service", dog_tags) do
-            binding = user.bind_service_to_app(service_instance, app)
+            binding = regular_user.bind_service_to_app(service_instance, app)
             binding.guid.should be
           end
 
