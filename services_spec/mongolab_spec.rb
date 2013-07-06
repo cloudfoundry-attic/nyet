@@ -1,10 +1,10 @@
-require 'spec_helper'
-require 'net/http'
-require 'support/test_app'
+require "spec_helper"
 
-describe 'Managing MongoLab', :appdirect => true do
-  let(:namespace) { "mongodb" }
-  let(:plan_name) { "sandbox" }
-  let(:service_name) { "mongolab-dev" }
-  it_should_behave_like "A bindable service", "mongolab"
+describe "Managing MongoLab", :appdirect => true do
+  it_can_manage_service(
+    app_name: "mongolab",
+    namespace: "mongodb",
+    plan_name: "sandbox",
+    service_name: "mongolab-dev",
+  )
 end

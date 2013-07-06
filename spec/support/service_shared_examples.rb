@@ -1,9 +1,17 @@
-shared_examples_for "A bindable service" do |app_name|
+require "net/http"
+require "support/test_app"
+
+module ManageServiceHelpers
+def it_can_manage_service(options={})
+app_name = options[:app_name] || raise("Missing app_name")
+namespace = options[:namespace] || raise("Missing namespace")
+plan_name = options[:plan_name] || raise("Missing plan_name")
+service_name = options[:service_name] || raise("Missing service_name")
+
+describe "manage service" do
   let(:user) { RegularUser.from_env }
   let!(:org) { user.find_organization_by_name(ENV.fetch("NYET_ORGANIZATION_NAME")) }
-  let!(:space) do
-    SharedSpace.instance { user.create_space(org) }
-  end
+  let!(:space) { SharedSpace.instance { user.create_space(org) } }
 
   let(:dog_tags) { {service: app_name} }
   let(:test_app_path) { "../../../apps/ruby/app_sinatra_service" }
@@ -57,4 +65,10 @@ shared_examples_for "A bindable service" do |app_name|
     service_instance.delete!
     app.delete!
   end
+end
+end
+end
+
+RSpec.configure do |config|
+  config.extend(ManageServiceHelpers)
 end

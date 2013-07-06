@@ -40,9 +40,11 @@ describe "App CRUD" do
       monitoring.record_action(:read) do
         deploy_app(@app)
       end
+
       monitoring.record_action(:start) do
         start_app(@app)
       end
+
       monitoring.record_action(:app_routable) do
         check_app_routable(@route)
       end

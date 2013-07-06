@@ -1,12 +1,10 @@
-require 'spec_helper'
-require 'support/test_app'
+require "spec_helper"
 
-describe 'Managing Dummy', :only_in_staging => true, :appdirect => true do
+describe "Managing Dummy", :only_in_staging => true, :appdirect => true do
   let(:namespace) { "dummy-dev" }
   let(:plan_name) { "small" }
   let(:service_name) { "dummy-dev" }
   let(:app_name) { 'dummy' }
-
 
   let(:user) { RegularUser.from_env }
   let!(:org) { user.find_organization_by_name(ENV.fetch("NYET_ORGANIZATION_NAME")) }

@@ -1,10 +1,10 @@
-require 'spec_helper'
-require 'net/http'
-require 'support/test_app'
+require "spec_helper"
 
-describe 'Managing ElephantSQL', :appdirect => true do
-  let(:namespace) { "pg" }
-  let(:plan_name) { "turtle" }
-  let(:service_name) { "elephantsql-dev" }
-  it_should_behave_like "A bindable service", "elephantsql"
+describe "Managing ElephantSQL", :appdirect => true do
+  it_can_manage_service(
+    app_name: "elephantsql",
+    namespace: "pg",
+    plan_name: "turtle",
+    service_name: "elephantsql-dev",
+  )
 end
