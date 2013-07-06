@@ -9,11 +9,18 @@ Nyet failure indicates a bad deployment.
 
 Nyet CRUDs a single Sinatra application.
 
+
 ## Initial setup
 
-* check your ```~/workspace/deployments-aws/[workstation name]``` directory for a ```nyet_environment``` file. 
-* source that file to read in the environment variables (which are declared below)
-* if that file doesn't exist, create it! you get the user/pass from ```cf-aws.yml``` (the scim admin user)
+* Check your `~/workspace/deployments-aws/[workstation name]`
+  directory for a `nyet_environment` file.
+
+* Source that file to read in the environment variables
+  (which are declared below)
+
+* If that file doesn't exist, create it! you get the
+  user/pass from `cf-aws.yml` (the scim admin user)
+
 
 ## Running Against an Existing Organization
 
@@ -44,6 +51,11 @@ NYET_ADMIN_PASSWORD="admin-password"
 NYET_REGULAR_USERNAME="username"
 NYET_REGULAR_PASSWORD="password"
 ```
+
+
+## Misc options
+
+* `NYET_RAISE_ALL_ERRORS` turns on aggressive error reporting
 
 
 ## DataDog Monitoring
