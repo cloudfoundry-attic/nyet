@@ -15,7 +15,4 @@ end
 
 RSpec.configure do |config|
   config.include(MonitoringHelpers)
-  config.after :suite, example_group: { file_path: /\/services_spec\// } do
-    SharedSpace.cleanup
-  end
 end

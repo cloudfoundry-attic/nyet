@@ -7,3 +7,7 @@ class SharedSpace
     @space.delete!(:recursive => true) if @space
   end
 end
+
+RSpec.configure do |config|
+  config.after(:suite) { SharedSpace.cleanup }
+end
