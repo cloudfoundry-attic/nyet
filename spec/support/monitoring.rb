@@ -1,5 +1,5 @@
 class Monitoring
-  def record_action(action, tags = {}, &blk)
+  def record_action(action, tags={}, &blk)
     puts "--- Started monitoring #{action} of application."
     t1 = Time.now.to_f
     blk.call
@@ -14,7 +14,7 @@ class Monitoring
     total_time_secs * 1000
   end
 
-  def record_metric(name, value, tags = {})
+  def record_metric(name, value, tags={})
     puts "--- Metric #{name} = #{value}  (#{tags.inspect})"
   end
 end

@@ -21,7 +21,7 @@ class DogapiMonitoring < Monitoring
     @deployment_name = deployment_name
   end
 
-  def record_action(action, tags = {}, &blk)
+  def record_action(action, tags={}, &blk)
     super.tap do |execution_time|
       record("#{action}.response_time_ms", execution_time, tags)
     end
@@ -36,9 +36,10 @@ class DogapiMonitoring < Monitoring
   def record(name, value, tags = {})
     full_name = "#{@deployment_name}.nyet.#{name}"
     tags = {
-        role: "core",
-        deployment: "cf-#{@deployment_name}",
-    }.merge(tags).collect{|k,v| "#{k}:#{v}" }
+      role: "core",
+      deployment: "cf-#{@deployment_name}",
+    }.merge(tags).collect{ |k,v| "#{k}:#{v}" }
+
     puts "--- Dogapi record '#{full_name}' with #{value}  #{tags.inspect}"
     client.emit_point(full_name, value, :tags => tags)
   end

@@ -1,6 +1,10 @@
 require "bundler/setup"
+
 require "support/monitoring"
 require "support/dogapi_monitoring"
+require "support/tagged_monitoring"
+require "support/health_monitoring"
+
 require "support/admin_user"
 require "support/regular_user"
 require "support/shared_space"
