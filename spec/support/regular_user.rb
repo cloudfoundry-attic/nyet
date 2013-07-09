@@ -1,6 +1,6 @@
 require "uri"
-require "securerandom"
 require "cfoundry"
+require "securerandom"
 
 class RegularUser
   def self.from_env
@@ -63,9 +63,9 @@ class RegularUser
     end
   end
 
-  def create_route(app, host)
+  def create_route(app)
     debug(:create, client.route.tap do |route|
-      route.host = host
+      route.host = "#{app.name}-#{SecureRandom.uuid}"
       route.domain = app.space.domains.first
       route.space = app.space
       route.create!
@@ -80,8 +80,14 @@ class RegularUser
     end
   end
 
-  def find_service_plan(service_label, plan_name)
-    debug(:find_service_plan, find_service(service_label).service_plans.detect { |p| p.name == plan_name } || raise("No plan named #{plan_name.inspect}"))
+  def find_service_plan(service_label, service_plan_name)
+    service = client.services.find { |s| s.label == service_label } ||
+      raise("No service named #{service_label.inspect}")
+
+    service_plan = service.service_plans.find { |s| s.name == service_plan_name } ||
+      raise("No service plan named #{service_plan_name.inspect}")
+
+    debug(:find, service_plan)
   end
 
   def bind_service_to_app(service_instance, app)
@@ -93,6 +99,7 @@ class RegularUser
   end
 
   private
+
   def debug(action, object)
     puts "--- #{action}: #{object.inspect} (regular user: #{client.current_user.inspect})"
     object
@@ -102,9 +109,5 @@ class RegularUser
     @client ||= CFoundry::Client.new(@target.to_s).tap do |c|
       c.login(@username, @password)
     end
-  end
-
-  def find_service(service_label)
-    client.services.detect { |s| s.label == service_label } or raise "No service named #{service_label.inspect}"
   end
 end
