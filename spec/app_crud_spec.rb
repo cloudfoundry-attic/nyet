@@ -13,8 +13,9 @@ describe "App CRUD" do
   with_user_with_org
   with_new_space
 
+  with_health_monitoring "crud_app.health"
+
   it "creates/updates/deletes an app" do
-    begin
       monitoring.record_action(:create) do
         app_name = "crud"
 
@@ -22,10 +23,10 @@ describe "App CRUD" do
         @app = regular_user.create_app(@space, app_name)
 
         regular_user.clean_up_route_from_previous_run(app_name)
-        @route = regular_user.create_route(@app, "#{app_name}-#{SecureRandom.uuid}")
+        @route = regular_user.create_route(@app)
       end
 
-      monitoring.record_action(:read) do
+      monitoring.record_action(:push) do
         deploy_app(@app)
       end
 
@@ -46,12 +47,6 @@ describe "App CRUD" do
         @app.delete!
         check_app_not_running(@route)
       end
-
-      monitoring.record_metric("crud_app.health", 1)
-    rescue => e
-      monitoring.record_metric("crud_app.health", 0)
-      raise e
-    end
   end
 
   def deploy_app(app)

@@ -1,6 +1,6 @@
 require "uri"
-require "securerandom"
 require "cfoundry"
+require "securerandom"
 
 class RegularUser
   def self.from_env
@@ -63,9 +63,9 @@ class RegularUser
     end
   end
 
-  def create_route(app, host)
+  def create_route(app)
     debug(:create, client.route.tap do |route|
-      route.host = host
+      route.host = "#{app.name}-#{SecureRandom.uuid}"
       route.domain = app.space.domains.first
       route.space = app.space
       route.create!
@@ -93,6 +93,7 @@ class RegularUser
   end
 
   private
+
   def debug(action, object)
     puts "--- #{action}: #{object.inspect} (regular user: #{client.current_user.inspect})"
     object
