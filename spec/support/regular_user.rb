@@ -80,8 +80,14 @@ class RegularUser
     end
   end
 
-  def find_service_plan(service_label, plan_name)
-    debug(:find_service_plan, find_service(service_label).service_plans.detect { |p| p.name == plan_name } || raise("No plan named #{plan_name.inspect}"))
+  def find_service_plan(service_label, service_plan_name)
+    service = client.services.find { |s| s.label == service_label } ||
+      raise("No service named #{service_label.inspect}")
+
+    service_plan = service.service_plans.find { |s| s.name == service_plan_name } ||
+      raise("No service plan named #{service_plan_name.inspect}")
+
+    debug(:find, service_plan)
   end
 
   def bind_service_to_app(service_instance, app)
@@ -103,9 +109,5 @@ class RegularUser
     @client ||= CFoundry::Client.new(@target.to_s).tap do |c|
       c.login(@username, @password)
     end
-  end
-
-  def find_service(service_label)
-    client.services.detect { |s| s.label == service_label } or raise "No service named #{service_label.inspect}"
   end
 end
