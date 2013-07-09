@@ -2,6 +2,7 @@ require "spec_helper"
 require "timeout"
 require "net/http"
 require "securerandom"
+require "support/app_with_start"
 
 describe "App CRUD" do
   CHECK_DELAY = 0.5.freeze
@@ -31,7 +32,7 @@ describe "App CRUD" do
       end
 
       monitoring.record_action(:start) do
-        start_app(@app)
+        AppWithStart.new(@app, APP_START_TIMEOUT, CHECK_DELAY).start_and_wait
       end
 
       monitoring.record_action(:app_routable) do
@@ -51,29 +52,6 @@ describe "App CRUD" do
 
   def deploy_app(app)
     app.upload(File.expand_path("../../apps/java/JavaTinyApp-1.0.war", __FILE__))
-  end
-
-  def start_app(app)
-    staging_log = ""
-    app.start!(true) do |url|
-      app.stream_update_log(url) do |chunk|
-        staging_log << chunk
-      end if url
-    end
-
-    Timeout.timeout(APP_START_TIMEOUT) do
-      check_app_started(app)
-    end
-  rescue
-    puts "Staging app log:\n#{staging_log}"
-    raise
-  end
-
-  def check_app_started(app)
-    sleep(CHECK_DELAY) until app.running?
-  rescue CFoundry::NotStaged
-    sleep(CHECK_DELAY)
-    retry
   end
 
   def check_app_routable(route)
