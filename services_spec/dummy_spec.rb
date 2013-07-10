@@ -5,12 +5,12 @@ describe "Managing Dummy", :only_in_staging => true, :appdirect => true do
   let(:namespace) { "dummy-dev" }
   let(:plan_name) { "small" }
   let(:service_name) { "dummy-dev" }
-  let(:service_instance_name) { 'dummy-tester' }
-  let(:app_name) { 'dummy' }
+  let(:service_instance_name) { "dummy-tester-#{Time.now.to_i}" }
+  let(:app_name) { "dummy-services-nyet-app-#{Time.now.to_i}" }
 
   let(:dog_tags) { {service: 'dummy'} }
   let(:test_app_path) { File.expand_path("../apps/ruby/app_sinatra_service", File.dirname(__FILE__)) }
-  let(:fake_home)     { File.expand_path("../tmp/fake_home", File.dirname(__FILE__)) }
+  let(:fake_home) { File.expand_path("../tmp/fake_home", File.dirname(__FILE__)) }
   let(:cf_bin) { `which cf`.chomp }
 
   with_user_with_org
@@ -53,6 +53,10 @@ describe "Managing Dummy", :only_in_staging => true, :appdirect => true do
     end
   end
 
+  after do
+    space.service_instance_by_name(service_instance_name).delete!(recursive: true)
+    space.app_by_name(app_name).delete!(recursive: true)
+  end
 
   it "allows users to create, bind, unbind, and delete the dummy service" do
     Dir.chdir(test_app_path) do
@@ -99,9 +103,6 @@ describe "Managing Dummy", :only_in_staging => true, :appdirect => true do
         runner.should say "1/1 instances"
         runner.should say "OK", 30
       end
-
-      space.app_by_name(app_name).delete(recursive: true)
-      space.service_instance_by_name(service_instance_name).delete(recursive: true)
     end
   end
 end
