@@ -21,9 +21,13 @@ GEM
     diff-lcs (1.2.1)
     dogapi (1.6.0)
       json (>= 1.5.1)
+    httparty (0.11.0)
+      multi_json (~> 1.0)
+      multi_xml (>= 0.5.2)
     i18n (0.6.1)
     json (1.7.7)
     multi_json (1.7.6)
+    multi_xml (0.5.4)
     multipart-post (1.2.0)
     rake (10.0.3)
     rspec (2.13.0)
@@ -40,8 +44,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  cf-uaa-lib
   cfoundry
   ci_reporter
   dogapi
+  httparty
   rake
   rspec (~> 2.13)
