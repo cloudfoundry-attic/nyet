@@ -11,21 +11,27 @@ module UserWithOrgHelpers
       before { @org = admin_user.create_org(regular_user.user) }
       after { admin_user.delete_org }
     end
-
     let(:org) { @org }
   end
 
   def with_new_space
     # - `after`s are done in reverse order!
     # - failing in one after does not prevent execution of subsequent afters
-    before { @space = regular_user.create_space(@org) }
+    before { @space = regular_user.create_space(org) }
     after { @space.delete!(:recursive => true) if @space }
     let(:space) { @space }
   end
 
   def with_shared_space
-    let!(:space) { SharedSpace.instance { regular_user.create_space(org) } }
+    let!(:space) {
+      SharedSpace.instance {
+        org.space_by_name(ENV.fetch("NYET_SPACE_NAME")) or raise "No such space"
+      }.tap do |space|
+        puts "--- find: #{space.inspect} (org: #{org})"
+      end
+    }
   end
+
 end
 
 RSpec.configure do |config|

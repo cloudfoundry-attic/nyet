@@ -11,7 +11,3 @@ class SharedSpace
     # in one of the after blocks
   end
 end
-
-RSpec.configure do |config|
-  config.after(:suite) { SharedSpace.cleanup }
-end
