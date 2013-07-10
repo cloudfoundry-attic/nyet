@@ -6,6 +6,7 @@ require "support/regular_user"
 require "support/shared_space"
 require "support/user_with_org"
 require "support/service_shared_examples"
+require "blue-shell"
 
 module MonitoringHelpers
   def monitoring
@@ -15,4 +16,5 @@ end
 
 RSpec.configure do |config|
   config.include(MonitoringHelpers)
+  config.include(BlueShell::Matchers)
 end
