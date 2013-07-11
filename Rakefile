@@ -13,8 +13,8 @@ namespace :spec do
     c.rspec_opts = %w(--format documentation --color --tag ~only_in_staging --tag appdirect)
   end
 
-  RSpec::Core::RakeTask.new(:dummy_service) do |c|
-    c.pattern = 'services_spec/dummy_spec.rb'
+  RSpec::Core::RakeTask.new(:managing_a_service) do |c|
+    c.pattern = 'services_spec/managing_a_service_spec.rb'
     c.rspec_opts = %w(--format documentation --color)
   end
 end

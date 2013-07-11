@@ -1,14 +1,12 @@
 require "spec_helper"
 require "fileutils"
 
-describe "Managing Dummy", :only_in_staging => true, :appdirect => true do
-  let(:namespace) { "dummy-dev" }
-  let(:plan_name) { "small" }
-  let(:service_name) { "dummy-dev" }
-  let(:service_instance_name) { "dummy-tester-#{Time.now.to_i}" }
-  let(:app_name) { "dummy-services-nyet-app-#{Time.now.to_i}" }
+describe "Managing a Service -", :only_in_staging => true, :appdirect => true do
+  let(:plan_name) { ENV.fetch("NYET_TEST_PLAN", "small") }
+  let(:service_name) { ENV.fetch("NYET_TEST_SERVICE", "dummy-dev") }
+  let(:service_instance_name) { "service-management-tester-#{Time.now.to_i}" }
+  let(:app_name) { "services-management-nyet-app-#{Time.now.to_i}" }
 
-  let(:dog_tags) { {service: 'dummy'} }
   let(:test_app_path) { File.expand_path("../apps/ruby/app_sinatra_service", File.dirname(__FILE__)) }
   let(:tmp_dir) { File.expand_path("../tmp", File.dirname(__FILE__)) }
   let(:fake_home) { File.join(tmp_dir, 'fake_home') }
@@ -84,7 +82,7 @@ describe "Managing Dummy", :only_in_staging => true, :appdirect => true do
     space.app_by_name(app_name).delete!(recursive: true)
   end
 
-  it "allows users to create, bind, unbind, and delete the dummy service" do
+  it "allows the user to push an app with a newly created service and bind it" do
     Dir.chdir(test_app_path) do
       BlueShell::Runner.run("#{cf_bin} push --no-manifest") do |runner|
         runner.should say "Name>"
