@@ -10,21 +10,47 @@ describe "Managing Dummy", :only_in_staging => true, :appdirect => true do
 
   let(:dog_tags) { {service: 'dummy'} }
   let(:test_app_path) { File.expand_path("../apps/ruby/app_sinatra_service", File.dirname(__FILE__)) }
-  let(:fake_home) { File.expand_path("../tmp/fake_home", File.dirname(__FILE__)) }
-  let(:cf_bin) { `which cf`.chomp }
+  let(:tmp_dir) { File.expand_path("../tmp", File.dirname(__FILE__)) }
+  let(:fake_home) { File.join(tmp_dir, 'fake_home') }
+  let(:cf_bin)  { File.join(bin_dir, 'cf') }
+  let(:bin_dir) { File.join(tmp_dir, 'bin') }
+  let(:gem_dir) { File.join(tmp_dir, 'gems') }
+
 
   with_user_with_org
   with_shared_space
 
+  around do |example|
+    Bundler.with_clean_env do
+      example.call
+    end
+  end
+
   before do
+    FileUtils.rm_rf tmp_dir
     FileUtils.mkdir_p fake_home
+    FileUtils.mkdir_p bin_dir
+    FileUtils.mkdir_p gem_dir
+
     @original_home = ENV['HOME']
     ENV['HOME'] = fake_home
+
+    use_newest_cf
     login
   end
 
   after do
     ENV['HOME'] = @original_home
+  end
+
+  def use_newest_cf
+    ENV['GEM_HOME'] = gem_dir
+    ENV['GEM_PATH'] = gem_dir
+
+    system("gem install --install-dir #{gem_dir} --bindir #{bin_dir} --no-ri --no-rdoc cf 2>&1 >/dev/null") or
+      raise "Couldn't download latest cf"
+
+    puts "Installed the newest version of cf gem: #{`#{cf_bin} --version`.chomp}"
   end
 
   def login
@@ -61,7 +87,7 @@ describe "Managing Dummy", :only_in_staging => true, :appdirect => true do
   it "allows users to create, bind, unbind, and delete the dummy service" do
     Dir.chdir(test_app_path) do
       BlueShell::Runner.run("#{cf_bin} push --no-manifest") do |runner|
-        runner.should say "Name>", 10
+        runner.should say "Name>"
         runner.send_keys app_name
 
         runner.should say "Instances>"
