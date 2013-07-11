@@ -25,7 +25,11 @@ module UserWithOrgHelpers
   def with_shared_space
     let!(:space) {
       SharedSpace.instance {
-        org.space_by_name(ENV.fetch("NYET_SPACE_NAME")) or raise "No such space"
+        if space_name = ENV["NYET_SPACE_NAME"]
+          org.space_by_name(space_name) or raise "No such space"
+        else
+          regular_user.create_space(org)
+        end
       }.tap do |space|
         puts "--- find: #{space.inspect} (org: #{org})"
       end
