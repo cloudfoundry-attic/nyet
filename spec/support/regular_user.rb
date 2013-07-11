@@ -46,10 +46,10 @@ class RegularUser
     end)
   end
 
-  def create_service_instance(space, service_label, plan_name)
+  def create_service_instance(space, service_label, plan_name, instance_name)
     service_plan = find_service_plan(service_label, plan_name)
     debug(:create, client.service_instance.tap do |service_instance|
-      service_instance.name = "#{service_plan.name}-#{SecureRandom.hex(2)}"
+      service_instance.name = instance_name
       service_instance.service_plan = service_plan
       service_instance.space = space
       service_instance.create!
@@ -60,6 +60,13 @@ class RegularUser
     if app = client.app_by_name(name)
       debug(:delete, app)
       app.delete!(recursive: true)
+    end
+  end
+
+  def clean_up_service_instance_from_previous_run(name)
+    if service_instance = client.service_instance_by_name(name)
+      debug(:delete, service_instance)
+      service_instance.delete!(recursive: true)
     end
   end
 

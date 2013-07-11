@@ -7,6 +7,8 @@ module ManageServiceHelpers
     namespace = options[:namespace] || raise("Missing namespace")
     plan_name = options[:plan_name] || raise("Missing plan_name")
     service_name = options[:service_name] || raise("Missing service_name")
+    instance_name = "#{app_name}_#{plan_name}"
+    host = "services-nyets-#{app_name}"
 
     describe "manage service" do
       with_user_with_org
@@ -17,6 +19,10 @@ module ManageServiceHelpers
 
       it "allows users to create, bind, read, write, unbind, and delete the #{app_name} service" do
         begin
+          regular_user.clean_up_app_from_previous_run(app_name)
+          regular_user.clean_up_service_instance_from_previous_run(instance_name)
+          regular_user.clean_up_route_from_previous_run(host)
+
           plan = regular_user.find_service_plan(service_name, plan_name)
           plan.should be
 
@@ -25,11 +31,11 @@ module ManageServiceHelpers
           test_app = nil
 
           app = regular_user.create_app(space, app_name)
-          route = regular_user.create_route(app, "#{app_name}-#{SecureRandom.hex(2)}")
+          route = regular_user.create_route(app, host)
 
           begin
             monitoring.record_action("create_service", dog_tags) do
-              service_instance = regular_user.create_service_instance(space, service_name, plan_name)
+              service_instance = regular_user.create_service_instance(space, service_name, plan_name, instance_name)
               service_instance.guid.should be
             end
 
@@ -62,9 +68,9 @@ module ManageServiceHelpers
             raise e
           end
         ensure
-          binding.delete!          if binding
-          service_instance.delete! if service_instance
-          app.delete!              if app
+          regular_user.clean_up_app_from_previous_run(app_name)
+          regular_user.clean_up_service_instance_from_previous_run(instance_name)
+          regular_user.clean_up_route_from_previous_run(host)
         end
       end
     end
