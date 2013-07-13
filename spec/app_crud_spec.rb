@@ -5,9 +5,9 @@ require "securerandom"
 
 describe "App CRUD" do
   CHECK_DELAY = 0.5.freeze
-  APP_START_TIMEOUT = 150.freeze # was 120, but prod is being a little slow atm
+  APP_START_TIMEOUT = 240.freeze # was 120, but prod is being a little slow atm
   APP_ROUTE_TIMEOUT = 5.freeze
-  APP_SCALE_TIMEOUT = 90.freeze # was 60, but prod is being a little slow atm
+  APP_SCALE_TIMEOUT = 240.freeze # was 60, but prod is being a little slow atm
   APP_DELETED_TIMEOUT = 60.freeze
 
   with_user_with_org
