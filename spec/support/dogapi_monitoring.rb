@@ -34,7 +34,7 @@ class DogapiMonitoring < Monitoring
   private
 
   def record(name, value, tags = {})
-    full_name = "#{@deployment_name}.nyet.#{name}"
+    full_name = "nyet.#{name}"
     tags = {
         role: "core",
         deployment: "cf-#{@deployment_name}",
