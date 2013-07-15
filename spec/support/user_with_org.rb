@@ -1,4 +1,5 @@
 require "support/shared_space"
+require "timeout"
 
 module UserWithOrgHelpers
   def with_user_with_org
@@ -36,6 +37,13 @@ module UserWithOrgHelpers
     }
   end
 
+  def with_time_limit(limit=600)
+    around do |example|
+      Timeout.timeout(limit) do
+        example.run
+      end
+    end
+  end
 end
 
 RSpec.configure do |config|

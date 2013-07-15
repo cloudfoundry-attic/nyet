@@ -7,6 +7,7 @@ describe "App CRUD" do
 
   with_user_with_org
   with_new_space
+  with_time_limit
 
   it "creates/updates/deletes an app" do
     begin
