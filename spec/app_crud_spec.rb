@@ -1,14 +1,9 @@
 require "spec_helper"
-require "timeout"
 require "net/http"
 require "securerandom"
 
 describe "App CRUD" do
   CHECK_DELAY = 0.5.freeze
-  APP_START_TIMEOUT = 240.freeze # was 120, but prod is being a little slow atm
-  APP_ROUTE_TIMEOUT = 5.freeze
-  APP_SCALE_TIMEOUT = 240.freeze # was 60, but prod is being a little slow atm
-  APP_DELETED_TIMEOUT = 60.freeze
 
   with_user_with_org
   with_new_space
@@ -68,9 +63,7 @@ describe "App CRUD" do
       end if url
     end
 
-    Timeout.timeout(APP_START_TIMEOUT) do
-      check_app_started(app)
-    end
+    check_app_started(app)
   rescue
     puts "Staging app log:\n#{staging_log}"
     raise
@@ -85,10 +78,7 @@ describe "App CRUD" do
 
   def check_app_routable(route)
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
-    content = nil
-    Timeout.timeout(APP_ROUTE_TIMEOUT) do
-      content = Net::HTTP.get(app_uri)
-    end
+    content = Net::HTTP.get(app_uri)
     expect(content).to match(/^It just needed to be restarted!/)
   end
 
@@ -96,23 +86,19 @@ describe "App CRUD" do
     app.total_instances = 2
     app.update!
 
-    Timeout.timeout(APP_SCALE_TIMEOUT) do
-      sleep(CHECK_DELAY) until app.running?
-    end
+    sleep(CHECK_DELAY) until app.running?
   end
 
   def check_app_not_running(route)
     app_uri = URI("http://#{route.name}")
 
-    Timeout.timeout(APP_DELETED_TIMEOUT) do
-      response = Net::HTTP.get_response(app_uri)
-      puts "--- GET #{app_uri}: #{response.class}"
+    response = Net::HTTP.get_response(app_uri)
+    puts "--- GET #{app_uri}: #{response.class}"
 
-      while response.is_a?(Net::HTTPSuccess)
-        puts "--- GET #{app_uri}: #{response.class}"
-        sleep(CHECK_DELAY)
-        response = Net::HTTP.get_response(app_uri)
-      end
+    while response.is_a?(Net::HTTPSuccess)
+      puts "--- GET #{app_uri}: #{response.class}"
+      sleep(CHECK_DELAY)
+      response = Net::HTTP.get_response(app_uri)
     end
   end
 end
