@@ -1,4 +1,5 @@
 require 'timeout'
+require 'cgi'
 
 class TestApp
   attr_reader :host_name, :service_instance, :app
@@ -43,6 +44,16 @@ class TestApp
     response.body
   end
 
+  def send_email(to)
+    http = Net::HTTP.new(host_name)
+    key_path = "/service/#{@namespace}/#{service_instance.name}"
+    debug("POST to #{host_name} #{key_path}")
+    response = http.post(key_path, "to=#{CGI.escape(to)}")
+    debug("Response: #{response}")
+    debug("  Body: #{response.body}")
+    response
+  end
+
   def when_running(&block)
     Timeout::timeout(WAITING_TIMEOUT) do
       loop do
@@ -64,6 +75,7 @@ class TestApp
   end
 
   private
+
   def key_path(key)
     "/service/#{@namespace}/#{service_instance.name}/#{key}"
   end

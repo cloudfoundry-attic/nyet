@@ -172,7 +172,7 @@ end
 def load_smtp(service_name)
   sendgrid_service = load_service_by_name(service_name)
   Mail.defaults do
-    delivery_method :smtp, { :address   => sendgrid_service.fetch('smtp_host'),
+    delivery_method :smtp, { :address   => sendgrid_service.fetch('hostname'),
                              :port      => 587,
                              :domain    => "cloudfoundry.com",
                              :user_name => sendgrid_service.fetch('username'),
