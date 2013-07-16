@@ -53,10 +53,12 @@ describe "App CRUD" do
   end
 
   def deploy_app(app)
+    puts "starting #{__method__} (#{Time.now})"
     app.upload(File.expand_path("../../apps/java/JavaTinyApp-1.0.war", __FILE__))
   end
 
   def start_app(app)
+    puts "starting #{__method__} (#{Time.now})"
     staging_log = ""
     app.start!(true) do |url|
       app.stream_update_log(url) do |chunk|
@@ -71,6 +73,7 @@ describe "App CRUD" do
   end
 
   def check_app_started(app)
+    puts "starting #{__method__} (#{Time.now})"
     sleep(CHECK_DELAY) until app.running?
   rescue CFoundry::NotStaged
     sleep(CHECK_DELAY)
@@ -78,12 +81,14 @@ describe "App CRUD" do
   end
 
   def check_app_routable(route)
+    puts "starting #{__method__} (#{Time.now})"
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
     content = Net::HTTP.get(app_uri)
     expect(content).to match(/^It just needed to be restarted!/)
   end
 
   def scale_app(app)
+    puts "starting #{__method__} (#{Time.now})"
     app.total_instances = 2
     app.update!
 
@@ -91,6 +96,7 @@ describe "App CRUD" do
   end
 
   def check_app_not_running(route)
+    puts "starting #{__method__} (#{Time.now})"
     app_uri = URI("http://#{route.name}")
 
     response = Net::HTTP.get_response(app_uri)
