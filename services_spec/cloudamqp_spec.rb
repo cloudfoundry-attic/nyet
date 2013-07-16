@@ -1,10 +1,15 @@
 require "spec_helper"
 
-describe "Managing CloudAMQP", :appdirect => true do
-  it_can_manage_service(
-    app_name: "cloudamqp",
-    namespace: "amqp",
-    plan_name: "lemur",
-    service_name: "cloudamqp-dev",
-  )
+describe "Managing CloudAMQP", :service => true, :appdirect => true do
+  let(:app_name) { "cloudamqp" }
+  let(:namespace) { "amqp" }
+  let(:plan_name) { "lemur" }
+  let(:service_name) { "cloudamqp-dev" }
+
+  it "allows users to create, bind, read, write, unbind, and delete the CloudAMQP service" do
+    create_and_use_service do |client|
+      client.insert_value('key', 'value').should be_a Net::HTTPSuccess
+      client.get_value('key').should == 'value'
+    end
+  end
 end

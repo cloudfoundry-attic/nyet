@@ -1,10 +1,15 @@
 require "spec_helper"
 
-describe "Managing ElephantSQL", :appdirect => true do
-  it_can_manage_service(
-    app_name: "elephantsql",
-    namespace: "pg",
-    plan_name: "turtle",
-    service_name: "elephantsql-dev",
-  )
+describe "Managing ElephantSQL", :service => true, :appdirect => true do
+  let(:app_name) { "elephantsql" }
+  let(:namespace) { "pg" }
+  let(:plan_name) { "turtle" }
+  let(:service_name) { "elephantsql-dev" }
+
+  it "allows users to create, bind, read, write, unbind, and delete the ElephantSQL service" do
+    create_and_use_service do |client|
+      client.insert_value('key', 'value').should be_a Net::HTTPSuccess
+      client.get_value('key').should == 'value'
+    end
+  end
 end

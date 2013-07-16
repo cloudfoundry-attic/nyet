@@ -5,7 +5,8 @@ require "support/admin_user"
 require "support/regular_user"
 require "support/shared_space"
 require "support/user_with_org"
-require "support/service_shared_examples"
+require "support/test_app"
+require "support/service"
 require "blue-shell"
 
 module MonitoringHelpers

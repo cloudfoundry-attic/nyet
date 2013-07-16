@@ -1,10 +1,15 @@
 require "spec_helper"
 
-describe "Managing MongoLab", :appdirect => true do
-  it_can_manage_service(
-    app_name: "mongolab",
-    namespace: "mongodb",
-    plan_name: "sandbox",
-    service_name: "mongolab-dev",
-  )
+describe "Managing Mongolab", :service => true, :appdirect => true do
+  let(:app_name) { "mongolab" }
+  let(:namespace) { "mongodb" }
+  let(:plan_name) { "sandbox" }
+  let(:service_name) { "mongolab-dev" }
+
+  it "allows users to create, bind, read, write, unbind, and delete the Mongolab service" do
+    create_and_use_service do |client|
+      client.insert_value('key', 'value').should be_a Net::HTTPSuccess
+      client.get_value('key').should == 'value'
+    end
+  end
 end

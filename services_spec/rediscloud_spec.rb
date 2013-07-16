@@ -1,12 +1,15 @@
 require "spec_helper"
 
-describe "Managing RedisCloud", :appdirect => true do
-  pending "Rediscloud disabled our automatic testing and returns no credentials" do
-    it_can_manage_service(
-      app_name: "rediscloud",
-      namespace: "redis",
-      plan_name: "20mb",
-      service_name: "rediscloud-dev",
-    )
+describe "Managing RedisCloud", :service => true, :appdirect => true do
+  let(:app_name) { "rediscloud" }
+  let(:namespace) { "redis" }
+  let(:plan_name) { "20mb" }
+  let(:service_name) { "rediscloud-dev" }
+
+  pending "allows users to create, bind, read, write, unbind, and delete the RedisCloud service" do
+    create_and_use_service do |client|
+      client.insert_value('key', 'value').should be_a Net::HTTPSuccess
+      client.get_value('key').should == 'value'
+    end
   end
 end
