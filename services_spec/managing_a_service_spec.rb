@@ -122,7 +122,7 @@ describe "Managing a Service -", :only_in_staging => true, :appdirect => true do
         runner.send_keys "n"
 
         runner.should say "Uploading #{app_name}... OK", 180
-        runner.should say "Starting #{app_name}... OK", 180
+        runner.should say "Preparing to start #{app_name}... OK", 180
         runner.should say "Checking status of app '#{app_name}'", 180
         runner.should say "1 of 1 instances running"
         runner.should say "Push successful!", 30
