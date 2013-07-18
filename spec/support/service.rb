@@ -64,6 +64,11 @@ module ServiceHelper
     yield test_app
 
     monitoring.record_metric("services.health", 1, dog_tags)
+  rescue CFoundry::APIError => e
+    monitoring.record_metric("services.health", 0, dog_tags)
+    puts '--- CC error:'
+    puts e.response_trace
+    raise
   rescue RSpec::Core::Pending::PendingDeclaredInExample => e
     raise e
   rescue => e
