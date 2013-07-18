@@ -84,7 +84,7 @@ describe "App CRUD" do
     puts "starting #{__method__} (#{Time.now})"
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
     puts "checking that http://#{route.host}.#{route.domain.name} is routable"
-    sleep 1
+    sleep 3
     content = Net::HTTP.get(app_uri)
     expect(content).to match(/^It just needed to be restarted!/)
   end
