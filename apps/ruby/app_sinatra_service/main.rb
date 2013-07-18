@@ -6,6 +6,10 @@ require "mail"
 
 Bundler.require
 
+after do
+  headers["Services-Nyet-App"]="true"
+end
+
 get '/env' do
   ENV['VCAP_SERVICES']
 end
