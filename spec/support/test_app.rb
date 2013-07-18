@@ -24,24 +24,36 @@ class TestApp
     response.body
   end
 
+  RETRY_COUNT=3
+
   def insert_value(key, value)
     http = Net::HTTP.new(host_name)
     key_path = key_path(key)
-    debug("POST to #{host_name} #{key_path}")
-    response = http.post(key_path, value)
-    debug("Response: #{response}")
-    debug("  Body: #{response.body}")
-    response
+    RETRY_COUNT.times do
+      debug("POST to #{host_name} #{key_path}")
+      response = http.post(key_path, value)
+      if response['Services-Nyet-App'] == 'true'
+        debug("Response: #{response}")
+        debug("  Body: #{response.body}")
+        return response
+      end
+    end
+    raise "Router malfunction"
   end
 
   def get_value(key)
     http = Net::HTTP.new(host_name)
     key_path = key_path(key)
-    debug("GET from #{host_name} #{key_path}")
-    response = http.get(key_path)
-    debug("Response: #{response}")
-    debug("  Body: #{response.body}")
-    response.body
+    RETRY_COUNT.times do
+      debug("GET from #{host_name} #{key_path}")
+      response = http.get(key_path)
+      if response['Services-Nyet-App'] == 'true'
+        debug("Response: #{response}")
+        debug("  Body: #{response.body}")
+        return response.body
+      end
+    end
+    raise "Router malfunction"
   end
 
   def send_email(to)
