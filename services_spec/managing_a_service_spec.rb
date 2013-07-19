@@ -79,6 +79,7 @@ describe "Managing a Service -", :only_in_staging => true, :appdirect => true do
 
   after do
     space.service_instance_by_name(service_instance_name).delete!(recursive: true)
+    regular_user.clean_up_route_from_previous_run(app_name)
     space.app_by_name(app_name).delete!(recursive: true)
   end
 
