@@ -1,11 +1,11 @@
 require "spec_helper"
 require "fileutils"
 
-describe "Managing a Service -", :only_in_staging => true, :appdirect => true do
+describe "Managing a Service", :only_in_staging => true, :appdirect => true do
   let(:plan_name) { ENV.fetch("NYET_TEST_PLAN", "small") }
   let(:service_name) { ENV.fetch("NYET_TEST_SERVICE", "dummy-dev") }
-  let(:service_instance_name) { "service-management-tester-#{Time.now.to_i}" }
-  let(:app_name) { "services-management-nyet-app-#{Time.now.to_i}" }
+  let(:service_instance_name) { "service-management-tester" }
+  let(:app_name) { "services-management-nyet-app" }
 
   let(:test_app_path) { File.expand_path("../apps/ruby/app_sinatra_service", File.dirname(__FILE__)) }
   let(:tmp_dir) { File.expand_path("../tmp", File.dirname(__FILE__)) }
@@ -35,6 +35,10 @@ describe "Managing a Service -", :only_in_staging => true, :appdirect => true do
 
     use_newest_cf
     login
+
+    clean_up_service_instance(service_instance_name)
+    regular_user.clean_up_route_from_previous_run(app_name)
+    clean_up_app(app_name)
   end
 
   after do
@@ -77,10 +81,22 @@ describe "Managing a Service -", :only_in_staging => true, :appdirect => true do
     end
   end
 
+  def clean_up_service_instance(service_instance_name)
+    if service_instance = space.service_instance_by_name(service_instance_name)
+      service_instance.delete!(recursive: true)
+    end
+  end
+
+  def clean_up_app(app_name)
+    if app = space.app_by_name(app_name)
+      app.delete!(recursive: true)
+    end
+  end
+
   after do
-    space.service_instance_by_name(service_instance_name).delete!(recursive: true)
+    clean_up_service_instance(service_instance_name)
     regular_user.clean_up_route_from_previous_run(app_name)
-    space.app_by_name(app_name).delete!(recursive: true)
+    clean_up_app(app_name)
   end
 
   it "allows the user to push an app with a newly created service and bind it" do
