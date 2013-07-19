@@ -85,11 +85,13 @@ describe "App CRUD" do
   def check_app_routable(route)
     puts "starting #{__method__} (#{Time.now})"
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
-    puts "checking that http://#{route.host}.#{route.domain.name} is routable"
+    count = 0
 
     Timeout::timeout(ROUTING_TIMEOUT) do
       content = nil
       while content !~ /^It just needed to be restarted!/
+        count += 1
+        puts "checking that http://#{route.host}.#{route.domain.name} is routable attempt: #{count}."
         content = Net::HTTP.get(app_uri) rescue nil
         sleep 0.2
       end
