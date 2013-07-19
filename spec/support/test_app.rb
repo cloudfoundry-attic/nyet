@@ -2,16 +2,17 @@ require 'timeout'
 require 'cgi'
 
 class TestApp
-  attr_reader :host_name, :service_instance, :app
+  attr_reader :host_name, :service_instance, :app, :example
   # temporarily bumping this to 10mins
   # sunset this after the HM fix
   WAITING_TIMEOUT = 600
 
-  def initialize(app, host_name, service_instance, namespace)
+  def initialize(app, host_name, service_instance, namespace, example)
     @app = app
     @host_name = host_name
     @service_instance = service_instance
     @namespace = namespace
+    @example = example
   end
 
   def get_env
@@ -38,7 +39,7 @@ class TestApp
         return response
       end
     end
-    raise "Router malfunction"
+    example.pending "Router malfunction"
   end
 
   def get_value(key)
@@ -53,7 +54,7 @@ class TestApp
         return response.body
       end
     end
-    raise "Router malfunction"
+    example.pending "Router malfunction"
   end
 
   def send_email(to)
