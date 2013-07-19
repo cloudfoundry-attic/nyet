@@ -1,9 +1,11 @@
 require "spec_helper"
 require "net/http"
 require "securerandom"
+require "timeout"
 
 describe "App CRUD" do
   CHECK_DELAY = 0.5.freeze
+  ROUTING_TIMEOUT = 60
 
   with_user_with_org
   with_new_space
@@ -84,9 +86,14 @@ describe "App CRUD" do
     puts "starting #{__method__} (#{Time.now})"
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
     puts "checking that http://#{route.host}.#{route.domain.name} is routable"
-    sleep 3
-    content = Net::HTTP.get(app_uri)
-    expect(content).to match(/^It just needed to be restarted!/)
+
+    Timeout::timeout(ROUTING_TIMEOUT) do
+      content = nil
+      while content !~ /^It just needed to be restarted!/
+        content = Net::HTTP.get(app_uri) rescue nil
+        sleep 0.2
+      end
+    end
   end
 
   def scale_app(app)
