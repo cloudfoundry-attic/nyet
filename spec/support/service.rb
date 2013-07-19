@@ -52,14 +52,12 @@ module ServiceHelper
       monitoring.record_action(:start, dog_tags) do
         @app.start!(true)
         test_app = TestApp.new(@app, @route.name, service_instance, namespace, self)
-        test_app.when_running
+        test_app.wait_until_running
       end
     rescue => e
       raise if ENV["NYET_RAISE_ALL_ERRORS"]
       pending "Unable to push an app. Possibly backend issue, error #{e.inspect}"
     end
-
-    test_app.get_env
 
     yield test_app
 

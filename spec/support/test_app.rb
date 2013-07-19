@@ -15,59 +15,51 @@ class TestApp
     @example = example
   end
 
-  def get_env
-    http = Net::HTTP.new(host_name)
-    path = "/env"
-    debug("GET from #{host_name} #{path}")
-    response = http.get(path)
-    debug("Response: #{response}")
-    debug("  Body: #{response.body}")
-    response.body
-  end
-
-  RETRY_COUNT=3
-
   def insert_value(key, value)
     http = Net::HTTP.new(host_name)
     key_path = key_path(key)
-    RETRY_COUNT.times do
+    make_request_with_retry do
       debug("POST to #{host_name} #{key_path}")
-      response = http.post(key_path, value)
-      if response['Services-Nyet-App'] == 'true'
-        debug("Response: #{response}")
-        debug("  Body: #{response.body}")
-        return response
-      end
+      http.post(key_path, value)
     end
-    example.pending "Router malfunction"
   end
 
   def get_value(key)
     http = Net::HTTP.new(host_name)
     key_path = key_path(key)
-    RETRY_COUNT.times do
+    make_request_with_retry do
       debug("GET from #{host_name} #{key_path}")
-      response = http.get(key_path)
-      if response['Services-Nyet-App'] == 'true'
-        debug("Response: #{response}")
-        debug("  Body: #{response.body}")
-        return response.body
-      end
-    end
-    example.pending "Router malfunction"
+      http.get(key_path)
+    end.body
   end
 
   def send_email(to)
     http = Net::HTTP.new(host_name)
     key_path = "/service/#{@namespace}/#{service_instance.name}"
-    debug("POST to #{host_name} #{key_path}")
-    response = http.post(key_path, "to=#{CGI.escape(to)}")
-    debug("Response: #{response}")
-    debug("  Body: #{response.body}")
-    response
+    make_request_with_retry do
+      debug("POST to #{host_name} #{key_path}")
+      http.post(key_path, "to=#{CGI.escape(to)}")
+    end
   end
 
-  def when_running(&block)
+  def make_request_with_retry
+    Timeout::timeout(WAITING_TIMEOUT) do
+      while true
+        response = yield
+        debug 'header' + response['Services-Nyet-App'].inspect
+        if response['Services-Nyet-App'] == 'true'
+          debug("Response: #{response}")
+          debug("  Body: #{response.body}")
+          return response
+        end
+        sleep(1)
+      end
+    end
+  rescue TimeoutError
+    example.pending "Router malfunction"
+  end
+
+  def wait_until_running
     Timeout::timeout(WAITING_TIMEOUT) do
       loop do
         print "---- Waiting for app: "
@@ -84,7 +76,6 @@ class TestApp
         sleep 2
       end
     end
-    block.call if block_given?
   end
 
   private
