@@ -19,9 +19,11 @@ describe "Managing a Service", :only_in_staging => true, :appdirect => true do
   with_shared_space
 
   around do |example|
+    original_env = ENV.to_hash
     Bundler.with_clean_env do
       example.call
     end
+    ENV.replace(original_env)
   end
 
   before do
@@ -30,7 +32,6 @@ describe "Managing a Service", :only_in_staging => true, :appdirect => true do
     FileUtils.mkdir_p bin_dir
     FileUtils.mkdir_p gem_dir
 
-    @original_home = ENV['HOME']
     ENV['HOME'] = fake_home
 
     use_newest_cf
@@ -42,8 +43,6 @@ describe "Managing a Service", :only_in_staging => true, :appdirect => true do
   end
 
   after do
-    ENV['HOME'] = @original_home
-
     clean_up_service_instance(service_instance_name)
     regular_user.clean_up_route_from_previous_run(app_name)
     clean_up_app(app_name)
