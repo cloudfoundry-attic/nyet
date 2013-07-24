@@ -2,8 +2,8 @@ require "spec_helper"
 require "fileutils"
 
 describe "Managing a Service", :only_in_staging => true, :appdirect => true do
-  let(:plan_name) { ENV.fetch("NYET_TEST_PLAN", "small") }
-  let(:service_name) { ENV.fetch("NYET_TEST_SERVICE", "dummy-dev") }
+  let(:plan_name) { "small" }
+  let(:service_name) { "dummy-dev" }
   let(:service_instance_name) { "service-management-tester" }
   let(:app_name) { "services-management-nyet-app" }
 
