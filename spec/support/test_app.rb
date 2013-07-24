@@ -15,6 +15,15 @@ class TestApp
     @example = example
   end
 
+  def get_env
+    http = Net::HTTP.new(host_name)
+    path = "/env"
+    make_request_with_retry do
+      debug("GET from #{host_name} #{path}")
+      http.get(path)
+    end.body
+  end
+
   def insert_value(key, value)
     http = Net::HTTP.new(host_name)
     key_path = key_path(key)
