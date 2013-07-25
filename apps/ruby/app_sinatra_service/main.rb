@@ -161,7 +161,13 @@ end
 
 def load_mysql(service_name)
   mysql_service = load_service_by_name(service_name)
-  client = Mysql2::Client.new(:host => mysql_service['hostname'], :username => mysql_service['username'], :port => mysql_service['port'].to_i, :password => mysql_service['password'], :database => mysql_service['name'])
+  client = Mysql2::Client.new(
+    :host     => mysql_service['hostname'],
+    :username => mysql_service['username'],
+    :port     => mysql_service['port'].to_i,
+    :password => mysql_service['password'],
+    :database => mysql_service['name']
+  )
   result = client.query("SELECT table_name FROM information_schema.tables WHERE table_name = 'data_values'")
   client.query("CREATE TABLE IF NOT EXISTS data_values ( id VARCHAR(20), data_value VARCHAR(20)); ") if result.count != 1
   client
