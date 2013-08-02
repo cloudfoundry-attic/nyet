@@ -2,17 +2,18 @@ require 'timeout'
 require 'cgi'
 
 class TestApp
-  attr_reader :host_name, :service_instance, :app, :example
+  attr_reader :host_name, :service_instance, :app, :example, :signature
   # temporarily bumping this to 10mins
   # sunset this after the HM fix
   WAITING_TIMEOUT = 600
 
-  def initialize(app, host_name, service_instance, namespace, example)
+  def initialize(app, host_name, service_instance, namespace, example, signature)
     @app = app
     @host_name = host_name
     @service_instance = service_instance
     @namespace = namespace
     @example = example
+    @signature = signature
   end
 
   def get_env
@@ -59,6 +60,9 @@ class TestApp
         if response['Services-Nyet-App'] == 'true'
           debug("Response: #{response}")
           debug("  Body: #{response.body}")
+
+          raise 'Attack of the zombies!!! Run for your lives!!!' if response['App-Signature'] != signature
+
           return response
         end
         sleep(1)

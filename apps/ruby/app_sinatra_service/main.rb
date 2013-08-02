@@ -2,12 +2,13 @@ require 'json'
 require 'uri'
 require 'forwardable'
 require 'bundler'
-require "mail"
+require 'mail'
 
 Bundler.require
 
 after do
-  headers["Services-Nyet-App"]="true"
+  headers['Services-Nyet-App'] = 'true'
+  headers['App-Signature'] = ENV.fetch('APP_SIGNATURE')
 end
 
 get '/env' do

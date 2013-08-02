@@ -36,12 +36,13 @@ class RegularUser
     end)
   end
 
-  def create_app(space, name)
+  def create_app(space, name, environment={})
     debug(:create, client.app.tap do |app|
       app.name = name
       app.memory = 512
       app.total_instances = 1
       app.space = space
+      app.env = environment
       app.create!
     end)
   end

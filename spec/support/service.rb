@@ -28,7 +28,8 @@ module ServiceHelper
         @plan = regular_user.find_service_plan(service_name, plan_name)
         @plan.should be # :(
 
-        @app = regular_user.create_app(space, app_name)
+        @app_signature = SecureRandom.uuid
+        @app = regular_user.create_app(space, app_name, {APP_SIGNATURE: @app_signature})
         @route = regular_user.create_route(@app, host)
       end
     end
@@ -52,7 +53,7 @@ module ServiceHelper
       @app.upload(File.expand_path(test_app_path, __FILE__))
       monitoring.record_action(:start, dog_tags) do
         @app.start!(true)
-        test_app = TestApp.new(@app, @route.name, service_instance, namespace, self)
+        test_app = TestApp.new(@app, @route.name, service_instance, namespace, self, @app_signature)
         test_app.wait_until_running
       end
     rescue => e
