@@ -4,12 +4,15 @@ require "securerandom"
 require "timeout"
 
 describe "App CRUD" do
-  CHECK_DELAY = 0.5.freeze
+  CHECK_DELAY = 0.25.freeze
   ROUTING_TIMEOUT = 60
 
   with_user_with_org
   with_new_space
   with_time_limit
+
+  let(:app_content) { "#{SecureRandom.uuid}_#{Time.now.to_i}" }
+  attr_reader :route
 
   it "creates/updates/deletes an app" do
     begin
@@ -18,11 +21,12 @@ describe "App CRUD" do
           app_name = "crud"
 
           regular_user.clean_up_app_from_previous_run(app_name)
-          @app = regular_user.create_app(@space, app_name)
+          @app = regular_user.create_app(@space, app_name, CUSTOM_VAR: app_content)
 
           regular_user.clean_up_route_from_previous_run(app_name)
-          @route = regular_user.create_route(@app, "#{app_name}-#{SecureRandom.uuid}")
+          @route = regular_user.create_route(@app, app_name)
         end
+
 
         monitoring.record_action(:read) do
           deploy_app(@app)
@@ -33,7 +37,7 @@ describe "App CRUD" do
         end
 
         monitoring.record_action(:app_routable) do
-          check_app_routable(@route)
+          check_app_routable
         end
 
         monitoring.record_action(:update) do
@@ -43,7 +47,7 @@ describe "App CRUD" do
         monitoring.record_action(:delete) do
           @route.delete!
           @app.delete!
-          check_app_not_running(@route)
+          check_app_not_running
         end
       end
 
@@ -56,7 +60,7 @@ describe "App CRUD" do
 
   def deploy_app(app)
     puts "starting #{__method__} (#{Time.now})"
-    app.upload(File.expand_path("../../apps/java/JavaTinyApp-1.0.war", __FILE__))
+    app.upload(File.expand_path("../../apps/java/JavaTinyApp-1.1.war", __FILE__))
   end
 
   def start_app(app)
@@ -82,20 +86,21 @@ describe "App CRUD" do
     retry
   end
 
-  def check_app_routable(route)
+  def check_app_routable
     puts "starting #{__method__} (#{Time.now})"
-    app_uri = URI("http://#{route.host}.#{route.domain.name}")
-    count = 0
 
+    count = 0
     Timeout::timeout(ROUTING_TIMEOUT) do
       content = nil
       while content !~ /^It just needed to be restarted!/
         count += 1
         puts "checking that http://#{route.host}.#{route.domain.name} is routable attempt: #{count}."
-        content = Net::HTTP.get(app_uri) rescue nil
+        content = page_content rescue nil
         sleep 0.2
       end
     end
+
+    expect(page_content).to include(app_content)
   end
 
   def scale_app(app)
@@ -104,10 +109,13 @@ describe "App CRUD" do
     app.update!
 
     sleep(CHECK_DELAY) until app.running?
+    sleep(CHECK_DELAY) until page_content.include?('"instance_index":1')
+    sleep(CHECK_DELAY) until page_content.include?('"instance_index":0')
   end
 
-  def check_app_not_running(route)
+  def check_app_not_running
     puts "starting #{__method__} (#{Time.now})"
+
     app_uri = URI("http://#{route.name}")
 
     response = Net::HTTP.get_response(app_uri)
@@ -118,5 +126,10 @@ describe "App CRUD" do
       sleep(CHECK_DELAY)
       response = Net::HTTP.get_response(app_uri)
     end
+  end
+
+  def page_content
+    app_uri = URI("http://#{route.host}.#{route.domain.name}")
+    Net::HTTP.get(app_uri)
   end
 end
