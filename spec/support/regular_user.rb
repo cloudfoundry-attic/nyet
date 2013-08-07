@@ -49,6 +49,9 @@ class RegularUser
 
   def create_managed_service_instance(space, service_label, plan_name, instance_name)
     service_plan = find_service_plan(service_label, plan_name)
+    if service_plan.nil?
+      raise ArgumentError, "no such a service plan #{plan_name} for label #{service_label}"
+    end
     debug(:create, client.managed_service_instance.tap do |service_instance|
       service_instance.name = instance_name
       service_instance.service_plan = service_plan

@@ -25,9 +25,6 @@ module ServiceHelper
       end
 
       before do
-        @plan = regular_user.find_service_plan(service_name, plan_name)
-        @plan.should be # :(
-
         @app_signature = SecureRandom.uuid
         @app = regular_user.create_app(space, app_name, {APP_SIGNATURE: @app_signature})
         @route = regular_user.create_route(@app, host)
