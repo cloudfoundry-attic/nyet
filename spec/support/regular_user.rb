@@ -49,7 +49,7 @@ class RegularUser
 
   def create_service_instance(space, service_label, plan_name, instance_name)
     service_plan = find_service_plan(service_label, plan_name)
-    debug(:create, client.service_instance.tap do |service_instance|
+    debug(:create, client.managed_service_instance.tap do |service_instance|
       service_instance.name = instance_name
       service_instance.service_plan = service_plan
       service_instance.space = space
@@ -108,7 +108,7 @@ class RegularUser
 
   def client
     @client ||= CFoundry::Client.new(@target.to_s).tap do |c|
-      c.login(@username, @password)
+      c.login(username:@username, password:@password)
     end
   end
 
