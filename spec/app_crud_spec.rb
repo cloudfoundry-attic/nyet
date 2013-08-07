@@ -66,7 +66,7 @@ describe "App CRUD" do
   def start_app(app)
     puts "starting #{__method__} (#{Time.now})"
     staging_log = ""
-    app.start!(true) do |url|
+    app.start! do |url|
       app.stream_update_log(url) do |chunk|
         staging_log << chunk
       end if url
