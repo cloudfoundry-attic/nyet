@@ -47,7 +47,7 @@ class RegularUser
     end)
   end
 
-  def create_service_instance(space, service_label, plan_name, instance_name)
+  def create_managed_service_instance(space, service_label, plan_name, instance_name)
     service_plan = find_service_plan(service_label, plan_name)
     debug(:create, client.managed_service_instance.tap do |service_instance|
       service_instance.name = instance_name

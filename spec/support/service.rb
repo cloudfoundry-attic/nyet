@@ -40,7 +40,7 @@ module ServiceHelper
     test_app = nil
 
     monitoring.record_action("create_service", dog_tags) do
-      service_instance = regular_user.create_service_instance(space, service_name, plan_name, instance_name)
+      service_instance = regular_user.create_managed_service_instance(space, service_name, plan_name, instance_name)
       service_instance.guid.should be
     end
 
