@@ -2,7 +2,7 @@ module ServiceHelper
   def self.included(base)
     base.instance_eval do
       let(:namespace) { nil }
-      let(:instance_name) { "#{app_name}_#{plan_name}" }
+      let(:instance_name) { "#{app_name}_service_instance" }
       let(:host) { "services-nyets-#{app_name}" }
 
       with_user_with_org
