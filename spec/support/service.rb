@@ -35,7 +35,7 @@ module ServiceHelper
     end
   end
 
-  def create_and_use_service
+  def create_and_use_managed_service
     service_instance = nil
     test_app = nil
 

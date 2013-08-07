@@ -6,7 +6,7 @@ describe "Managing Dummy", :service => true, :appdirect => true do
   let(:service_name) { "dummy-dev" }
 
   it "allows users to create, bind, read, write, unbind, and delete the dummy service" do
-    create_and_use_service do |client|
+    create_and_use_managed_service do |client|
       env = JSON.parse(client.get_env)
       env["#{service_name}-n/a"].first['credentials']['dummy'].should == 'value'
     end
