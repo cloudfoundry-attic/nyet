@@ -35,14 +35,18 @@ module ServiceHelper
     end
   end
 
-  def create_and_use_managed_service
+  def create_and_use_managed_service(&blk)
     service_instance = nil
-    test_app = nil
-
     monitoring.record_action("create_service", dog_tags) do
       service_instance = regular_user.create_managed_service_instance(space, service_name, plan_name, instance_name)
       service_instance.guid.should be
     end
+    use_service(service_instance, &blk)
+  end
+
+  private
+  def use_service(service_instance, &blk)
+    test_app = nil
 
     monitoring.record_action("bind_service", dog_tags) do
       binding = regular_user.bind_service_to_app(service_instance, @app)
@@ -61,7 +65,7 @@ module ServiceHelper
       pending "Unable to push an app. Possibly backend issue, error #{e.inspect}"
     end
 
-    yield test_app
+    blk.call(test_app)
 
     monitoring.record_metric("services.health", 1, dog_tags)
   rescue CFoundry::APIError => e

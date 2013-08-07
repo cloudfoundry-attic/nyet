@@ -57,6 +57,15 @@ class RegularUser
     end)
   end
 
+  def create_user_provided_service_instance(space, instance_name, credentials)
+    debug(:create, client.user_provided_service_instance.tap do |service_instance|
+      service_instance.credentials = credentials
+      service_instance.name = instance_name
+      service_instance.space = space
+      service_instance.create!
+    end)
+  end
+
   def clean_up_app_from_previous_run(name)
     if app = client.app_by_name(name)
       debug(:delete, app)
