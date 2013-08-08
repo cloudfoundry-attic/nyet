@@ -119,7 +119,7 @@ class RegularUser
   end
 
   def client
-    @client ||= CFoundry::Client.new(@target.to_s).tap do |c|
+    @client ||= CFoundry::V2::Client.new(@target.to_s).tap do |c|
       c.login(username:@username, password:@password)
     end
   end
