@@ -11,23 +11,20 @@ module ServiceHelper
       let(:dog_tags) { {service: app_name} }
       let(:test_app_path) { File.join(File.dirname(__FILE__), "../../apps/ruby/app_sinatra_service") }
 
-      around do |example|
-        begin
-          regular_user.clean_up_app_from_previous_run(app_name)
-          regular_user.clean_up_service_instance_from_previous_run(instance_name)
-          regular_user.clean_up_route_from_previous_run(host)
-          example.run
-        ensure
-          regular_user.clean_up_app_from_previous_run(app_name)
-          regular_user.clean_up_service_instance_from_previous_run(instance_name)
-          regular_user.clean_up_route_from_previous_run(host)
-        end
-      end
-
       before do
+        regular_user.clean_up_app_from_previous_run(app_name)
+        regular_user.clean_up_service_instance_from_previous_run(space, instance_name)
+        regular_user.clean_up_route_from_previous_run(host)
+
         @app_signature = SecureRandom.uuid
         @app = regular_user.create_app(space, app_name, {APP_SIGNATURE: @app_signature})
         @route = regular_user.create_route(@app, host)
+      end
+
+      after do
+        regular_user.clean_up_app_from_previous_run(app_name)
+        regular_user.clean_up_service_instance_from_previous_run(space, instance_name)
+        regular_user.clean_up_route_from_previous_run(host)
       end
     end
   end
@@ -38,6 +35,11 @@ module ServiceHelper
       service_instance = regular_user.create_managed_service_instance(space, service_name, plan_name, instance_name)
       service_instance.guid.should be
     end
+    use_service(service_instance, &blk)
+  end
+
+  def create_and_use_service_connector(credentials, &blk)
+    service_instance = regular_user.create_user_provided_service_instance(space, instance_name, credentials)
     use_service(service_instance, &blk)
   end
 

@@ -76,8 +76,8 @@ class RegularUser
     end
   end
 
-  def clean_up_service_instance_from_previous_run(name)
-    if service_instance = client.service_instance_by_name(name)
+  def clean_up_service_instance_from_previous_run(space, name)
+    if service_instance = space.service_instance_by_name(name)
       debug(:delete, service_instance)
       service_instance.delete!(recursive: true)
     end
