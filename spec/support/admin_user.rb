@@ -49,7 +49,7 @@ class AdminUser
   # are done by the admin account *in this class*!
   def client
     @client ||= CFoundry::Client.new(@target.to_s).tap do |c|
-      c.login(@username, @password)
+      c.login(username: @username, password: @password)
     end
   end
 end

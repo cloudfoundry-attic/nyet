@@ -42,6 +42,8 @@ describe "App CRUD" do
 
         monitoring.record_action(:update) do
           scale_app(@app)
+          check_first_instance_reachable
+          check_second_instance_reachable
         end
 
         monitoring.record_action(:delete) do
@@ -109,8 +111,16 @@ describe "App CRUD" do
     app.update!
 
     sleep(CHECK_DELAY) until app.running?
-    sleep(CHECK_DELAY) until page_content.include?('"instance_index":1')
+  end
+
+  def check_first_instance_reachable
+    puts "starting #{__method__} (#{Time.now})"
     sleep(CHECK_DELAY) until page_content.include?('"instance_index":0')
+  end
+
+  def check_second_instance_reachable
+    puts "starting #{__method__} (#{Time.now})"
+    sleep(CHECK_DELAY) until page_content.include?('"instance_index":1')
   end
 
   def check_app_not_running
