@@ -8,7 +8,7 @@ Bundler.require
 
 after do
   headers['Services-Nyet-App'] = 'true'
-  headers['App-Signature'] = ENV.fetch('APP_SIGNATURE')
+  headers['App-Signature'] = ENV.fetch('APP_SIGNATURE', "")
 end
 
 get '/env' do
