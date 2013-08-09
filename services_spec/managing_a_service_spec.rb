@@ -93,6 +93,30 @@ describe "Managing a Service", :only_in_staging => true, :appdirect => true do
         runner.should say "1 of 1 instances running"
         runner.should say "Push successful!", 30
       end
+
+      app_signature = SecureRandom.uuid
+      BlueShell::Runner.run("#{cf_bin} set-env #{app_name} APP_SIGNATURE #{app_signature} --restart") do |runner|
+        runner.should say "Preparing to start #{app_name}... OK", 180
+        runner.should say "Checking status of app '#{app_name}'", 180
+        runner.should say "1 of 1 instances running"
+      end
+
+      app_handle = space.app_by_name(app_name)
+      route = app_handle.routes.first
+      service_instance = space.service_instance_by_name(service_instance_name)
+      namespace = nil
+
+      test_app = TestApp.new(
+        app_handle,
+        route.name,
+        service_instance,
+        namespace,
+        self,
+        app_signature
+      )
+
+      env = JSON.parse(test_app.get_env)
+      env["#{service_name}-n/a"].first['credentials']['dummy'].should == 'value'
     end
   end
 
