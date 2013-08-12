@@ -1,53 +1,11 @@
 require "spec_helper"
 require "fileutils"
 
-describe "Managing a Service", :only_in_staging => true, :appdirect => true do
+describe "Managing a Service", :only_in_staging => true, :appdirect => true, :cf => true do
   let(:plan_name) { "small" }
   let(:service_name) { "dummy-dev" }
   let(:service_instance_name) { "service-management-tester" }
   let(:app_name) { "services-management-nyet-app" }
-
-  let(:test_app_path) { File.expand_path("../apps/ruby/app_sinatra_service", File.dirname(__FILE__)) }
-  let(:tmp_dir) { File.expand_path("../tmp", File.dirname(__FILE__)) }
-  let(:fake_home) { File.join(tmp_dir, 'fake_home') }
-  let(:cf_bin)  { File.join(bin_dir, 'cf') }
-  let(:bin_dir) { File.join(tmp_dir, 'bin') }
-  let(:gem_dir) { File.join(tmp_dir, 'gems') }
-
-
-  with_user_with_org
-  with_shared_space
-
-  around do |example|
-    original_env = ENV.to_hash
-    Bundler.with_clean_env do
-      example.call
-    end
-    ENV.replace(original_env)
-  end
-
-  before do
-    FileUtils.rm_rf tmp_dir
-    FileUtils.mkdir_p fake_home
-    FileUtils.mkdir_p bin_dir
-    FileUtils.mkdir_p gem_dir
-
-    ENV['HOME'] = fake_home
-
-    use_newest_cf
-    login
-
-    clean_up_service_instance(service_instance_name)
-    regular_user.clean_up_route_from_previous_run(app_name)
-    clean_up_app(app_name)
-  end
-
-  after do
-    clean_up_service_instance(service_instance_name)
-    regular_user.clean_up_route_from_previous_run(app_name)
-    clean_up_app(app_name)
-  end
-
 
   it "allows the user to push an app with a newly created service and bind it" do
     Dir.chdir(test_app_path) do
