@@ -6,7 +6,6 @@ describe "Service Connector", cf: true do
   let(:service_name) { "user-provided" }
   let(:service_instance_name) { "user-provided-service-instance" }
   let(:app_name) { "services-management-nyet-app" }
-  let(:app_signature) { SecureRandom.uuid }
 
   it "allows the user to push an app with a newly created user provided service instance and bind it" do
     app_url = ""
@@ -57,21 +56,9 @@ describe "Service Connector", cf: true do
         runner.should say "Uploading #{app_name}... OK", 180
       end
 
-      BlueShell::Runner.run("#{cf_bin} set-env #{app_name} APP_SIGNATURE #{app_signature}") do |runner|
-        runner.should say "Updating #{app_name}"
-      end
-
-      BlueShell::Runner.run("#{cf_bin} start #{app_name}") do |runner|
-        runner.should say "Preparing to start #{app_name}... OK", 180
-        runner.should say "Checking status of app '#{app_name}'", 180
-        runner.should say "1 of 1 instances running"
-        runner.should say /Push successful! App '#{app_name}' available at.*\n/
-        app_url = runner.output.scan(/http:\/\/#{app_name}.*/).last
-      end
-
-      result = get_env(app_url)
-      env = JSON.parse(result)
-      env.should include(
+      set_app_signature_env_variable(app_name)
+      start_app(app_name)
+      get_env(app_name, space, service_instance_name).should include(
         "user-provided" => [
           {
             "credentials" => {"user" => "LeBron", "password" => "Miami"},
@@ -81,12 +68,6 @@ describe "Service Connector", cf: true do
           }
         ]
       )
-
     end
-  end
-
-  def get_env(app_url)
-    puts "---- GET from #{app_url}/env"
-    HTTParty.get("#{app_url}/env").body
   end
 end

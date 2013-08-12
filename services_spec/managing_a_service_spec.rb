@@ -9,7 +9,7 @@ describe "Managing a Service", :appdirect => true, :cf => true do
 
   it "allows the user to push an app with a newly created service and bind it" do
     Dir.chdir(test_app_path) do
-      BlueShell::Runner.run("#{cf_bin} push --no-manifest") do |runner|
+      BlueShell::Runner.run("#{cf_bin} push --no-manifest --no-start") do |runner|
         runner.should say "Name>"
         runner.send_keys app_name
 
@@ -47,33 +47,11 @@ describe "Managing a Service", :appdirect => true, :cf => true do
         runner.send_keys "n"
 
         runner.should say "Uploading #{app_name}... OK", 180
-        runner.should say "Preparing to start #{app_name}... OK", 180
-        runner.should say "Checking status of app '#{app_name}'", 180
-        runner.should say "1 of 1 instances running"
-        runner.should say "Push successful!", 30
       end
 
-      app_signature = SecureRandom.uuid
-      BlueShell::Runner.run("#{cf_bin} set-env #{app_name} APP_SIGNATURE #{app_signature} --restart") do |runner|
-        runner.should say "Preparing to start #{app_name}... OK", 180
-        runner.should say "Checking status of app '#{app_name}'", 180
-        runner.should say "1 of 1 instances running"
-      end
-
-      app_handle = space.app_by_name(app_name)
-      route = app_handle.routes.first
-      service_instance = space.service_instance_by_name(service_instance_name)
-      namespace = nil
-
-      test_app = TestApp.new(
-        app: app_handle,
-        host_name: route.name,
-        service_instance: service_instance,
-        example: self,
-        signature: app_signature
-      )
-
-      env = JSON.parse(test_app.get_env)
+      set_app_signature_env_variable(app_name)
+      start_app(app_name)
+      env = get_env(app_name, space, service_instance_name)
       env["#{service_name}-n/a"].first['credentials']['dummy'].should == 'value'
     end
   end

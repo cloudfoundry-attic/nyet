@@ -7,6 +7,7 @@ module CfHelpers
       let(:cf_bin)  { File.join(bin_dir, 'cf') }
       let(:bin_dir) { File.join(tmp_dir, 'bin') }
       let(:gem_dir) { File.join(tmp_dir, 'gems') }
+      let(:app_signature) { SecureRandom.uuid }
 
       with_user_with_org
       with_shared_space
@@ -89,6 +90,33 @@ module CfHelpers
       raise "Couldn't download latest cf"
 
     puts "Installed the newest version of cf gem: #{`#{cf_bin} --version`.chomp}"
+  end
+
+  def set_app_signature_env_variable(app_name)
+    BlueShell::Runner.run("#{cf_bin} set-env #{app_name} APP_SIGNATURE #{app_signature}") do |runner|
+      runner.should say "Updating #{app_name}... OK", 180
+    end
+  end
+
+  def start_app(app_name)
+    BlueShell::Runner.run("#{cf_bin} start #{app_name}") do |runner|
+      runner.should say "Preparing to start #{app_name}... OK", 180
+      runner.should say "Checking status of app '#{app_name}'", 180
+      runner.should say "1 of 1 instances running"
+      runner.should say "Push successful"
+    end
+  end
+
+  def get_env(app_name, space, service_instance_name)
+    app_handle = space.app_by_name(app_name)
+    test_app = TestApp.new(
+      app: app_handle,
+      host_name: app_handle.routes.first.name,
+      service_instance: space.service_instance_by_name(service_instance_name),
+      example: self,
+      signature: app_signature
+    )
+    JSON.parse(test_app.get_env)
   end
 end
 
