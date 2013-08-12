@@ -1,7 +1,7 @@
 require "spec_helper"
 require "fileutils"
 
-describe "Managing a Service", :only_in_staging => true, :appdirect => true, :cf => true do
+describe "Managing a Service", :appdirect => true, :cf => true do
   let(:plan_name) { "small" }
   let(:service_name) { "dummy-dev" }
   let(:service_instance_name) { "service-management-tester" }
