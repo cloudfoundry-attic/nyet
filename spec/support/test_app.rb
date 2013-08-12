@@ -2,18 +2,18 @@ require 'timeout'
 require 'cgi'
 
 class TestApp
-  attr_reader :host_name, :service_instance, :app, :example, :signature
+  attr_reader :host_name, :service_instance, :app, :example, :signature, :namespace
   # temporarily bumping this to 10mins
   # sunset this after the HM fix
   WAITING_TIMEOUT = 600
 
-  def initialize(app, host_name, service_instance, namespace, example, signature)
-    @app = app
-    @host_name = host_name
-    @service_instance = service_instance
-    @namespace = namespace
-    @example = example
-    @signature = signature
+  def initialize(opts)
+    @app = opts.fetch(:app)
+    @host_name = opts.fetch(:host_name)
+    @service_instance = opts.fetch(:service_instance)
+    @namespace = opts.fetch(:namespace, nil)
+    @example = opts.fetch(:example)
+    @signature = opts.fetch(:signature)
   end
 
   def get_env
@@ -45,7 +45,7 @@ class TestApp
 
   def send_email(to)
     http = Net::HTTP.new(host_name)
-    key_path = "/service/#{@namespace}/#{service_instance.name}"
+    key_path = "/service/#{namespace}/#{service_instance.name}"
     make_request_with_retry do
       debug("POST to #{host_name} #{key_path}")
       http.post(key_path, "to=#{CGI.escape(to)}")
@@ -94,7 +94,7 @@ class TestApp
   private
 
   def key_path(key)
-    "/service/#{@namespace}/#{service_instance.name}/#{key}"
+    "/service/#{namespace}/#{service_instance.name}/#{key}"
   end
 
   def debug(msg)

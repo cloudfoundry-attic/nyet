@@ -56,7 +56,14 @@ module ServiceHelper
       @app.upload(File.expand_path(test_app_path, __FILE__))
       monitoring.record_action(:start, dog_tags) do
         @app.start!
-        test_app = TestApp.new(@app, @route.name, service_instance, namespace, self, @app_signature)
+        test_app = TestApp.new(
+          app: @app,
+          host_name: @route.name,
+          service_instance: service_instance,
+          namespace: namespace,
+          example: self,
+          signature: @app_signature
+        )
         test_app.wait_until_running
       end
     rescue => e

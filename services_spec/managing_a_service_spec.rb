@@ -66,12 +66,11 @@ describe "Managing a Service", :appdirect => true, :cf => true do
       namespace = nil
 
       test_app = TestApp.new(
-        app_handle,
-        route.name,
-        service_instance,
-        namespace,
-        self,
-        app_signature
+        app: app_handle,
+        host_name: route.name,
+        service_instance: service_instance,
+        example: self,
+        signature: app_signature
       )
 
       env = JSON.parse(test_app.get_env)
