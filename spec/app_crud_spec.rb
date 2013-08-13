@@ -42,6 +42,7 @@ describe "App CRUD" do
 
         monitoring.record_action(:update) do
           scale_app(@app)
+          check_running_instances(@app)
           check_first_instance_reachable
           check_second_instance_reachable
         end
@@ -111,6 +112,10 @@ describe "App CRUD" do
     app.update!
 
     sleep(CHECK_DELAY) until app.running?
+  end
+
+  def check_running_instances(app)
+    puts "Running instances: #{app.running_instances}"
   end
 
   def check_first_instance_reachable
