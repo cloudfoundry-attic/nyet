@@ -35,22 +35,13 @@ module ServiceHelper
       service_instance = regular_user.create_managed_service_instance(space, service_name, plan_name, instance_name)
       service_instance.guid.should be
     end
-    use_service(service_instance, &blk)
-  end
-
-  def create_and_use_service_connector(credentials, &blk)
-    service_instance = regular_user.create_user_provided_service_instance(space, instance_name, credentials)
-    use_service(service_instance, &blk)
-  end
-
-  private
-  def use_service(service_instance, &blk)
-    test_app = nil
 
     monitoring.record_action("bind_service", dog_tags) do
       binding = regular_user.bind_service_to_app(service_instance, @app)
       binding.guid.should be
     end
+
+    test_app = nil
 
     begin
       @app.upload(File.expand_path(test_app_path, __FILE__))
