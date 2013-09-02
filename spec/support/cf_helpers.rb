@@ -94,7 +94,7 @@ module CfHelpers
 
   def set_app_signature_env_variable(app_name)
     BlueShell::Runner.run("#{cf_bin} set-env #{app_name} APP_SIGNATURE #{app_signature}") do |runner|
-      runner.should say "Updating #{app_name}... OK", 180
+      runner.should say "Updating env variable APP_SIGNATURE for app #{app_name}... OK", 180
     end
   end
 
