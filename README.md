@@ -55,6 +55,8 @@ NYET_REGULAR_PASSWORD="password"
 
 ## Misc options
 
+* `NYET_APPS_DOMAIN` allows to specify domain that serves nyet apps
+
 * `NYET_RAISE_ALL_ERRORS` turns on aggressive error reporting
 
 
