@@ -83,11 +83,20 @@ class RegularUser
     end
   end
 
-  def create_route(app, host)
+  def create_route(app, host, domain_name=nil)
+    space = app.space
+
+    if domain_name
+      raise "Failed to find domain with '#{domain_name}' in #{space.inspect}" \
+        unless domain = space.domain_by_name(domain_name)
+    else
+      domain = space.domains.first
+    end
+
     debug(:create, client.route.tap do |route|
       route.host = host
-      route.domain = app.space.domains.first
-      route.space = app.space
+      route.domain = domain
+      route.space = space
       route.create!
       app.add_route(route)
     end)
