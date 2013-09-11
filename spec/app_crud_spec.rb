@@ -2,6 +2,7 @@ require "spec_helper"
 require "net/http"
 require "securerandom"
 require "timeout"
+require "support/test_env"
 
 describe "App CRUD" do
   CHECK_DELAY = 0.25.freeze
@@ -24,7 +25,7 @@ describe "App CRUD" do
           @app = regular_user.create_app(@space, app_name, CUSTOM_VAR: app_content)
 
           regular_user.clean_up_route_from_previous_run(app_name)
-          @route = regular_user.create_route(@app, app_name)
+          @route = regular_user.create_route(@app, app_name, TestEnv.default.apps_domain)
         end
 
 

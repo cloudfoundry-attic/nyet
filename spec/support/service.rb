@@ -1,3 +1,5 @@
+require "support/test_env"
+
 module ServiceHelper
   def self.included(base)
     base.instance_eval do
@@ -18,7 +20,7 @@ module ServiceHelper
 
         @app_signature = SecureRandom.uuid
         @app = regular_user.create_app(space, app_name, {APP_SIGNATURE: @app_signature})
-        @route = regular_user.create_route(@app, host)
+        @route = regular_user.create_route(@app, host, TestEnv.default.apps_domain)
       end
 
       after do
