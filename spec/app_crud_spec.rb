@@ -7,32 +7,37 @@ require "support/test_env"
 describe "App CRUD" do
   CHECK_DELAY = 0.25.freeze
   ROUTING_TIMEOUT = 60.freeze
-  APP_NAME = "crud".freeze
+
+  APPS = {
+    "ruby" => "ruby/simple",
+    "java" => "java/JavaTinyApp-1.1.war"
+  }
 
   with_user_with_org
   with_new_space
   with_time_limit
 
   let(:app_content) { "#{SecureRandom.uuid}_#{Time.now.to_i}" }
+  let(:app_name) { "crud-#{ENV["NYET_APP"]}" || "crud-java" }
   attr_reader :route
 
   it "creates/updates/deletes an app" do
     begin
       monitoring.record_action(:full_run) do
         monitoring.record_action(:create) do
-          regular_user.clean_up_app_from_previous_run(APP_NAME)
-          @app = regular_user.create_app(@space, APP_NAME, CUSTOM_VAR: app_content)
+          regular_user.clean_up_app_from_previous_run(app_name)
+          @app = regular_user.create_app(@space, app_name, CUSTOM_VAR: app_content)
 
-          regular_user.clean_up_app_from_previous_run(APP_NAME)
-          @app = regular_user.create_app(@space, APP_NAME, CUSTOM_VAR: app_content)
+          regular_user.clean_up_app_from_previous_run(app_name)
+          @app = regular_user.create_app(@space, app_name, CUSTOM_VAR: app_content)
 
-          regular_user.clean_up_route_from_previous_run(APP_NAME)
-          @route = regular_user.create_route(@app, APP_NAME, TestEnv.default.apps_domain)
+          regular_user.clean_up_route_from_previous_run(app_name)
+          @route = regular_user.create_route(@app, app_name, TestEnv.default.apps_domain)
         end
 
 
         monitoring.record_action(:read) do
-          path = ENV["NYET_APP"] || "java/JavaTinyApp-1.1.war"
+          path = APPS[ENV["NYET_APP"]]
           deploy_app(@app, path)
         end
 
@@ -54,7 +59,7 @@ describe "App CRUD" do
         monitoring.record_action(:delete) do
           @route.delete!
           @app.delete!
-          check_app_api_unavailable(regular_user, APP_NAME)
+          check_app_api_unavailable(regular_user, app_name)
           check_app_uri_unavailable
         end
       end
