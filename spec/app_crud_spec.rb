@@ -32,7 +32,8 @@ describe "App CRUD" do
 
 
         monitoring.record_action(:read) do
-          deploy_app(@app)
+          path = ENV["NYET_APP"] || "java/JavaTinyApp-1.1.war"
+          deploy_app(@app, path)
         end
 
         monitoring.record_action(:start) do
@@ -65,9 +66,9 @@ describe "App CRUD" do
     end
   end
 
-  def deploy_app(app)
+  def deploy_app(app, path)
     puts "starting #{__method__} (#{Time.now})"
-    app.upload(File.expand_path("../../apps/java/JavaTinyApp-1.1.war", __FILE__))
+    app.upload(File.expand_path("../../apps/#{path}", __FILE__))
   end
 
   def start_app(app)
