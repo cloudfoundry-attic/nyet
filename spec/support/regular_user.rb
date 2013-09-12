@@ -47,6 +47,10 @@ class RegularUser
     end)
   end
 
+  def list_apps()
+    debug(:app_list, client.apps)
+  end
+
   def create_managed_service_instance(space, service_label, plan_name, instance_name)
     service_plan = find_service_plan(service_label, plan_name)
     if service_plan.nil?

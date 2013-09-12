@@ -6,7 +6,8 @@ require "support/test_env"
 
 describe "App CRUD" do
   CHECK_DELAY = 0.25.freeze
-  ROUTING_TIMEOUT = 60
+  ROUTING_TIMEOUT = 60.freeze
+  APP_NAME = "crud".freeze
 
   with_user_with_org
   with_new_space
@@ -19,13 +20,14 @@ describe "App CRUD" do
     begin
       monitoring.record_action(:full_run) do
         monitoring.record_action(:create) do
-          app_name = "crud"
+          regular_user.clean_up_app_from_previous_run(APP_NAME)
+          @app = regular_user.create_app(@space, APP_NAME, CUSTOM_VAR: app_content)
 
-          regular_user.clean_up_app_from_previous_run(app_name)
-          @app = regular_user.create_app(@space, app_name, CUSTOM_VAR: app_content)
+          regular_user.clean_up_app_from_previous_run(APP_NAME)
+          @app = regular_user.create_app(@space, APP_NAME, CUSTOM_VAR: app_content)
 
-          regular_user.clean_up_route_from_previous_run(app_name)
-          @route = regular_user.create_route(@app, app_name, TestEnv.default.apps_domain)
+          regular_user.clean_up_route_from_previous_run(APP_NAME)
+          @route = regular_user.create_route(@app, APP_NAME, TestEnv.default.apps_domain)
         end
 
 
@@ -51,7 +53,8 @@ describe "App CRUD" do
         monitoring.record_action(:delete) do
           @route.delete!
           @app.delete!
-          check_app_not_running
+          check_app_api_unavailable(regular_user, APP_NAME)
+          check_app_uri_unavailable
         end
       end
 
@@ -129,7 +132,7 @@ describe "App CRUD" do
     sleep(CHECK_DELAY) until page_content.include?('"instance_index":1')
   end
 
-  def check_app_not_running
+  def check_app_uri_unavailable
     puts "starting #{__method__} (#{Time.now})"
 
     app_uri = URI("http://#{route.name}")
@@ -141,6 +144,19 @@ describe "App CRUD" do
       puts "--- GET #{app_uri}: #{response.class}"
       sleep(CHECK_DELAY)
       response = Net::HTTP.get_response(app_uri)
+    end
+  end
+
+  def check_app_api_unavailable(user, app_name)
+    puts "starting #{__method__} (#{Time.now})"
+
+    apps = user.list_apps.select { |app| app.name == app_name }
+
+    while apps.size > 0
+      puts "--- verifying apps removed from cc"
+      p apps: apps.map { |a| a.name }
+      sleep(CHECK_DELAY)
+      apps = user.list_apps.select { |app| app.name == app_name }
     end
   end
 
