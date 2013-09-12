@@ -11,14 +11,15 @@ class DogapiMonitoring < Monitoring
     return unless defined?(::Dogapi)
 
     if ENV["NYET_DATADOG_API_KEY"] && ENV["NYET_DATADOG_APP_KEY"]
-      new(*ENV.values_at("NYET_DATADOG_API_KEY", "NYET_DATADOG_APP_KEY", "DEPLOYMENT_NAME"))
+      new(*ENV.values_at("NYET_DATADOG_API_KEY", "NYET_DATADOG_APP_KEY", "DEPLOYMENT_NAME", "NYET_APP"))
     end
   end
 
-  def initialize(api_key, app_key, deployment_name)
+  def initialize(api_key, app_key, deployment_name, app_type)
     @api_key = api_key
     @app_key = app_key
     @deployment_name = deployment_name
+    @app_type = app_type
   end
 
   def record_action(action, tags = {}, &blk)
@@ -38,6 +39,7 @@ class DogapiMonitoring < Monitoring
     tags = {
         role: "core",
         deployment: "cf-#{@deployment_name}",
+        app_type: @app_type,
     }.merge(tags).collect{|k,v| "#{k}:#{v}" }
     puts "--- Dogapi record '#{full_name}' with #{value}  #{tags.inspect}"
     client.emit_point(full_name, value, :tags => tags)
