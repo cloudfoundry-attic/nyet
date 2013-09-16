@@ -19,6 +19,12 @@ get '/rack/env' do
   ENV['RACK_ENV']
 end
 
+get '/timeout/:time_in_sec' do
+ t = params['time_in_sec'].to_f
+ sleep t
+ "waited #{t} sec, should have timed out but maybe your environment has a longer timeout"
+end
+
 error do
   "Error: #{env['sinatra.error']}\n#{env['sinatra.error'].backtrace.join("\n")}"
 end
