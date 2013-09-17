@@ -118,12 +118,19 @@ class RegularUser
   end
 
   def bind_service_to_app(service_instance, app)
-    debug(:create_binding, client.service_binding.tap do |binding|
-      binding.service_instance = service_instance
-      binding.app = app
-      binding.create!
-    end)
-    debug(:credentials, client.service_binding.credentials)
+    CFoundry::V2::ServiceBinding.module_eval do
+      attribute :credentials, :hash
+    end
+
+    binding = client.service_binding
+    binding.service_instance = service_instance
+    binding.app = app
+    binding.create!
+
+    debug(:create_binding, binding)
+    debug(:credentials, binding.credentials)
+
+    binding
   end
 
   private
