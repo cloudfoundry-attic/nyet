@@ -123,6 +123,7 @@ class RegularUser
       binding.app = app
       binding.create!
     end)
+    debug(:credentials, client.service_binding.credentials)
   end
 
   private

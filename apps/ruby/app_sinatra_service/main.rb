@@ -26,7 +26,13 @@ get '/timeout/:time_in_sec' do
 end
 
 error do
-  "Error: #{env['sinatra.error']}\n#{env['sinatra.error'].backtrace.join("\n")}"
+  <<-ERROR
+Error: #{env['sinatra.error']}
+
+Backtrace: #{env['sinatra.error'].backtrace.join("\n")}
+
+VCAP_SERVICES: #{ENV['VCAP_SERVICES']}
+  ERROR
 end
 
 post '/service/pg/:service_name/:key' do
