@@ -3,9 +3,7 @@ require 'cgi'
 
 class TestApp
   attr_reader :host_name, :service_instance, :app, :example, :signature, :namespace
-  # temporarily bumping this to 10mins
-  # sunset this after the HM fix
-  WAITING_TIMEOUT = 600
+  WAITING_TIMEOUT = 300
 
   def initialize(opts)
     @app = opts.fetch(:app)
@@ -54,22 +52,28 @@ class TestApp
 
   def make_request_with_retry
     Timeout::timeout(WAITING_TIMEOUT) do
-      while true
+      loop do
         response = yield
-        debug 'header' + response['Services-Nyet-App'].inspect
+        debug 'Services-Nyet-App: ' + response['Services-Nyet-App'].inspect
+        debug("Response: #{response}")
+        debug("  Body: #{response.body}")
         if response['Services-Nyet-App'] == 'true'
-          debug("Response: #{response}")
-          debug("  Body: #{response.body}")
-
           raise 'Attack of the zombies!!! Run for your lives!!!' if response['App-Signature'] != signature
 
-          return response
+          case response
+          when Net::HTTPServiceUnavailable
+            debug("Service unavailable. Retrying in #{response['Retry-After']} seconds.")
+            sleep(response['Retry-After'].to_i)
+          else
+            return response
+          end
+        else
+          sleep(1)
         end
-        sleep(1)
       end
     end
   rescue TimeoutError
-    example.pending "Router malfunction"
+    example.pending "Request did not succeed in #{WAITING_TIMEOUT} seconds."
   end
 
   def wait_until_running

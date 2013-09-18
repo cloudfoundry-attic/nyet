@@ -6,6 +6,8 @@ require 'mail'
 
 Bundler.require
 
+class ServiceUnavailableError < StandardError; end
+
 after do
   headers['Services-Nyet-App'] = 'true'
   headers['App-Signature'] = ENV.fetch('APP_SIGNATURE', "")
@@ -25,13 +27,17 @@ get '/timeout/:time_in_sec' do
  "waited #{t} sec, should have timed out but maybe your environment has a longer timeout"
 end
 
+error ServiceUnavailableError do
+  status 503
+  headers['Retry-After'] = '5'
+  body env['sinatra.error'].message
+end
+
 error do
   <<-ERROR
 Error: #{env['sinatra.error']}
 
 Backtrace: #{env['sinatra.error'].backtrace.join("\n")}
-
-VCAP_SERVICES: #{ENV['VCAP_SERVICES']}
   ERROR
 end
 
@@ -170,6 +176,8 @@ def load_postgresql(service_name)
     client.query("create table data_values (id varchar(20), data_value varchar(20));")
   end
   client
+rescue PGError => e
+  raise ServiceUnavailableError, e.message
 end
 
 def load_mysql(service_name)
