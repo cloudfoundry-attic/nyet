@@ -3,7 +3,7 @@ require 'cgi'
 
 class TestApp
   attr_reader :host_name, :service_instance, :app, :example, :signature, :namespace
-  WAITING_TIMEOUT = 300
+  STAGING_TIMEOUT = 300
 
   def initialize(opts)
     @app = opts.fetch(:app)
@@ -51,33 +51,38 @@ class TestApp
   end
 
   def make_request_with_retry
-    Timeout::timeout(WAITING_TIMEOUT) do
-      loop do
-        response = yield
-        debug 'Services-Nyet-App: ' + response['Services-Nyet-App'].inspect
-        debug("Response: #{response}")
-        debug("  Body: #{response.body}")
-        if response['Services-Nyet-App'] == 'true'
-          raise 'Attack of the zombies!!! Run for your lives!!!' if response['App-Signature'] != signature
+    timeout = Time.now + 300
+    loop do
+      response = yield
+      debug 'Services-Nyet-App: ' + response['Services-Nyet-App'].inspect
+      debug("Response: #{response}")
+      debug("  Body: #{response.body}")
+      if response['Services-Nyet-App'] == 'true'
+        raise 'Attack of the zombies!!! Run for your lives!!!' if response['App-Signature'] != signature
 
-          case response
-          when Net::HTTPServiceUnavailable
-            debug("Service unavailable. Retrying in #{response['Retry-After']} seconds.")
+        case response
+        when Net::HTTPServiceUnavailable
+          debug("Service unavailable. Retrying in #{response['Retry-After']} seconds.")
+          if Time.now < timeout
             sleep(response['Retry-After'].to_i)
           else
-            return response
+            raise "Failed to use service within 5 minutes."
           end
         else
+          return response
+        end
+      else
+        if Time.now < timeout
           sleep(1)
+        else
+          example.pending "Failed to reach app within 5 minutes."
         end
       end
     end
-  rescue TimeoutError
-    example.pending "Request did not succeed in #{WAITING_TIMEOUT} seconds."
   end
 
   def wait_until_running
-    Timeout::timeout(WAITING_TIMEOUT) do
+    Timeout::timeout(STAGING_TIMEOUT) do
       loop do
         print "---- Waiting for app: "
         begin
