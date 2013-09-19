@@ -11,7 +11,7 @@ describe "Managing a Service", :appdirect => true, :cf => true do
   it "allows the user to push an app with a newly created service and bind it" do
     begin
       Dir.chdir(test_app_path) do
-        BlueShell::Runner.run("#{cf_bin} push --no-manifest --no-start") do |runner|
+        BlueShell::Runner.run("#{cf_bin} push --no-manifest --no-start --trace") do |runner|
           runner.should say "Name>"
           runner.send_keys app_name
 

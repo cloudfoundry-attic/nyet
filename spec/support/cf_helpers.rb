@@ -99,7 +99,7 @@ module CfHelpers
   end
 
   def start_app(app_name)
-    BlueShell::Runner.run("#{cf_bin} start #{app_name}") do |runner|
+    BlueShell::Runner.run("#{cf_bin} start #{app_name} --trace") do |runner|
       runner.should say "Preparing to start #{app_name}... OK", 180
       runner.should say "Checking status of app '#{app_name}'", 180
       runner.should say "1 of 1 instances running"
