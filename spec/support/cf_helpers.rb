@@ -37,6 +37,12 @@ module CfHelpers
       end
 
       after do
+        crash_log = File.join(fake_home, '.cf', 'crash')
+        if File.exists?(crash_log)
+          puts `cat #{crash_log}`
+          FileUtils.rm(crash_log)
+        end
+
         clean_up_service_instance(service_instance_name)
         regular_user.clean_up_route_from_previous_run(app_name)
         clean_up_app(app_name)
@@ -74,6 +80,19 @@ module CfHelpers
     if service_instance = space.service_instance_by_name(service_instance_name)
       service_instance.delete!(recursive: true)
     end
+  rescue => e
+    if e.respond_to?(:request_trace)
+      puts "<<<"
+      puts e.request_trace
+    end
+
+    if e.respond_to?(:response_trace)
+      puts e.response_trace
+      puts ">>>"
+      puts ""
+    end
+
+    raise
   end
 
   def clean_up_app(app_name)
