@@ -18,8 +18,10 @@ namespace :spec do
     c.rspec_opts = %w(--format documentation --color)
   end
 
-  RSpec::Core::RakeTask.new(:service_connector) do |c|
+  RSpec::Core::RakeTask.new(:user_provided_service) do |c|
     c.pattern = 'services_spec/service_connector_spec.rb'
     c.rspec_opts = %w(--format documentation --color)
   end
+
+  task :service_connector
 end
