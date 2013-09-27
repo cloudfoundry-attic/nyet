@@ -3,6 +3,8 @@ require 'uri'
 require 'forwardable'
 require 'bundler'
 require 'mail'
+require 'net/http'
+require 'net/smtp'
 
 Bundler.require
 
@@ -145,15 +147,19 @@ get '/service/mongodb/:service_name/:key' do
 end
 
 post '/service/smtp/:service_name' do
-  prms = params
-  load_smtp(prms[:service_name])
-  mail = Mail.deliver do
-    from "nyettests@cloudfoundry.com"
-    to prms[:to] or raise "Missing require form param 'to'"
-    subject prms[:subject] || "Default subject"
-    body prms[:body] || "Default body"
+  begin
+    prms = params
+    load_smtp(prms[:service_name])
+    mail = Mail.deliver do
+      from "nyettests@cloudfoundry.com"
+      to prms[:to] or raise "Missing require form param 'to'"
+      subject prms[:subject] || "Default subject"
+      body prms[:body] || "Default body"
+    end
+    mail.inspect
+  rescue Net::SMTPAuthenticationError => e
+    raise ServiceUnavailableError, e.message
   end
-  mail.inspect
 end
 
 class DatabaseCredentials
