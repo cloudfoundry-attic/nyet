@@ -34,6 +34,7 @@ describe "App CRUD" do
 
         monitoring.record_action(:read) do
           path = APPS[ENV["NYET_APP"]]
+          raise "You must set the NYET_APP environment variable" unless path
           deploy_app(@app, path)
         end
 
