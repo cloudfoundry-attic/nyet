@@ -28,13 +28,9 @@ describe "App CRUD" do
           regular_user.clean_up_app_from_previous_run(app_name)
           @app = regular_user.create_app(@space, app_name, CUSTOM_VAR: app_content)
 
-          regular_user.clean_up_app_from_previous_run(app_name)
-          @app = regular_user.create_app(@space, app_name, CUSTOM_VAR: app_content)
-
           regular_user.clean_up_route_from_previous_run(app_name)
           @route = regular_user.create_route(@app, app_name, TestEnv.default.apps_domain)
         end
-
 
         monitoring.record_action(:read) do
           path = APPS[ENV["NYET_APP"]]
