@@ -59,6 +59,8 @@ NYET_REGULAR_PASSWORD="password"
 
 * `NYET_RAISE_ALL_ERRORS` turns on aggressive error reporting
 
+* `NYET_TRACE` will enable CFoundry client trace (which goes to stderr)
+
 
 ## DataDog Monitoring
 

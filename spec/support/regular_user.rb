@@ -142,6 +142,7 @@ class RegularUser
   def client
     @client ||= CFoundry::V2::Client.new(@target.to_s).tap do |c|
       c.login(username: @username, password: @password)
+      c.trace = true if ENV['NYET_TRACE']
     end
   end
 
