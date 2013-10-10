@@ -162,6 +162,22 @@ post '/service/smtp/:service_name' do
   end
 end
 
+# Try to open :count number of simultaneous connections to the service
+get '/connections/mysql/:service_name/:count' do
+  clients = []
+
+  begin
+    params[:count].to_i.times do
+      clients << load_mysql(params[:service_name])
+    end
+
+    'success'
+  ensure
+    clients.each { |client| client.close }
+  end
+end
+
+
 class DatabaseCredentials
   extend Forwardable
   def_delegators :@uri, :host, :port, :user, :password
