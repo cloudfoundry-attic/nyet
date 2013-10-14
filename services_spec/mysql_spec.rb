@@ -3,7 +3,7 @@ require "spec_helper"
 describe "Managing MySQL", :service => true do
   let(:app_name) { "mysql" }
   let(:namespace) { "mysql" }
-  let(:plan_name) { "100" }
+  let(:plan_name) { "100mb" }
   let(:service_name) { "mysql" }
 
   it "allows users to create, bind, read, write, unbind, and delete the Mysql service" do
