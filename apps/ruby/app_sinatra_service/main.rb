@@ -43,6 +43,32 @@ Backtrace: #{env['sinatra.error'].backtrace.join("\n")}
   ERROR
 end
 
+post '/service/mysql/:service_name/quota-check' do
+  client = load_mysql(params[:service_name])
+
+  value = request.env["rack.input"].read
+  megabytes = value.to_i / (1024 * 1024)
+  one_mb_string = 'A'*1024*1024
+
+  megabytes.times do
+  #  #insert 1 mb into storage_quota_testing
+    client.query("insert into storage_quota_testing (data) values ('#{one_mb_string}');")
+  end
+
+  "Inserted #{megabytes} megabytes into the database"
+end
+
+post '/service/mysql/:service_name/quota-check-delete' do
+  client = load_mysql(params[:service_name])
+
+  value = request.env["rack.input"].read
+  megabytes = value.to_i / (1024 * 1024)
+
+  client.query("delete from storage_quota_testing limit #{megabytes};")
+
+  "Dropped #{megabytes} megabytes from the database"
+end
+
 post '/service/pg/:service_name/:key' do
   value = request.env["rack.input"].read
   client = load_postgresql(params[:service_name])
@@ -213,6 +239,8 @@ def load_mysql(service_name)
   )
   result = client.query("SELECT table_name FROM information_schema.tables WHERE table_name = 'data_values'")
   client.query("CREATE TABLE IF NOT EXISTS data_values ( id VARCHAR(20), data_value VARCHAR(20)); ") if result.count != 1
+  result = client.query("SELECT table_name FROM information_schema.tables WHERE table_name = 'storage_quota_testing'")
+  client.query("CREATE TABLE IF NOT EXISTS storage_quota_testing (id MEDIUMINT NOT NULL AUTO_INCREMENT, data LONGTEXT, PRIMARY KEY (ID)); ") if result.count != 1
   client
 end
 

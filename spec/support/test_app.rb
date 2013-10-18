@@ -41,6 +41,24 @@ class TestApp
     end.body
   end
 
+  def insert_data(bytes)
+    http = Net::HTTP.new(host_name)
+    path = "/service/mysql/#{service_instance.name}/quota-check"
+    make_request_with_retry do
+      debug("POST from #{host_name} #{path} with value #{bytes}")
+      http.post(path, bytes.to_s)
+    end
+  end
+
+  def delete_data(bytes)
+    http = Net::HTTP.new(host_name)
+    path = "/service/mysql/#{service_instance.name}/quota-check-delete"
+    make_request_with_retry do
+      debug("DELETE from #{host_name} #{path} with value #{bytes}")
+      http.post(path, bytes.to_s)
+    end
+  end
+
   def send_email(to)
     http = Net::HTTP.new(host_name)
     key_path = "/service/#{namespace}/#{service_instance.name}"
