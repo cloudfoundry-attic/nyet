@@ -49,8 +49,8 @@ describe "Enforcing MySQL quota", :service => true do
     expect(response).to be_a Net::HTTPSuccess
   end
 
-  def fall_below_quota_by_deleting(bytes)
-    response = @client.delete_data(bytes)
+  def fall_below_quota_by_dropping_table
+    response = @client.drop_storage_quota_table
     expect(response).to be_a Net::HTTPSuccess
   end
 
@@ -59,13 +59,14 @@ describe "Enforcing MySQL quota", :service => true do
       @client = client
 
       verify_insert_succeeds('first_value')
+      verify_read_succeeds('first_value')
 
       exceed_quota_by_inserting(11.megabytes)
 
       verify_insert_fails
       verify_read_succeeds('first_value')
 
-      fall_below_quota_by_deleting(3.megabytes)
+      fall_below_quota_by_dropping_table
 
       verify_insert_succeeds('second_value')
       verify_read_succeeds('second_value')

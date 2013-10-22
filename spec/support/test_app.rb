@@ -54,8 +54,17 @@ class TestApp
     http = Net::HTTP.new(host_name)
     path = "/service/mysql/#{service_instance.name}/quota-check-delete"
     make_request_with_retry do
-      debug("DELETE from #{host_name} #{path} with value #{bytes}")
+      debug("POST from #{host_name} #{path} with value #{bytes}")
       http.post(path, bytes.to_s)
+    end
+  end
+
+  def drop_storage_quota_table
+    http = Net::HTTP.new(host_name)
+    path = "/service/mysql/#{service_instance.name}/quota-check-drop-table"
+    make_request_with_retry do
+      debug("DELETE from #{host_name} #{path}")
+      http.delete(path)
     end
   end
 

@@ -69,6 +69,14 @@ post '/service/mysql/:service_name/quota-check-delete' do
   "Dropped #{megabytes} megabytes from the database"
 end
 
+delete '/service/mysql/:service_name/quota-check-drop-table' do
+  client = load_mysql(params[:service_name])
+
+  client.query("drop table storage_quota_testing;")
+
+  "Dropped storage_quota_testing table from the database"
+end
+
 post '/service/pg/:service_name/:key' do
   value = request.env["rack.input"].read
   client = load_postgresql(params[:service_name])
