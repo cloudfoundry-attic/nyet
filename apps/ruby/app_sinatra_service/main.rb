@@ -8,7 +8,8 @@ require 'net/smtp'
 
 Bundler.require
 
-class ServiceUnavailableError < StandardError; end
+class ServiceUnavailableError < StandardError;
+end
 
 after do
   headers['Services-Nyet-App'] = 'true'
@@ -24,9 +25,9 @@ get '/rack/env' do
 end
 
 get '/timeout/:time_in_sec' do
- t = params['time_in_sec'].to_f
- sleep t
- "waited #{t} sec, should have timed out but maybe your environment has a longer timeout"
+  t = params['time_in_sec'].to_f
+  sleep t
+  "waited #{t} sec, should have timed out but maybe your environment has a longer timeout"
 end
 
 error ServiceUnavailableError do
@@ -43,38 +44,44 @@ Backtrace: #{env['sinatra.error'].backtrace.join("\n")}
   ERROR
 end
 
-post '/service/mysql/:service_name/quota-check' do
+post '/service/mysql/:service_name/write-bulk-data' do
   client = load_mysql(params[:service_name])
 
-  value = request.env["rack.input"].read
-  megabytes = value.to_i / (1024 * 1024)
+  value = request.env['rack.input'].read
+  megabytes = value.to_i
   one_mb_string = 'A'*1024*1024
 
   megabytes.times do
-  #  #insert 1 mb into storage_quota_testing
-    client.query("insert into storage_quota_testing (data) values ('#{one_mb_string}');")
+    begin
+      # Insert 1 mb into storage_quota_testing.
+      # Note that this might succeed (writing the data) but raise an error because the connection was killed
+      # by the quota enforcer.
+      client.query("insert into storage_quota_testing (data) values ('#{one_mb_string}');")
+    rescue => e
+      puts "Error trying to insert one megabyte: #{e.inspect}"
+      client = load_mysql(params[:service_name])
+    end
   end
 
-  "Inserted #{megabytes} megabytes into the database"
+  "Database now contains #{client.query("select count(*) from storage_quota_testing").first.values.first} megabytes"
 end
 
-post '/service/mysql/:service_name/quota-check-delete' do
+post '/service/mysql/:service_name/delete-bulk-data' do
   client = load_mysql(params[:service_name])
 
   value = request.env["rack.input"].read
-  megabytes = value.to_i / (1024 * 1024)
+  megabytes = value.to_i
 
-  client.query("delete from storage_quota_testing limit #{megabytes};")
+  megabytes.times do
+    begin
+      client.query("delete from storage_quota_testing limit 1;")
+    rescue => e
+      puts "Error trying to delete one megabyte: #{e.inspect}"
+      client = load_mysql(params[:service_name])
+    end
+  end
 
-  "Dropped #{megabytes} megabytes from the database"
-end
-
-delete '/service/mysql/:service_name/quota-check-drop-table' do
-  client = load_mysql(params[:service_name])
-
-  client.query("drop table storage_quota_testing;")
-
-  "Dropped storage_quota_testing table from the database"
+  "Database now contains #{client.query("select count(*) from storage_quota_testing").first.values.first} megabytes"
 end
 
 post '/service/pg/:service_name/:key' do
@@ -165,8 +172,8 @@ post '/service/mongodb/:service_name/:key' do
   db = load_mongodb(params[:service_name])
 
   collection = db['my_collection']
-  document = { '_id' => params[:key], 'value' => value }
-  collection.update({ '_id' => params[:key] }, document, :upsert => true)
+  document = {'_id' => params[:key], 'value' => value}
+  collection.update({'_id' => params[:key]}, document, :upsert => true)
 
   value
 end
@@ -216,6 +223,7 @@ end
 class DatabaseCredentials
   extend Forwardable
   def_delegators :@uri, :host, :port, :user, :password
+
   def initialize(uri)
     @uri = URI(uri)
   end
@@ -240,9 +248,9 @@ end
 def load_mysql(service_name)
   mysql_service = load_service_by_name(service_name)
   client = Mysql2::Client.new(
-    :host     => mysql_service['hostname'],
+    :host => mysql_service['hostname'],
     :username => mysql_service['username'],
-    :port     => mysql_service['port'].to_i,
+    :port => mysql_service['port'].to_i,
     :password => mysql_service['password'],
     :database => mysql_service['name']
   )
@@ -262,13 +270,13 @@ end
 def load_smtp(service_name)
   sendgrid_service = load_service_by_name(service_name)
   Mail.defaults do
-    delivery_method :smtp, { :address   => sendgrid_service.fetch('hostname'),
-                             :port      => 587,
-                             :domain    => "cloudfoundry.com",
-                             :user_name => sendgrid_service.fetch('username'),
-                             :password => sendgrid_service.fetch('password'),
-                             :authentication => 'plain',
-                             :enable_starttls_auto => true }
+    delivery_method :smtp, {:address => sendgrid_service.fetch('hostname'),
+      :port => 587,
+      :domain => "cloudfoundry.com",
+      :user_name => sendgrid_service.fetch('username'),
+      :password => sendgrid_service.fetch('password'),
+      :authentication => 'plain',
+      :enable_starttls_auto => true}
   end
 end
 

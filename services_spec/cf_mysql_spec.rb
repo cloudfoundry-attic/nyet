@@ -1,78 +1,70 @@
-require "spec_helper"
-require "active_support/core_ext/numeric"
-require "timeout"
+require 'spec_helper'
+require 'active_support/core_ext/numeric'
+require 'timeout'
 
-describe "Enforcing MySQL quota", :service => true do
-  let (:timeout) { 120 }
+describe 'Enforcing MySQL quota', :service => true do
+  let(:app_name) { 'mysql-quota-check' }
+  let(:namespace) { 'mysql' }
+  let(:plan_name) { 'free' }
+  let(:service_name) { 'cf-mysql' }
 
-  let(:app_name) { "mysql-quota-check" }
-  let(:namespace) { "mysql" }
-  let(:plan_name) { "free" }
-  let(:service_name) { "cf-mysql" }
-
-  def verify_read_succeeds(expected_value)
-    expect(@client.get_value('key')).to eq(expected_value)
-  end
-
-  def verify_insert_fails
-    timer_start = Time.now
-    Timeout::timeout(timeout) do
-      puts "attempting to insert into the database"
-      loop do
-        response = @client.insert_value('after_enforcement', 'this should not be allowed in DB')
-        if (response.is_a?(Net::HTTPInternalServerError) &&
-            response.body =~ /Error: (INSERT|UPDATE) command denied .* for table 'data_values'/)
-          break
-        end
-        sleep 0.5
-      end
-    end
-    puts "Database insert disallowed as expected. Took #{Time.now - timer_start} seconds"
-  end
-
-  def verify_insert_succeeds(insert_value)
-    timer_start = Time.now
-    Timeout::timeout(timeout) do
-      puts "attempting to insert into the database"
-      loop do
-        @client.insert_value('key', insert_value)
-        result = @client.get_value('key')
-        break if result == insert_value
-        sleep 1
-      end
-    end
-    puts "Database insert succeeded. Took #{Time.now - timer_start} seconds"
-  end
-
-  def exceed_quota_by_inserting(bytes)
-    response = @client.insert_data(bytes)
-    expect(response).to be_a Net::HTTPSuccess
-  end
-
-  def fall_below_quota_by_dropping_table
-    response = @client.drop_storage_quota_table
-    expect(response).to be_a Net::HTTPSuccess
-  end
-
-  it "enforces the storage quota" do
+  it 'enforces the storage quota' do
     create_and_use_managed_service do |client|
-      @client = client
+      puts '*** Proving we can write'
+      expect(client).to be_able_to_write('key', 'first_value')
+      puts '*** Proving we can read'
+      expect(client).to be_able_to_read('key', 'first_value')
 
-      verify_insert_succeeds('first_value')
-      verify_read_succeeds('first_value')
+      puts '*** Exceeding quota'
+      client.exceed_quota_by_inserting(10)
 
-      exceed_quota_by_inserting(11.megabytes)
+      puts '*** Proving we cannot write'
+      expect(client).to fail_to_insert('after_enforcement', 'this should not be allowed in DB')
+      puts '*** Proving we can read'
+      expect(client).to be_able_to_read('key', 'first_value')
 
-      verify_insert_fails
-      verify_read_succeeds('first_value')
+      puts '*** Deleting below quota'
+      client.fall_below_quota_by_deleting(2)
 
-      fall_below_quota_by_dropping_table
+      puts '*** Proving we can write'
+      expect(client).to be_able_to_write('key', 'second_value')
+      puts '*** Proving we can read'
+      expect(client).to be_able_to_read('key', 'second_value')
+    end
+  end
 
-      verify_insert_succeeds('second_value')
-      verify_read_succeeds('second_value')
+  RSpec::Matchers.define :be_able_to_write do |key, value|
+    match do |client|
+      puts '---- Attempting to insert into the database'
+      client.insert_value(key, value)
+      client.get_value(key) == value
+    end
+
+    failure_message_for_should do |_|
+      'expected that client should be able to write to the database'
+    end
+  end
+
+  RSpec::Matchers.define :fail_to_insert do |key, value|
+    match do |client|
+      puts '---- Attempting to insert into the database'
+      response = client.insert_value(key, value)
+      /Error: (INSERT|UPDATE) command denied .* for table 'data_values'/ === response.body
+    end
+
+    failure_message_for_should do |_|
+      'expected that client should NOT be able to write to the database'
+    end
+  end
+
+  RSpec::Matchers.define :be_able_to_read do |key, value|
+    match do |client|
+      puts '---- Attempting to read from the database'
+      client.get_value(key) == value
+    end
+
+    failure_message_for_should do |_|
+      'expected that client should be able to read from the database'
     end
   end
 end
-
-
-

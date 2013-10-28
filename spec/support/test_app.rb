@@ -41,32 +41,25 @@ class TestApp
     end.body
   end
 
-  def insert_data(bytes)
+  def insert_data(megabytes)
     http = Net::HTTP.new(host_name)
-    path = "/service/mysql/#{service_instance.name}/quota-check"
+    path = "/service/mysql/#{service_instance.name}/write-bulk-data"
     make_request_with_retry do
-      debug("POST from #{host_name} #{path} with value #{bytes}")
-      http.post(path, bytes.to_s)
+      debug("POST from #{host_name} #{path} with value #{megabytes}")
+      http.post(path, megabytes.to_s)
     end
   end
+  alias_method :exceed_quota_by_inserting, :insert_data
 
-  def delete_data(bytes)
+  def delete_data(megabytes)
     http = Net::HTTP.new(host_name)
-    path = "/service/mysql/#{service_instance.name}/quota-check-delete"
+    path = "/service/mysql/#{service_instance.name}/delete-bulk-data"
     make_request_with_retry do
-      debug("POST from #{host_name} #{path} with value #{bytes}")
-      http.post(path, bytes.to_s)
+      debug("POST from #{host_name} #{path} with value #{megabytes}")
+      http.post(path, megabytes.to_s)
     end
   end
-
-  def drop_storage_quota_table
-    http = Net::HTTP.new(host_name)
-    path = "/service/mysql/#{service_instance.name}/quota-check-drop-table"
-    make_request_with_retry do
-      debug("DELETE from #{host_name} #{path}")
-      http.delete(path)
-    end
-  end
+  alias_method :fall_below_quota_by_deleting, :delete_data
 
   def send_email(to)
     http = Net::HTTP.new(host_name)
