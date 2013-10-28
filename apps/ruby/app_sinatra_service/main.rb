@@ -63,7 +63,10 @@ post '/service/mysql/:service_name/write-bulk-data' do
     end
   end
 
-  "Database now contains #{client.query("select count(*) from storage_quota_testing").first.values.first} megabytes"
+  megabytes_in_db = client.query("select count(*) from storage_quota_testing").first.values.first
+  client.close
+
+  "Database now contains #{megabytes_in_db} megabytes"
 end
 
 post '/service/mysql/:service_name/delete-bulk-data' do
@@ -81,7 +84,10 @@ post '/service/mysql/:service_name/delete-bulk-data' do
     end
   end
 
-  "Database now contains #{client.query("select count(*) from storage_quota_testing").first.values.first} megabytes"
+  megabytes_in_db = client.query("select count(*) from storage_quota_testing").first.values.first
+  client.close
+
+  "Database now contains #{megabytes_in_db} megabytes"
 end
 
 post '/service/pg/:service_name/:key' do
