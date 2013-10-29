@@ -105,8 +105,11 @@ module CfHelpers
     ENV['GEM_HOME'] = gem_dir
     ENV['GEM_PATH'] = gem_dir
 
-    system("gem install --install-dir #{gem_dir} --bindir #{bin_dir} --no-ri --no-rdoc cf 2>&1 >/dev/null") or
-      raise "Couldn't download latest cf"
+    unless system("gem install --install-dir #{gem_dir} --bindir #{bin_dir} --no-ri --no-rdoc cf 2>&1 >/dev/null")
+      puts "Retrying install of latest CF with more verbosity"
+      system("gem install --install-dir #{gem_dir} --bindir #{bin_dir} --no-ri --no-rdoc cf 2>&1") or
+        raise "Couldn't download latest cf on second retry"
+    end
 
     puts "Installed the newest version of cf gem: #{`#{cf_bin} --version`.chomp}"
   end
