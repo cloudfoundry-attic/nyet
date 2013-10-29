@@ -7,6 +7,7 @@ describe 'Enforcing MySQL quota', :service => true do
   let(:namespace) { 'mysql' }
   let(:plan_name) { 'free' }
   let(:service_name) { 'cf-mysql' }
+  let(:quota_enforcer_sleep_time) { 2 }
 
   it 'enforces the storage quota' do
     create_and_use_managed_service do |client|
@@ -18,6 +19,9 @@ describe 'Enforcing MySQL quota', :service => true do
       puts '*** Exceeding quota'
       client.exceed_quota_by_inserting(10)
 
+      puts '*** Sleeping to let quota enforcer run'
+      sleep quota_enforcer_sleep_time
+
       puts '*** Proving we cannot write'
       expect(client).to fail_to_insert('after_enforcement', 'this should not be allowed in DB')
       puts '*** Proving we can read'
@@ -25,6 +29,9 @@ describe 'Enforcing MySQL quota', :service => true do
 
       puts '*** Deleting below quota'
       client.fall_below_quota_by_deleting(2)
+
+      puts '*** Sleeping to let quota enforcer run'
+      sleep quota_enforcer_sleep_time
 
       puts '*** Proving we can write'
       expect(client).to be_able_to_write('key', 'second_value')
