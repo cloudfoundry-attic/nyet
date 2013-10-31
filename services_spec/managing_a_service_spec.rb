@@ -3,7 +3,8 @@ require "fileutils"
 
 describe "Managing a Service", :appdirect => true, :cf => true do
   let(:plan_name) { "small" }
-  let(:service_name) { "dummy-dev" }
+  let(:service_provider_prefix) { ENV["NYET_SERVICE_PROVIDER_PREFIX"] || '' }
+  let(:service_name) { "#{service_provider_prefix}dummy-dev" }
   let(:service_instance_name) { "service-management-tester" }
   let(:app_name) { "services-management-nyet-app" }
   let(:dog_tags) { {service: 'service-management' } }
