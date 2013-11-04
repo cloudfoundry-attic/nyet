@@ -54,7 +54,6 @@ module ServiceHelper
     monitoring.record_metric("services.health", 0, dog_tags)
     raise e
   end
-  end
 
   def use_managed_service(service_instance, &blk)
     monitoring.record_action("bind_service", dog_tags) do
