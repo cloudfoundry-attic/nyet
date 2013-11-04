@@ -38,6 +38,25 @@ module ServiceHelper
       service_instance.guid.should be
     end
 
+    use_managed_service(service_instance, &blk)
+
+  rescue CFoundry::APIError => e
+    monitoring.record_metric("services.health", 0, dog_tags)
+    puts '--- CC error:'
+    puts '<<<'
+    puts e.request_trace
+    puts '>>>'
+    puts e.response_trace
+    raise
+  rescue RSpec::Core::Pending::PendingDeclaredInExample => e
+    raise e
+  rescue => e
+    monitoring.record_metric("services.health", 0, dog_tags)
+    raise e
+  end
+  end
+
+  def use_managed_service(service_instance, &blk)
     monitoring.record_action("bind_service", dog_tags) do
       binding = regular_user.bind_service_to_app(service_instance, @app)
       binding.guid.should be

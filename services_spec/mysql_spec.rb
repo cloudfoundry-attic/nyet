@@ -12,4 +12,11 @@ describe "Managing MySQL", :service => true do
       client.get_value('key').should == 'value'
     end
   end
+
+  it "allows us to bind and unbind to an existing instance after a restart" do
+    use_managed_service(ENV['NYET_EXISTING_INSTANCE_ID']) do |client|
+      client.insert_value('key', 'value').should be_a Net::HTTPSuccess
+      client.get_value('key').should == 'value'
+    end
+  end
 end
