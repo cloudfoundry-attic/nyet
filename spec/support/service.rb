@@ -55,6 +55,11 @@ module ServiceHelper
     raise e
   end
 
+  def use_managed_service_instance(guid, &block)
+    service_instance = regular_user.find_service_instance(guid)
+    use_managed_service(service_instance, &block)
+  end
+
   def use_managed_service(service_instance, &blk)
     monitoring.record_action("bind_service", dog_tags) do
       binding = regular_user.bind_service_to_app(service_instance, @app)

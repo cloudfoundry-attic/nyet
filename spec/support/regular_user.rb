@@ -133,6 +133,10 @@ class RegularUser
     binding
   end
 
+  def find_service_instance(guid)
+    client.service_instances.detect {|instance| instance.guid == guid }
+  end
+
   private
   def debug(action, object)
     puts "--- #{action}: #{object.inspect} (regular user: #{client.current_user.inspect})"
