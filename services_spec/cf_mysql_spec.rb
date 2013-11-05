@@ -76,11 +76,17 @@ describe 'Enforcing MySQL quota', :service => true do
   end
 end
 
-#describe 'Managing a service instance', :service => true do
-#  it "allows us to bind and unbind to an existing instance" do
-#    use_managed_service_instance(ENV['NYET_EXISTING_MYSQL_V2_INSTANCE_ID']) do |client|
-#      client.insert_value('key', 'value').should be_a Net::HTTPSuccess
-#      client.get_value('key').should == 'value'
-#    end
-#  end
-#end
+describe 'Using a long-running service instance', :service => true do
+
+  let(:app_name) { 'use-existing-mysql' }
+  let(:namespace) { 'mysql' }
+  let(:plan_name) { 'free' }
+  let(:service_name) { 'cf-mysql' }
+
+  it "allows us to bind and unbind to an existing instance" do
+    use_managed_service_instance(ENV['NYET_EXISTING_MYSQL_V2_INSTANCE_ID']) do |client|
+      client.insert_value('key', 'value').should be_a Net::HTTPSuccess
+      client.get_value('key').should == 'value'
+    end
+  end
+end
