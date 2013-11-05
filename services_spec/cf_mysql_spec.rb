@@ -17,7 +17,7 @@ describe 'Enforcing MySQL quota', :service => true do
       expect(client).to be_able_to_read('key', 'first_value')
 
       puts '*** Exceeding quota'
-      client.exceed_quota_by_inserting(10)
+      client.exceed_quota_by_inserting(100)
 
       puts '*** Sleeping to let quota enforcer run'
       sleep quota_enforcer_sleep_time
@@ -75,3 +75,12 @@ describe 'Enforcing MySQL quota', :service => true do
     end
   end
 end
+
+#describe 'Managing a service instance', :service => true do
+#  it "allows us to bind and unbind to an existing instance" do
+#    use_managed_service_instance(ENV['NYET_EXISTING_MYSQL_V2_INSTANCE_ID']) do |client|
+#      client.insert_value('key', 'value').should be_a Net::HTTPSuccess
+#      client.get_value('key').should == 'value'
+#    end
+#  end
+#end
