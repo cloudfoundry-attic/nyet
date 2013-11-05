@@ -17,7 +17,7 @@ describe 'Enforcing MySQL quota', :service => true do
       expect(client).to be_able_to_read('key', 'first_value')
 
       puts '*** Exceeding quota'
-      client.exceed_quota_by_inserting(100)
+      client.exceed_quota_by_inserting(ENV['MYSQL_V2_MAX_MB'].to_i)
 
       puts '*** Sleeping to let quota enforcer run'
       sleep quota_enforcer_sleep_time
