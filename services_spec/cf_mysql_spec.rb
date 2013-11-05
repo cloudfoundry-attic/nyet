@@ -28,7 +28,7 @@ describe 'Enforcing MySQL quota', :service => true do
       expect(client).to be_able_to_read('key', 'first_value')
 
       puts '*** Deleting below quota'
-      client.fall_below_quota_by_deleting(2)
+      client.fall_below_quota_by_deleting(20)
 
       puts '*** Sleeping to let quota enforcer run'
       sleep quota_enforcer_sleep_time
