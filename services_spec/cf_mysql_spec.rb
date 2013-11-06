@@ -6,7 +6,7 @@ describe 'Enforcing MySQL quota', :service => true do
   let(:app_name) { 'mysql-quota-check' }
   let(:namespace) { 'mysql' }
   let(:plan_name) { 'free' }
-  let(:service_name) { 'cf-mysql' }
+  let(:service_name) { 'p-mysql' }
   let(:quota_enforcer_sleep_time) { 2 }
 
   it 'enforces the storage quota' do
@@ -81,7 +81,7 @@ describe 'Using a long-running service instance', :service => true do
   let(:app_name) { 'use-existing-mysql' }
   let(:namespace) { 'mysql' }
   let(:plan_name) { 'free' }
-  let(:service_name) { 'cf-mysql' }
+  let(:service_name) { 'p-mysql' }
 
   it "allows us to bind and unbind to an existing instance" do
     use_managed_service_instance(ENV['NYET_EXISTING_MYSQL_V2_INSTANCE_ID']) do |client|
