@@ -5,7 +5,7 @@ require 'timeout'
 describe 'Enforcing MySQL quota', :service => true do
   let(:app_name) { 'mysql-quota-check' }
   let(:namespace) { 'mysql' }
-  let(:plan_name) { 'free' }
+  let(:plan_name) { '100mb' }
   let(:service_name) { 'p-mysql' }
   let(:quota_enforcer_sleep_time) { 2 }
 
