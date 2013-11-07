@@ -3,7 +3,7 @@ require "spec_helper"
 describe "Managing RedisCloud", :service => true, :appdirect => true do
   let(:app_name) { "rediscloud" }
   let(:namespace) { "redis" }
-  let(:plan_name) { "20mb" }
+  let(:plan_name) { "25mb" }
   let(:service_name) { "rediscloud-dev" }
 
   it "allows users to create, bind, read, write, unbind, and delete the RedisCloud service" do
