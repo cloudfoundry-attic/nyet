@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Managing CloudAMQP", :service => true, :appdirect => true do
+describe "Managing CloudAMQP", service: true, appdirect: true, isv: true do
   let(:app_name) { "cloudamqp" }
   let(:namespace) { "amqp" }
   let(:plan_name) { "lemur" }
