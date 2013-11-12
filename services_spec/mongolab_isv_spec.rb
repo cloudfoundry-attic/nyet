@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Managing Mongolab", service: true, appdirect: true, isv: true do
+describe "Managing Mongolab", :service => true, :appdirect => true do
   let(:app_name) { "mongolab" }
   let(:namespace) { "mongodb" }
   let(:plan_name) { "sandbox" }

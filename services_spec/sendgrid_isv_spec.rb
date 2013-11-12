@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Managing SendGrid", service: true, appdirect: true, isv: true do
+describe "Managing SendGrid", :service => true, :appdirect => true do
   let(:app_name) { "sendgrid" }
   let(:namespace) { "smtp" }
   let(:plan_name) { "free" }

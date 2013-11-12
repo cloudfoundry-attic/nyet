@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Managing ClearDB", service: true, appdirect: true, isv: true do
+describe "Managing ClearDB", :service => true, :appdirect => true do
   let(:app_name) { "cleardb" }
   let(:namespace) { "mysql" }
   let(:plan_name) { "spark" }

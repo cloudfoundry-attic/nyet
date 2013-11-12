@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Managing ElephantSQL", service: true, appdirect: true, isv: true do
+describe "Managing ElephantSQL", :service => true, :appdirect => true do
   let(:app_name) { "elephantsql" }
   let(:namespace) { "pg" }
   let(:plan_name) { "turtle" }

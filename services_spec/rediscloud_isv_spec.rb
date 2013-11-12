@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "Managing RedisCloud", service: true, appdirect: true, isv: true do
+describe "Managing RedisCloud", :service => true, :appdirect => true do
   let(:app_name) { "rediscloud" }
   let(:namespace) { "redis" }
   let(:plan_name) { "25mb" }

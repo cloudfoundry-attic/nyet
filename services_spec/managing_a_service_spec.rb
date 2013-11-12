@@ -1,7 +1,7 @@
 require "spec_helper"
 require "fileutils"
 
-describe "Managing a Service", appdirect: true, cf: true do
+describe "Managing a Service", :appdirect => true, :cf => true do
   let(:plan_name) { "small" }
   let(:service_provider_prefix) { ENV["NYET_SERVICE_PROVIDER_PREFIX"] || '' }
   let(:service_name) { "#{service_provider_prefix}dummy-dev" }
