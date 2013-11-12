@@ -18,7 +18,8 @@ describe "App CRUD" do
   with_time_limit
 
   let(:app_content) { "#{SecureRandom.uuid}_#{Time.now.to_i}" }
-  let(:app_name) { "crud-#{ENV["NYET_APP"]}" || "crud-java" }
+  let(:language) { ENV["NYET_APP"] || "java" }
+  let(:app_name) { "crud-#{language}" }
   attr_reader :route
 
   it "creates/updates/deletes an app" do
@@ -33,9 +34,11 @@ describe "App CRUD" do
         end
 
         monitoring.record_action(:read) do
-          path = APPS[ENV["NYET_APP"]]
-          raise "You must set the NYET_APP environment variable" unless path
-          deploy_app(@app, path)
+          if path = APPS[language]
+            deploy_app(@app, path)
+          else
+            raise "NYET_APP was set to #{ENV["NYET_APP"].inspect}, must be one of #{APPS.keys.to_s} (or nil)"
+          end
         end
 
         monitoring.record_action(:start) do
