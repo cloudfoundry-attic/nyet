@@ -75,10 +75,10 @@ class TestApp
     loop do
       response = yield
       debug 'Services-Nyet-App: ' + response['Services-Nyet-App'].inspect
-      debug("Response: #{response}")
+      debug("Response: #{response.inspect}")
       debug("  Body: #{response.body}")
       if response['Services-Nyet-App'] == 'true'
-        raise 'Attack of the zombies!!! Run for your lives!!!' if response['App-Signature'] != signature
+        raise "Attack of the zombie with signature #{ response['App-Signature']}!!! Expected signature: #{signature}!!! Run for your lives!!!" if response['App-Signature'] != signature
 
         case response
         when Net::HTTPServiceUnavailable
