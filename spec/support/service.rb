@@ -24,6 +24,10 @@ module ServiceHelper
       end
 
       after do
+        # Why do we do this in an after hook if it's already in the before hook, you're asking?
+        # Because we want to destroy the instances immediately so that
+        # we don't pay more money than we have to. But... if that fails, then on the next test run, it might successfully
+        # delete in the before hook.
         regular_user.clean_up_app_from_previous_run(app_name)
         regular_user.clean_up_service_instance_from_previous_run(space, instance_name)
         regular_user.clean_up_route_from_previous_run(host)
