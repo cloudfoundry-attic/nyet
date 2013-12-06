@@ -23,6 +23,11 @@ module ServiceHelper
         @route = regular_user.create_route(@app, host, TestEnv.default.apps_domain)
       end
 
+      after do
+        regular_user.clean_up_app_from_previous_run(app_name)
+        regular_user.clean_up_service_instance_from_previous_run(space, instance_name)
+        regular_user.clean_up_route_from_previous_run(host)
+      end
     end
   end
 

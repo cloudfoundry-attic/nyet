@@ -11,5 +11,6 @@ describe "Managing RedisCloud", :service => true, :appdirect => true do
       client.insert_value('key', 'value').should be_a Net::HTTPSuccess
       client.get_value('key').should == 'value'
     end
+
   end
 end
