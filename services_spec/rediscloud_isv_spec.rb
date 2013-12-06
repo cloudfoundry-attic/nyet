@@ -13,6 +13,5 @@ describe "Managing RedisCloud", :service => true, :appdirect => true do
         client.get_value('key').should == 'value'
       end
     end
-
   end
 end
