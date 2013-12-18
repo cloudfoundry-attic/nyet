@@ -154,13 +154,20 @@ get '/service/amqp/:service_name/:key' do
   value
 end
 
+REDIS_CLOUD_DNS_FLAKINESS = SocketError
+
 post '/service/redis/:service_name/:key' do
   value = request.env["rack.input"].read
   client = load_redis(params[:service_name])
 
-  client.set(params[:key], value)
+  begin
+    client.set(params[:key], value)
+    client.quit
 
-  client.quit
+  rescue REDIS_CLOUD_DNS_FLAKINESS => e
+    raise ServiceUnavailableError, e.message
+  end
+
   value
 end
 
