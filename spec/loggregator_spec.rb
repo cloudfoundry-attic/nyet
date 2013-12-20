@@ -66,7 +66,10 @@ describe "Loggregator" do
   def initialize_gcf
     username = ENV['NYET_REGULAR_USERNAME']
     password = ENV['NYET_REGULAR_PASSWORD']
-    `gcf auth #{username} #{password}`
-    `gcf target -o #{@org.name} -s #{@space.name}`
+    api_endpoint = ENV['NYET_TARGET']
+    
+    puts `gcf api #{api_endpoint}`
+    puts `gcf auth #{username} #{password}`
+    puts `gcf target -o #{@org.name} -s #{@space.name}`
   end
 end
