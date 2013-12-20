@@ -3,15 +3,10 @@ require "net/http"
 require "securerandom"
 require "timeout"
 require "support/test_env"
+require "support/app_crud_helpers"
 
 describe "App CRUD" do
-  CHECK_DELAY = 0.25.freeze
-  ROUTING_TIMEOUT = 60.freeze
-
-  APPS = {
-    "ruby" => "ruby/simple",
-    "java" => "java/JavaTinyApp-1.1.war"
-  }
+  include AppCrudHelpers
 
   with_user_with_org
   with_new_space
@@ -42,7 +37,7 @@ describe "App CRUD" do
         end
 
         monitoring.record_action(:start) do
-          start_app(@app)
+          start_app_and_wait_until_up(@app)
         end
 
         monitoring.record_action(:app_routable) do
@@ -69,34 +64,6 @@ describe "App CRUD" do
       monitoring.record_metric("crud_app.health", 0)
       raise e
     end
-  end
-
-  def deploy_app(app, path)
-    puts "starting #{__method__} (#{Time.now})"
-    app.upload(File.expand_path("../../apps/#{path}", __FILE__))
-  end
-
-  def start_app(app)
-    puts "starting #{__method__} (#{Time.now})"
-    staging_log = ""
-    app.start! do |url|
-      app.stream_update_log(url) do |chunk|
-        staging_log << chunk
-      end if url
-    end
-
-    check_app_started(app)
-  rescue
-    puts "Staging app log:\n#{staging_log}"
-    raise
-  end
-
-  def check_app_started(app)
-    puts "starting #{__method__} (#{Time.now})"
-    sleep(CHECK_DELAY) until app.running?
-  rescue CFoundry::NotStaged
-    sleep(CHECK_DELAY)
-    retry
   end
 
   def check_app_routable
@@ -166,8 +133,5 @@ describe "App CRUD" do
     end
   end
 
-  def page_content
-    app_uri = URI("http://#{route.host}.#{route.domain.name}")
-    Net::HTTP.get(app_uri)
-  end
+
 end
