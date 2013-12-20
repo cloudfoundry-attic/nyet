@@ -21,6 +21,8 @@ Nyet CRUDs a single Sinatra application.
 * If that file doesn't exist, create it! you get the
   user/pass from `cf-aws.yml` (the scim admin user)
 
+* You will need `gcf` in your $PATH for the loggregator_spec to work.
+
 
 ## Running Against an Existing Organization
 
