@@ -5,7 +5,7 @@ require "timeout"
 require "support/test_env"
 require "support/app_crud_helpers"
 
-describe "Loggregator" do
+describe "Loggregator", component: 'loggregator' do
   include AppCrudHelpers
 
   with_user_with_org
