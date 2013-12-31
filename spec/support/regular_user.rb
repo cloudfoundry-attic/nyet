@@ -1,6 +1,7 @@
 require "uri"
 require "securerandom"
 require "cfoundry"
+require "httparty"
 
 class RegularUser
   def self.from_env
@@ -135,6 +136,14 @@ class RegularUser
 
   def find_service_instance(guid)
     client.service_instances.detect {|instance| instance.guid == guid }
+  end
+
+  def clean_up_orphaned_appdirect_service_instances(space, instance_name)
+    debug(:delete, "any orphaned service instances in space #{space.guid}")
+    base_uri = ENV['ORPHAN_FINDER_DOMAIN_NAME']
+    auth = {:username => ENV['ORPHAN_FINDER_USERNAME'], :password => ENV['ORPHAN_FINDER_PASSWORD']}
+    HTTParty.delete(base_uri + "/appdirect_orphans/space/#{space.guid}/instance_name/#{instance_name}",
+                               {:basic_auth => auth})
   end
 
   private

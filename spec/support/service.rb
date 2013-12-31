@@ -18,6 +18,8 @@ module ServiceHelper
         regular_user.clean_up_service_instance_from_previous_run(space, instance_name)
         regular_user.clean_up_route_from_previous_run(host)
 
+        regular_user.clean_up_orphaned_appdirect_service_instances(space, instance_name) if example.metadata[:appdirect]
+
         @app_signature = SecureRandom.uuid
         @app = regular_user.create_app(space, app_name, {APP_SIGNATURE: @app_signature})
         @route = regular_user.create_route(@app, host, TestEnv.default.apps_domain)
