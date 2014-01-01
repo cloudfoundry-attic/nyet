@@ -6,7 +6,7 @@ gem 'ci_reporter'
 gem 'cfoundry', '~> 4.0.4.rc2'
 gem 'cf-uaa-lib'
 gem 'httparty'
-gem 'blue-shell', '~> 0.3.0'
+gem 'blue-shell'
 gem 'parallel_tests'
 
 group :monitoring do

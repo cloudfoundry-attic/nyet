@@ -7,7 +7,7 @@ GEM
     activesupport (3.2.14)
       i18n (~> 0.6, >= 0.6.4)
       multi_json (~> 1.0)
-    blue-shell (0.3.0)
+    blue-shell (0.2.2)
       rspec
     builder (3.0.4)
     cf-uaa-lib (1.3.10)
@@ -49,7 +49,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  blue-shell (~> 0.3.0)
+  blue-shell
   cf-uaa-lib
   cfoundry (~> 4.0.4.rc2)
   ci_reporter

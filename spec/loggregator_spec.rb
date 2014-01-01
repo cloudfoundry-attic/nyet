@@ -52,15 +52,13 @@ describe "Loggregator", component: 'loggregator' do
     puts "starting #{__method__} (#{Time.now})"
 
     BlueShell::Runner.run("gcf logs #{app_name}") do |runner|
-      runner.with_timeout 60 do
-        runner.should say "Connected, tailing logs for app #{app_name}"
+      runner.should say "Connected, tailing logs for app #{app_name}"
 
-        # Hit twice to see that both router and app messages come through; order is not guaranteed
-        page_content
-        runner.should say "[RTR]"
-        page_content
-        runner.should say "[App/0]"
-      end
+      # Hit twice to see that both router and app messages come through; order is not guaranteed
+      page_content
+      runner.should say "[RTR]"
+      page_content
+      runner.should say "[App/0]"
     end
   end
 
