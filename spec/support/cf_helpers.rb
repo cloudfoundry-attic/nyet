@@ -59,20 +59,26 @@ module CfHelpers
 
     cmd = "#{cf_bin} login #{username} --password #{password} -o #{org.name} -s #{space.name}"
     BlueShell::Runner.run(cmd) do |runner|
-      runner.wait_for_exit 60
+      runner.with_timeout 60 do
+        runner.wait_for_exit
+      end
     end
   end
 
   def logout
     BlueShell::Runner.run("#{cf_bin} logout") do |runner|
-      runner.wait_for_exit 60
+      runner.with_timeout 60 do
+        runner.wait_for_exit
+      end
     end
   end
 
   def set_target
     target = ENV['NYET_TARGET']
     BlueShell::Runner.run("#{cf_bin} target #{target}") do |runner|
-      runner.wait_for_exit(20)
+      runner.with_timeout 20 do
+        runner.wait_for_exit
+      end
     end
   end
 
@@ -116,14 +122,20 @@ module CfHelpers
 
   def set_app_signature_env_variable(app_name)
     BlueShell::Runner.run("#{cf_bin} set-env #{app_name} APP_SIGNATURE #{app_signature}") do |runner|
-      runner.should say "Updating env variable APP_SIGNATURE for app #{app_name}... OK", 180
+      runner.with_timeout 180 do
+        runner.should say "Updating env variable APP_SIGNATURE for app #{app_name}... OK"
+      end
     end
   end
 
   def start_app(app_name)
     BlueShell::Runner.run("#{cf_bin} start --trace #{app_name} 2>>#{tmp_dir}/cf_trace.log") do |runner|
-      runner.should say "Preparing to start #{app_name}... OK", 180
-      runner.should say "Checking status of app '#{app_name}'", 180
+      runner.with_timeout 180 do
+        runner.should say "Preparing to start #{app_name}... OK"
+      end
+      runner.with_timeout 180 do
+        runner.should say "Checking status of app '#{app_name}'"
+      end
       runner.should say "1 of 1 instances running"
       runner.should say "Push successful"
     end

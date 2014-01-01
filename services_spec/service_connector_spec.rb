@@ -53,7 +53,9 @@ describe "Service Connector", cf: true do
         runner.should say "Bind other services to application?>"
         runner.send_keys "n"
 
-        runner.should say "Uploading #{app_name}... OK", 180
+        runner.with_timeout 180 do
+          runner.should say "Uploading #{app_name}... OK"
+        end
       end
 
       set_app_signature_env_variable(app_name)
