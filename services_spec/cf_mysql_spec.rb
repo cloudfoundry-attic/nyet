@@ -17,7 +17,7 @@ describe 'Enforcing MySQL quota', :service => true do
       expect(client).to be_able_to_read('key', 'first_value')
 
       puts '*** Exceeding quota'
-      client.exceed_quota_by_inserting(ENV['MYSQL_V2_MAX_MB'].to_i)
+      client.exceed_quota_by_inserting(ENV.fetch('MYSQL_V2_MAX_MB').to_i)
 
       puts '*** Sleeping to let quota enforcer run'
       sleep quota_enforcer_sleep_time
@@ -76,13 +76,13 @@ describe 'Enforcing MySQL quota', :service => true do
   end
 end
 
-describe "Using a new service instance", :service => true do
-  let(:app_name) { "mysql" }
-  let(:namespace) { "mysql" }
-  let(:plan_name) { "100mb" }
-  let(:service_name) { "p-mysql" }
+describe 'Using a new service instance', :service => true do
+  let(:app_name) { 'mysql' }
+  let(:namespace) { 'mysql' }
+  let(:plan_name) { '100mb' }
+  let(:service_name) { 'p-mysql' }
 
-  it "allows users to create, bind, read, write, unbind, and delete the Mysql service" do
+  it 'allows users to create, bind, read, write, unbind, and delete the Mysql service' do
     create_and_use_managed_service do |client|
       client.insert_value('key', 'value').should be_a Net::HTTPSuccess
       client.get_value('key').should == 'value'
@@ -97,8 +97,8 @@ describe 'Using a long-running service instance', :service => true do
   let(:plan_name) { 'free' }
   let(:service_name) { 'p-mysql' }
 
-  it "allows us to bind and unbind to an existing instance" do
-    use_managed_service_instance(ENV['NYET_EXISTING_MYSQL_V2_INSTANCE_ID']) do |client|
+  it 'allows us to bind and unbind to an existing instance' do
+    use_managed_service_instance(ENV.fetch('NYET_EXISTING_MYSQL_V2_INSTANCE_ID')) do |client|
       client.insert_value('key', 'value').should be_a Net::HTTPSuccess
       client.get_value('key').should == 'value'
     end
