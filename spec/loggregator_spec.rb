@@ -56,33 +56,38 @@ describe "Loggregator", component: 'loggregator' do
         runner.should say "Connected, tailing logs for app #{app_name}"
       end
 
-      # Wait a second to ensure that sink is set up and sending messages back
-      sleep 1
-
       # Hit twice to see that both router and app messages come through; order is not guaranteed
-      runner.with_timeout 60 do
-        response = page_content
-        puts "Got a response from the app with code: #{response}"
-        puts "OUTPUT*************************"
-        puts runner.output
-        puts "*************************"
-        runner.should say "[RTR]"
-        puts "OUTPUT*************************"
-        puts runner.output
-        puts "*************************"
+
+      retries = 5 # First run plus 5 retries gives a minute
+      begin
+        runner.with_timeout 10 do
+          page_content
+          runner.should say "[RTR]"
+        end
+      rescue RSpec::Expectations::ExpectationNotMetError => e
+        if retries.nonzero?
+          puts "*** Log expectation ('[RTR]') failed; retrying #{retries} more times"
+          retries -= 1
+          retry
+        else
+          raise e
+        end
       end
 
-      runner.with_timeout 60 do
-        response = page_content
-        puts "Got a response from the app with code: #{response}"
-        puts "OUTPUT*************************"
-        puts runner.output
-        puts "*************************"
-
-        runner.should say "[App/0]"
-        puts "OUTPUT*************************"
-        puts runner.output
-        puts "*************************"
+      retries = 5
+      begin
+        runner.with_timeout 10 do
+          page_content
+          runner.should say "[App/0]"
+        end
+      rescue RSpec::Expectations::ExpectationNotMetError => e
+        if retries.nonzero?
+          puts "*** Log expectation ('[App/0]') failed; retrying #{retries} more times"
+          retries -= 1
+          retry
+        else
+          raise e
+        end
       end
     end
   end
