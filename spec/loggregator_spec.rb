@@ -32,6 +32,7 @@ describe "Loggregator", component: 'loggregator' do
       end
 
       start_app_and_wait_until_up(@app)
+      sleep 15
 
       monitoring.record_action(:loggregator_works) do
         initialize_gcf
@@ -59,7 +60,6 @@ describe "Loggregator", component: 'loggregator' do
       # Hit twice to see that both router and app messages come through; order is not guaranteed
       runner.with_timeout 60 do
         response = page_content
-        debugger
         puts "Got a response from the app with code: #{response}"
         sleep 10
         puts "OUTPUT*************************"
