@@ -71,7 +71,7 @@ class TestApp
   end
 
   def make_request_with_retry
-    timeout = Time.now + 300
+    timeout = Time.now + 600
     loop do
       response = yield
       debug 'Services-Nyet-App: ' + response['Services-Nyet-App'].inspect
