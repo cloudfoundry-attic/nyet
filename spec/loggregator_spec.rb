@@ -14,7 +14,7 @@ describe "Loggregator", component: 'loggregator' do
 
   let(:app_content) { "#{SecureRandom.uuid}_#{Time.now.to_i}" }
   let(:language) { ENV["NYET_APP"] || "java" }
-  let(:app_name) { "crud-#{language}" }
+  let(:app_name) { "loggregator-#{language}" }
   attr_reader :route
 
   it "gets log messages from an app" do
@@ -32,7 +32,6 @@ describe "Loggregator", component: 'loggregator' do
       end
 
       start_app_and_wait_until_up(@app)
-      sleep 15
 
       monitoring.record_action(:loggregator_works) do
         initialize_gcf
@@ -61,7 +60,6 @@ describe "Loggregator", component: 'loggregator' do
       runner.with_timeout 60 do
         response = page_content
         puts "Got a response from the app with code: #{response}"
-        sleep 10
         puts "OUTPUT*************************"
         puts runner.output
         puts "*************************"
@@ -74,7 +72,6 @@ describe "Loggregator", component: 'loggregator' do
       runner.with_timeout 60 do
         response = page_content
         puts "Got a response from the app with code: #{response}"
-        sleep 10
         puts "OUTPUT*************************"
         puts runner.output
         puts "*************************"
