@@ -55,6 +55,7 @@ describe "Loggregator", component: 'loggregator' do
       runner.with_timeout 60 do
         runner.should say "Connected, tailing logs for app #{app_name}"
       end
+      sleep 15
 
       # Hit twice to see that both router and app messages come through; order is not guaranteed
       runner.with_timeout 60 do
