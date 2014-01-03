@@ -165,7 +165,7 @@ post '/service/redis/:service_name/:key' do
     client.quit
 
   rescue REDIS_CLOUD_DNS_FLAKINESS => e
-    raise ServiceUnavailableError, e.message
+    raise ServiceUnavailableError, "I tried to connect to #{client.client.host}, but got this error: #{e.message}"
   end
 
   value
