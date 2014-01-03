@@ -58,13 +58,31 @@ describe "Loggregator", component: 'loggregator' do
 
       # Hit twice to see that both router and app messages come through; order is not guaranteed
       runner.with_timeout 60 do
-        page_content
+        response = page_content
+        debugger
+        puts "Got a response from the app with code: #{response}"
+        sleep 10
+        puts "OUTPUT*************************"
+        puts runner.output
+        puts "*************************"
         runner.should say "[RTR]"
+        puts "OUTPUT*************************"
+        puts runner.output
+        puts "*************************"
       end
 
       runner.with_timeout 60 do
-        page_content
+        response = page_content
+        puts "Got a response from the app with code: #{response}"
+        sleep 10
+        puts "OUTPUT*************************"
+        puts runner.output
+        puts "*************************"
+
         runner.should say "[App/0]"
+        puts "OUTPUT*************************"
+        puts runner.output
+        puts "*************************"
       end
     end
   end

@@ -37,6 +37,7 @@ module AppCrudHelpers
 
   def page_content
     app_uri = URI("http://#{route.host}.#{route.domain.name}")
+    puts "Trying to hit the url: #{app_uri}"
     Net::HTTP.get(app_uri)
   end
 end
