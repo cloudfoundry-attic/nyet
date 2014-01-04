@@ -71,7 +71,8 @@ class TestApp
   end
 
   def make_request_with_retry
-    timeout = Time.now + 600
+    timeout_duration = 600
+    timeout = Time.now + timeout_duration
     loop do
       response = yield
       debug 'Services-Nyet-App: ' + response['Services-Nyet-App'].inspect
@@ -86,7 +87,7 @@ class TestApp
           if Time.now < timeout
             sleep(response['Retry-After'].to_i)
           else
-            raise "Failed to use service within 5 minutes."
+            raise "Failed to use service within #{timeout_duration} seconds."
           end
         else
           return response
