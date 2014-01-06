@@ -96,7 +96,7 @@ class TestApp
         if Time.now < timeout
           sleep(1)
         else
-          example.pending "Failed to reach app within 5 minutes."
+          example.pending "Failed to reach app within #{timeout_duration} minutes."
         end
       end
     end
