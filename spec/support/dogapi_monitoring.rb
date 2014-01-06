@@ -36,9 +36,11 @@ class DogapiMonitoring < Monitoring
 
   def record(name, value, tags = {})
     full_name = "nyet.#{name}"
+    deployment = @deployment_name
+    deployment = "cf-#{deployment}" unless deployment.start_with?("cf-")
     tags = {
         role: "core",
-        deployment: "cf-#{@deployment_name}",
+        deployment: deployment,
         app_type: @app_type,
     }.merge(tags).collect{|k,v| "#{k}:#{v}" }
     puts "--- Dogapi record '#{full_name}' with #{value}  #{tags.inspect}"
