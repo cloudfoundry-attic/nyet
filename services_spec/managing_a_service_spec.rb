@@ -1,6 +1,12 @@
 require "spec_helper"
 require "fileutils"
 
+DATADOG_SUCCESS = 1
+DATADOG_FAILURE = 0
+DATADOG_CF_DOWN = 0.6
+class CantUploadToCf < StandardError; end
+
+
 describe "Managing a Service", :appdirect => true, :cf => true do
   let(:plan_name) { "small" }
   let(:service_provider_prefix) { ENV["NYET_SERVICE_PROVIDER_PREFIX"] || '' }
@@ -49,8 +55,12 @@ describe "Managing a Service", :appdirect => true, :cf => true do
           runner.should say "Bind other services to application?>"
           runner.send_keys "n"
 
-          runner.with_timeout 180 do
-            runner.should say "Uploading #{app_name}... OK"
+          begin
+            runner.with_timeout 180 do
+              runner.should say "Uploading #{app_name}... OK"
+            end
+          rescue SignalException
+            raise CantUploadToCf
           end
         end
 
@@ -60,10 +70,12 @@ describe "Managing a Service", :appdirect => true, :cf => true do
         env["#{service_name}-n/a"].first['credentials']['dummy'].should == 'value'
       end
 
-      monitoring.record_metric("services.health", 1, dog_tags)
-    rescue
-      monitoring.record_metric("services.health", 0, dog_tags)
-      raise
+      monitoring.record_metric("services.health", DATADOG_SUCCESS, dog_tags)
+    rescue CantUploadToCf
+      monitoring.record_metric("services.health", DATADOG_CF_DOWN, dog_tags)
+    rescue Exception => e
+      monitoring.record_metric("services.health", DATADOG_FAILURE, dog_tags)
+      raise e
     end
   end
 end
