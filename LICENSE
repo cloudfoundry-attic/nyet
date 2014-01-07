@@ -1,5 +1,4 @@
-
-				Apache License
+             Apache License
            Version 2.0, January 2004
         http://www.apache.org/licenses/
 
@@ -202,68 +201,66 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-=======================================================================   
+=======================================================================
 
-cf-nyet:
+cf-nyet
 
-cf-nyet: includes a number of subcomponents with separate copyright 
-notices and license terms.  The product that includes this file
-does not necessarily use all the open source subcomponents referred 
-to below. Your use of the source code for the these subcomponents 
-is subject to the terms and conditions of the following licenses.
-
+cf-nyet : includes a number of subcomponents with
+separate copyright notices and license terms.  The product that 
+includes this file does not necessarily use all the open source 
+subcomponents referred to below. Your use of the source
+code for the these subcomponents is subject to the terms and
+conditions of the following license. 
 
 SECTION 1: BSD-STYLE, MIT-STYLE, OR SIMILAR STYLE LICENSES
 
    >>> activemodel-3.2.13
-   >>> activesupport-3.2.13
-   >>> blue-shell-0.2.1
+   >>> activemodel-3.2.14
+   >>> activesupport-3.2.14
+   >>> blue-shell-0.2.2
+   >>> builder-2.1.2
+   >>> builder-3.0.0
    >>> builder-3.0.4
-   >>> caldecott-client-0.0.2
-   >>> carrot-0.8.1
-   >>> diff-lcs-1.2.1
+   >>> ci_reporter-1.9.0
+   >>> diff-lcs-1.1.3
+   >>> diff-lcs-1.2.4
+   >>> dogapi-1.9.0
    >>> httparty-0.11.0
-   >>> i18n-0.6.1
-   >>> interact-0.5.2
-   >>> mime-types-1.23
-   >>> mothership-0.5.1
-   >>> multi_json-1.7.6
-   >>> multi_json-1.7.7
-   >>> multi_xml-0.5.4
+   >>> i18n-0.6.4
+   >>> i18n-0.6.5
+   >>> multi_json-1.0
+   >>> multi_json-1.7
+   >>> multi_json-1.8.1
+   >>> multi_json-1.8.2
+   >>> multi_xml-0.5.2
+   >>> multi_xml-0.5.5
+   >>> multipart-post-1.1
    >>> multipart-post-1.2.0
-   >>> mysql2-0.3.11
-   >>> polyglot-0.3.3
-   >>> rack-1.5.2
-   >>> rack-protection-1.5.0
-   >>> rake-10.0.3
-   >>> redis-2.2.0
-   >>> rest-client-1.6.7
-   >>> rspec-2.13.0
-   >>> rspec-core-2.13.0
-   >>> rspec-expectations-2.13.0
-   >>> rspec-mocks-2.13.0
-   >>> sinatra-1.4.3
-   >>> tilt-1.4.1
-   >>> treetop-1.4.12
+   >>> parallel-0.7.1
+   >>> parallel-0.9.0
+   >>> parallel_tests-0.15.1
+   >>> rake-10.1.0
+   >>> rspec-core-2.14.0
+   >>> rspec-core-2.14.5
+   >>> rspec-expectations-2.14.0
+   >>> rspec-expectations-2.14.3
+   >>> rspec-mocks-2.14.0
+   >>> rspec-mocks-2.14.3
 
 
 
 SECTION 2: Apache License, V2.0
 
-   >>> addressable-2.3.5
-   >>> bson-1.2.4
-   >>> cf-4.1.3
    >>> cf-uaa-lib-1.3.10
-   >>> mongo-1.2.4
-   >>> uuidtools-2.1.4
+   >>> rspec-2.14.1
 
 
 
 SECTION 3: Ruby Clause-6
 
-   >>> json-1.7.7
-   >>> json_pure-1.8.0
-   >>> pg-0.11.0
+   >>> json-1.5.1
+   >>> json-1.8.0
+   >>> rubyzip-0.9
    >>> rubyzip-0.9.9
 
 
@@ -272,7 +269,7 @@ APPENDIX. Standard License Files
 
    >>> Ruby Clause-6
 
-   
+
 
 --------------- SECTION 1:  BSD-STYLE, MIT-STYLE, OR SIMILAR STYLE LICENSES ----------
 
@@ -303,9 +300,24 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> activesupport-3.2.13
+>>> activemodel-3.2.14
 
-Copyright (c) 2004-2013 David Heinemeier Hansson
+MIT License
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+
+>>> activesupport-3.2.14
+
+Copyright (c) 2005-2011 David Heinemeier Hansson
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -327,7 +339,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> blue-shell-0.2.1
+>>> blue-shell-0.2.2
 
 The MIT License (MIT)
 Copyright (c) 2013 Pivotal Labs
@@ -343,6 +355,26 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
 COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+>>> builder-2.1.2
+
+Copyright 2004, 2005, 2006 by Jim Weirich (jim@weirichhouse.org).
+All rights reserved.
+
+Permission is granted for use, copying, modification, distribution,
+and distribution of modified versions of this work as long as the
+above copyright notice is included.
+
+
+>>> builder-3.0.0
+
+Copyright 2004, 2005 by Jim Weirich (jim@weirichhouse.org).
+All rights reserved.
+
+Permission is granted for use, copying, modification, distribution,
+and distribution of modified versions of this work as long as the
+above copyright notice is included.
 
 
 >>> builder-3.0.4
@@ -369,43 +401,78 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> caldecott-client-0.0.2
+>>> ci_reporter-1.9.0
 
-Copyright (c) 2010-2011 VMware Inc, All Rights Reserved
+Copyright (c) 2006-2012 Nick Sieger 
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+ Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+>>> diff-lcs-1.1.3
+
+[PLEASE NOTE: PIVOTAL SOFTWARE INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE MIT LICENSE. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.] 
+
+
+== License
+
+This software is available under three licenses: the GNU GPL version 2 (or at
+your option, a later version), the Perl Artistic license, or the MIT license.
+Note that my preference for licensing is the MIT license, but Algorithm::Diff
+was dually originally licensed with the Perl Artistic and the GNU GPL ("the
+same terms as Perl itself") and that the Ruby implementation hews pretty
+closely to the Perl version, so I must maintain the additional licensing terms.
+
+* Copyright 20042011 Austin Ziegler.
+* Adapted from Algorithm::Diff (Perl) by Ned Konz and a Smalltalk versionby
+  Mario I. Wolczko <mario@wolczko.com>
+
+=== MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
-This software downloads additional open source software components upon install
-that are distributed under separate terms and conditions.  Please see the license
-information provided in the individual software components for more information.
+=== Perl Artistic License (version 2)
+See the file docs/artistic.txt in the main distribution.
 
-
->>> carrot-0.8.1
-
-Copyright (c) 2009 Amos Elliston, Geni.com; 
-
-Published under The MIT License
+=== GNU GPL version 2
+See the file docs/COPYING.txt in the main distribution.
 
 
->>> diff-lcs-1.2.1
+>>> diff-lcs-1.2.4
 
-[PLEASE NOTE: GOPIVOTAL, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE MIT LICENSE.  PLEASE SEE BELOW FOR THE FULL TEXT OF THE MIT LICENSE].  THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.]
+[PLEASE NOTE:  PIVOTAL SOFTWARE INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE MIT LICENSE.  PLEASE SEE BELOW FOR THE FULL TEXT OF THE MIT LICENSE. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.]
 
 == License
 
@@ -448,6 +515,37 @@ See the file docs/artistic.txt in the main distribution.
 See the file docs/COPYING.txt in the main distribution.
 
 
+>>> dogapi-1.9.0
+
+Copyright (c) 2011, Datadog <info@datadoghq.com>
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+     
+Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+     
+Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    
+Neither the name of the Datadog nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL DATADOG BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
 >>> httparty-0.11.0
 
 Copyright (c) 2008 John Nunemaker
@@ -472,7 +570,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> i18n-0.6.1
+>>> i18n-0.6.4
 
 Copyright (c) 2008 The Ruby I18n team
 
@@ -496,118 +594,97 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> interact-0.5.2
+ADDITIONAL LICENSE INFORMATION:
 
-Copyright (c)2011, Alex Suraci
+> Ruby License
 
-All rights reserved.
+i18n-0.6.1.gem.tar\data.tar.gz\data.tar\lib\i18n\gettext\po_parser.rb
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+Copyright (C) 2003-2009 Masao Mutoh <mutoh at highway.ne.jp>
 
-* Redistributions of source code must retain the above copyright
-notice, this list of conditions and the following disclaimer.
+  You may redistribute it and/or modify it under the same
+  license terms as Ruby.
 
-* Redistributions in binary form must reproduce the above
-copyright notice, this list of conditions and the following
-disclaimer in the documentation and/or other materials provided
-with the distribution.
+1. You may make and give away verbatim copies of the source form of the
+     software without restriction, provided that you duplicate all of the
+     original copyright notices and associated disclaimers.
 
-* Neither the name of Alex Suraci nor the names of other
-contributors may be used to endorse or promote products derived
-from this software without specific prior written permission.
+  2. You may modify your copy of the software in any way, provided that
+     you do at least ONE of the following:
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+       a) place your modifications in the Public Domain or otherwise
+          make them Freely Available, such as by posting said
+	  modifications to Usenet or an equivalent medium, or by allowing
+	  the author to include your modifications in the software.
 
+       b) use the modified software only within your corporation or
+          organization.
 
->>> mime-types-1.23
+       c) give non-standard binaries non-standard names, with
+          instructions on where to get the original software distribution.
 
-[PLEASE NOTE: GOPIVOTAL, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE MIT LICENSE.  PLEASE SEE BELOW FOR THE FULL TEXT OF THE MIT LICENSE.  THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.]
+       d) make other distribution arrangements with the author.
 
-== Licence
+  3. You may distribute the software in object code or binary form,
+     provided that you do at least ONE of the following:
 
-This software is available under three licenses: the GNU GPL version 2 (or at
-your option, a later version), the Perl Artistic license, or the MIT license.
-Note that my preference for licensing is the MIT license, but the original Perl
-MIME::Types was dually originally licensed with the Perl Artistic and the GNU
-GPL ("the same terms as Perl itself") and given that the Ruby implementation
-hewed pretty closely to the Perl version, I must maintain the additional
-licensing terms.
+       a) distribute the binaries and library files of the software,
+	  together with instructions (in the manual page or equivalent)
+	  on where to get the original distribution.
 
-* Copyright 20032013 Austin Ziegler.
-* Adapted from MIME::Types (Perl) by Mark Overmeer.
+       b) accompany the distribution with the machine-readable source of
+	  the software.
 
-=== MIT License
+       c) give non-standard binaries non-standard names, with
+          instructions on where to get the original software distribution.
 
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
+       d) make other distribution arrangements with the author.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+  4. You may modify and include the part of the software into any other
+     software (possibly commercial).  But some files in the distribution
+     are not written by the author, so that they are not under these terms.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+     For the list of those files and their copying conditions, see the
+     file LEGAL.
 
-=== Perl Artistic License (version 2)
-See the file docs/artistic.txt in the main distribution.
+  5. The scripts and library files supplied as input to or produced as 
+     output from the software do not automatically fall under the
+     copyright of the software, but belong to whomever generated them, 
+     and may be sold commercially, and may be aggregated with this
+     software.
 
-=== GNU GPL version 2
-See the file docs/COPYING.txt in the main distribution.
+  6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+     IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+     WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+     PURPOSE.
 
 
->>> mothership-0.5.1
+>>> i18n-0.6.5
 
-Copyright (c)2012, Alex Suraci
+MIT License
+Copyright (c) 2008 The Ruby I18n team
 
-All rights reserved.
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
 
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following
-      disclaimer in the documentation and/or other materials provided
-      with the distribution.
-
-    * Neither the name of Alex Suraci nor the names of other
-      contributors may be used to endorse or promote products derived
-      from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> multi_json-1.7.6
+>>> multi_json-1.0
 
 Copyright (c) 2010-2013 Michael Bleigh, Josh Kalderimis, Erik Michaels-Ober, Pavel Pravosud
 
@@ -631,7 +708,31 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> multi_json-1.7.7
+>>> multi_json-1.7
+
+MIT License
+ Copyright 2011, 2012 Keith Rarick
+
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be included in
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
+
+
+>>> multi_json-1.8.1
 
 Copyright (c) 2010-2013 Michael Bleigh, Josh Kalderimis, Erik Michaels-Ober, Pavel Pravosud
 
@@ -654,8 +755,32 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
->>> multi_xml-0.5.4
+
+>>> multi_json-1.8.2
+
+Copyright (c) 2010-2013 Michael Bleigh, Josh Kalderimis, Erik Michaels-Ober, Pavel Pravosud
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+>>> multi_xml-0.5.2
+
+Copyright (c) 2010-2013 Erik Michaels-Ober
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+>>> multi_xml-0.5.5
 
 Copyright (c) 2010-2013 Erik Michaels-Ober
 
@@ -677,6 +802,30 @@ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+>>> multipart-post-1.1
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+'Software'), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 >>> multipart-post-1.2.0
@@ -703,9 +852,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> mysql2-0.3.11
-
-Copyright (c) 2010-2011 Brian Lopez - http://github.com/brianmario
+>>> parallel-0.7.1
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
@@ -727,47 +874,13 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> polyglot-0.3.3
+>>> parallel-0.9.0
 
-Copyright (c) 2007 Clifford Heath
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
->>> rack-1.5.2
-
-Copyright (c) 2007, 2008, 2009, 2010, 2011, 2012 Christian Neukirchen <purl.org/net/chneukirchen>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to
-deal in the Software without restriction, including without limitation the
-rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-sell copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER 
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
->>> rack-protection-1.5.0
-
-Copyright (c) 2011 Konstantin Haase
+Copyright (C) 2013 Michael Grosser <michael@grosser.it>
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
-'Software'), to deal in the Software without restriction, including
+"Software"), to deal in the Software without restriction, including
 without limitation the rights to use, copy, modify, merge, publish,
 distribute, sublicense, and/or sell copies of the Software, and to
 permit persons to whom the Software is furnished to do so, subject to
@@ -776,16 +889,21 @@ the following conditions:
 The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> rake-10.0.3
+>>> parallel_tests-0.15.1
+
+License : MIT
+
+
+>>> rake-10.1.0
 
 Copyright (c) 2003, 2004 Jim Weirich
 
@@ -809,57 +927,7 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> redis-2.2.0
-
-Copyright (c) 2009 Ezra Zygmuntowicz
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
->>> rest-client-1.6.7
-
-Released under the MIT License: http://www.opensource.org/licenses/mit-license.php
-
-Copyright (c) 2003, 2004 Jim Weirich
-
-Permission is hereby granted, free of charge, to any person obtaining
-a copy of this software and associated documentation files (the
-"Software"), to deal in the Software without restriction, including
-without limitation the rights to use, copy, modify, merge, publish,
-distribute, sublicense, and/or sell copies of the Software, and to
-permit persons to whom the Software is furnished to do so, subject to
-the following conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
->>> rspec-2.13.0
+>>> rspec-core-2.14.0
 
 (The MIT License)
 
@@ -887,9 +955,11 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> rspec-core-2.13.0
+>>> rspec-core-2.14.5
 
 (The MIT License)
+
+Copyright (c) 2012 Chad Humphries, David Chelimsky, Myron Marston
 Copyright (c) 2009 Chad Humphries, David Chelimsky
 Copyright (c) 2006 David Chelimsky, The RSpec Development Team
 Copyright (c) 2005 Steven Baker
@@ -914,7 +984,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> rspec-expectations-2.13.0
+>>> rspec-expectations-2.14.0
 
 (The MIT License)
 
@@ -941,7 +1011,35 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> rspec-mocks-2.13.0
+>>> rspec-expectations-2.14.3
+
+The MIT License
+
+Copyright (c) 2012 David Chelimsky, Myron Marston
+Copyright (c) 2006 David Chelimsky, The RSpec Development Team
+Copyright (c) 2005 Steven Baker
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+>>> rspec-mocks-2.14.0
 
 (The MIT License)
 
@@ -968,120 +1066,36 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
->>> sinatra-1.4.3
+>>> rspec-mocks-2.14.3
 
-Copyright (c) 2007, 2008, 2009, 2010, 2011 Blake Mizerany
+(The MIT License)
 
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
+Copyright (c) 2006 David Chelimsky, The RSpec Development Team
+Copyright (c) 2005 Steven Baker
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
 
 The above copyright notice and this permission notice shall be
 included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
-
-
->>> tilt-1.4.1
-
-Copyright (c) 2010 Ryan Tomayko <http://tomayko.com/about>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to
-deal in the Software without restriction, including without limitation the
-rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
-sell copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
->>> treetop-1.4.12
-
-Copyright (c) 2007 Nathan Sobo.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 --------------- SECTION 2: Apache License, V2.0 ----------
 
 Apache License, V2.0 is applicable to the following component(s).
-
-
->>> addressable-2.3.5
-
-coding: utf-8
-Copyright (C) 2006-2013 Bob Aman
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-
->>> bson-1.2.4
-
-Copyright (C) 2008-2011 10gen Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-
->>> cf-4.1.3
-
-LICENSE : Apache 2.0
 
 
 >>> cf-uaa-lib-1.3.10
@@ -1098,30 +1112,14 @@ subcomponents is subject to the terms and conditions of the
 subcomponent's license, as noted in the LICENSE file.
 
 
->>> mongo-1.2.4
+>>> rspec-2.14.1
 
-Copyright (C) 2008-2011 10gen Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-
->>> uuidtools-2.1.4
-
-Copyright (C) 2005-2012 Bob Aman
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+Licensed to the Apache Software Foundation (ASF) under one or more
+contributor license agreements. See the NOTICE file distributed with
+this work for additional information regarding copyright ownership.
+The ASF licenses this file to You under the Apache License, Version 2.0
+(the "License"); you may not use this file except in compliance with
+the License. You may obtain a copy of the License at
 
 http://www.apache.org/licenses/LICENSE-2.0
 
@@ -1137,34 +1135,116 @@ limitations under the License.
 Ruby Clause-6 is applicable to the following component(s).
 
 
->>> json-1.7.7
+>>> json-1.5.1
 
-[PLEASE NOTE: GOPIVOTAL, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE RUBYCLAUSE-6 LICENSE.  PLEASE SEE THE APPENDIX TO REVIEW THE FULL TEXT OF THE RUBYCLAUSE-6 LICENSE. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE] 
-
-This code is copyrighted work by Daniel Luz <dev at mernen dot com>.
-
-Distributed under the Ruby and GPLv2 licenses; see COPYING and GPL files
-for details.
-
-
->>> json_pure-1.8.0
-
-[PLEASE NOTE:  GOPIVOTAL, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE RUBYCLAUSE-6 LICENSE.  PLEASE SEE THE APPENDIX TO REVIEW THE FULL TEXT OF THE RUBYCLAUSE-6 LICENSE. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE] 
-
-This code is copyrighted work by Daniel Luz <dev at mernen dot com>.
-
-Distributed under the Ruby and GPLv2 licenses; see COPYING and GPL files
-for details.
-
-
->>> pg-0.11.0
-
-[PLEASE NOTE:  GOPIVOTAL, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE RUBYCLAUSE-6 LICENSE.  PLEASE SEE BELOW FOR THE FULL TEXT OF THE RUBYCLAUSE-6 LICENSE. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.] 
+[PLEASE NOTE:  PIVOTAL SOFTWARE, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE Ruby clause - 6.  PLEASE SEE THE APPENDIX TO REVIEW THE FULL TEXT OF THE Ruby clause - 6. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.]
 
 
 Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.co.jp>.
 You can redistribute it and/or modify it under either the terms of the GPL
-(see COPYING.txt file), or the conditions below:
+(see GPL file), or the conditions below:
+
+1. You may make and give away verbatim copies of the source form of the
+software without restriction, provided that you duplicate all of the
+original copyright notices and associated disclaimers.
+
+2. You may modify your copy of the software in any way, provided that
+you do at least ONE of the following:
+
+a) place your modifications in the Public Domain or otherwise
+make them Freely Available, such as by posting said
+modifications to Usenet or an equivalent medium, or by allowing
+the author to include your modifications in the software.
+
+b) use the modified software only within your corporation or
+organization.
+
+c) rename any non-standard executables so the names do not conflict
+with standard executables, which must also be provided.
+
+d) make other distribution arrangements with the author.
+
+3. You may distribute the software in object code or executable
+form, provided that you do at least ONE of the following:
+
+a) distribute the executables and library files of the software,
+together with instructions (in the manual page or equivalent)
+on where to get the original distribution.
+
+b) accompany the distribution with the machine-readable source of
+the software.
+
+c) give non-standard executables non-standard names, with
+instructions on where to get the original software distribution.
+
+d) make other distribution arrangements with the author.
+
+4. You may modify and include the part of the software into any other
+software (possibly commercial).  But some files in the distribution
+are not written by the author, so that they are not under this terms.
+
+They are gc.c(partly), utils.c(partly), regex.[ch], st.[ch] and some
+files under the ./missing directory.  See each file for the copying
+condition.
+
+5. The scripts and library files supplied as input to or produced as
+output from the software do not automatically fall under the
+copyright of the software, but belong to whomever generated them,
+and may be sold commercially, and may be aggregated with this
+software.
+
+6. THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE.
+
+
+ADDITIONAL LICENSE INFORMATION:
+
+
+> MIT Style
+
+json-1.5.1.gem\data.tar.gz\data.tar\data\prototype.js
+
+Prototype JavaScript framework, version 1.6.0
+(c) 2005-2007 Sam Stephenson
+
+Prototype is freely distributable under the terms of an MIT-style license.
+For details, see the Prototype web site: http://www.prototypejs.org/
+
+
+> MIT Style
+
+json-1.5.1.gem\data.tar.gz\data.tar\ext\json\ext\generator\generator.c
+Copyright 2001-2004 Unicode, Inc.
+
+Disclaimer
+
+This source code is provided as is by Unicode, Inc. No claims are
+made as to fitness for any particular purpose. No warranties of any
+kind are expressed or implied. The recipient agrees to determine
+applicability of information provided. If this file has been
+purchased on magnetic or optical media from Unicode, Inc., the
+sole remedy for any claim will be exchange of defective media
+within 90 days of receipt.
+
+Limitations on Rights to Redistribute This Code
+
+Unicode, Inc. hereby grants the right to freely use the information
+supplied in this file in the creation of products supporting the
+Unicode Standard, and to make copies of this file in any form
+for internal or external distribution as long as this notice
+remains attached.
+
+
+>>> json-1.8.0
+
+[PLEASE NOTE: PIVOTAL SOFTWARE, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE RUBYCLAUSE-6 LICENSE. THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE] 
+
+
+Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.co.jp>.
+You can redistribute it and/or modify it under either the terms of the GPL
+(see GPL file), or the conditions below:
 
   1. You may make and give away verbatim copies of the source form of the
      software without restriction, provided that you duplicate all of the
@@ -1221,34 +1301,26 @@ You can redistribute it and/or modify it under either the terms of the GPL
      PURPOSE.
 
 
-ADDITIONAL LICENSE INFORMATION:
+ADDITIONALL LICENSE INFORMATION :
 
 
-> MIT
-
-Cpg-0.11.0.gem\data.tar.gz\data.tar\.\BSD
+> MIT Style
 
 
-ortions Copyright (c) 1996-2008, PostgreSQL Global Development Group
+json-1.8.0.gem\data.tar.gz\data.tar\data\prototype.js
 
-Portions Copyright (c) 1994, The Regents of the University of California
 
-Permission to use, copy, modify, and distribute this software and its
-documentation for any purpose, without fee, and without a written agreement
-is hereby granted, provided that the above copyright notice and this
-paragraph and the following two paragraphs appear in all copies.
+(c) 2005-2007 Sam Stephenson
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR
-DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING
-LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
-DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
+Prototype is freely distributable under the terms of an MIT-style license.
+For details, see the Prototype web site: http://www.prototypejs.org
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE PROVIDED HEREUNDER IS
-ON AN "AS IS" BASIS, AND THE UNIVERSITY OF CALIFORNIA HAS NO OBLIGATIONS TO
-PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+>>> rubyzip-0.9
+
+Copyright (C) 2002, 2003 Thomas Sondergaard
+ rubyzip is free software; you can redistribute it and/or
+ modify it under the terms of the ruby license.
 
 
 >>> rubyzip-0.9.9
@@ -1258,7 +1330,7 @@ License
 rubyzip is distributed under the same license as ruby. See
 http://www.ruby-lang.org/en/LICENSE.txt
 
-[PLEASE NOTE: GOPIVOTAL, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE Ruby Clause-6.  PLEASE SEE THE APPENDIX TO REVIEW THE FULL TEXT OF THE Ruby Clause-6.  THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.]
+[PLEASE NOTE:  VMWARE, INC. ELECTS TO USE AND DISTRIBUTE THIS COMPONENT UNDER THE TERMS OF THE Ruby Clause-6.  PLEASE SEE THE APPENDIX TO REVIEW THE FULL TEXT OF THE Ruby Clause-6.  THE ORIGINAL LICENSE TERMS ARE REPRODUCED BELOW ONLY AS A REFERENCE.]
 
 Ruby is copyrighted free software by Yukihiro Matsumoto <matz@netlab.jp>.
 You can redistribute it and/or modify it under either the terms of the
@@ -1388,7 +1460,9 @@ You can redistribute it and/or modify it under either the terms of the GPL
      PURPOSE.
 
 
+
 ===========================================================================
+
 
 To the extent any open source components are licensed under the
 GPL and/or LGPL, or other similar licenses that require the
@@ -1398,13 +1472,13 @@ the source code corresponding to the binaries for such open
 source components and modifications thereto, if any, (the
 "Source Files"), by downloading the Source Files from VMware's website at
 http://www.vmware.com/download/open_source.html, or by sending a request, 
-with your name and address to: GoPivotal, Inc., 1900 S. Norfolk Street 
-#125, San Mateo, CA 94403, Attention: General Counsel. All such requests 
-should clearly specify: OPEN SOURCE FILES REQUEST,
-Attention General Counsel. GoPivotal shall mail a copy of the
+with your name and address to: Pivotal Software Inc, 1900 S. Norfolk Street #125, 
+San Mateo, CA 94403, Attention: General Counsel. All such requests should clearly 
+specify: OPEN SOURCE FILES REQUEST,
+Attention General Counsel. Pivotal Software Inc, shall mail a copy of the
 Source Files to you on a CD or equivalent physical medium. This
 offer to obtain a copy of the Source Files is valid for three
-years from the date you acquired this Software product. Alternatively, 
-the Source Files may accompany the GoPivotal product.
+years from the date you acquired this Software product. 
+Alternatively, the Source Files may accompany the Pivotal Software Inc, product.
 
-[CFNYET81513SS081913]
+[CFNYET11152013SS120413]
