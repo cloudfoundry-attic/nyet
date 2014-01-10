@@ -15,11 +15,12 @@ class DogapiMonitoring < Monitoring
     end
   end
 
-  def initialize(api_key, app_key, deployment_name, app_type)
+  def initialize(api_key, app_key, deployment_name, app_type, client = nil)
     @api_key = api_key
     @app_key = app_key
     @deployment_name = deployment_name
     @app_type = app_type
+    @client = client
   end
 
   def record_action(action, tags = {}, &blk)
