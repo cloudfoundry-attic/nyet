@@ -1,4 +1,6 @@
 module CfHelpers
+  class CantStartApp < StandardError; end
+
   def self.included(base)
     base.instance_eval do
       let(:test_app_path) { File.expand_path("../../apps/ruby/app_sinatra_service", File.dirname(__FILE__)) }
@@ -140,7 +142,7 @@ module CfHelpers
       runner.should say "Push successful"
     end
   rescue RSpec::Expectations::ExpectationNotMetError => err
-    pending "App did not start within timeout: #{err.inspect}"
+    raise CantStartApp
   end
 
   def get_env(app_name, space, service_instance_name)
