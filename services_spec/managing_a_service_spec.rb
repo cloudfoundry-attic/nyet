@@ -17,6 +17,8 @@ describe "Managing a Service", :appdirect => true, :cf => true do
 
   it "allows the user to push an app with a newly created service and bind it" do
     begin
+      prep_workspace_for_cf_push
+
       Dir.chdir(test_app_path) do
         BlueShell::Runner.run("#{cf_bin} push --no-manifest --no-start --trace 2>>#{tmp_dir}/cf_trace.log") do |runner|
           runner.should say "Name>"
@@ -71,7 +73,7 @@ describe "Managing a Service", :appdirect => true, :cf => true do
       end
 
       monitoring.record_metric("services.health", DATADOG_SUCCESS, dog_tags)
-    rescue CantUploadToCf, CfHelpers::CantStartApp
+    rescue CantUploadToCf, CfHelpers::CantStartApp, CfHelpers::CantConnectToCf
       monitoring.record_metric("services.health", DATADOG_CF_DOWN, dog_tags)
     rescue Exception => e
       monitoring.record_metric("services.health", DATADOG_FAILURE, dog_tags)

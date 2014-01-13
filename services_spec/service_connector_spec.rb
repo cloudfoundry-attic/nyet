@@ -7,7 +7,10 @@ describe "Service Connector", cf: true do
   let(:service_instance_name) { "user-provided-service-instance" }
   let(:app_name) { "services-management-nyet-app" }
 
+
   it "allows the user to push an app with a newly created user provided service instance and bind it" do
+    prep_workspace_for_cf_push
+
     app_url = ""
     Dir.chdir(test_app_path) do
       BlueShell::Runner.run("#{cf_bin} push --no-manifest --no-start") do |runner|

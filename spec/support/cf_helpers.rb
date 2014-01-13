@@ -1,5 +1,6 @@
 module CfHelpers
   class CantStartApp < StandardError; end
+  class CantConnectToCf < StandardError; end
 
   def self.included(base)
     base.instance_eval do
@@ -22,22 +23,6 @@ module CfHelpers
         ENV.replace(original_env)
       end
 
-      before do
-        FileUtils.rm_rf tmp_dir
-        FileUtils.mkdir_p fake_home
-        FileUtils.mkdir_p bin_dir
-        FileUtils.mkdir_p gem_dir
-
-        ENV['HOME'] = fake_home
-
-        use_newest_cf
-        login
-
-        clean_up_service_instance(service_instance_name)
-        regular_user.clean_up_route_from_previous_run(app_name)
-        clean_up_app(app_name)
-      end
-
       after do
         crash_log = File.join(fake_home, '.cf', 'crash')
         if File.exists?(crash_log)
@@ -51,6 +36,23 @@ module CfHelpers
       end
     end
   end
+
+  def prep_workspace_for_cf_push
+    FileUtils.rm_rf tmp_dir
+    FileUtils.mkdir_p fake_home
+    FileUtils.mkdir_p bin_dir
+    FileUtils.mkdir_p gem_dir
+
+    ENV['HOME'] = fake_home
+
+    use_newest_cf
+    login
+
+    clean_up_service_instance(service_instance_name)
+    regular_user.clean_up_route_from_previous_run(app_name)
+    clean_up_app(app_name)
+  end
+
 
   def login
     set_target
@@ -77,10 +79,16 @@ module CfHelpers
 
   def set_target
     target = ENV['NYET_TARGET']
-    BlueShell::Runner.run("#{cf_bin} target #{target}") do |runner|
-      runner.with_timeout 20 do
-        runner.wait_for_exit
+
+    begin
+      BlueShell::Runner.run("#{cf_bin} target #{target}") do |runner|
+        runner.with_timeout 20 do
+          runner.wait_for_exit
+        end
       end
+
+    rescue Timeout::Error
+      raise CfHelpers::CantConnectToCf, "trying to target #{target} with #{cf_bin} command."
     end
   end
 
