@@ -142,9 +142,12 @@ class RegularUser
     debug(:delete, "any orphaned service instances in space #{space.guid}")
     base_uri = ENV['ORPHAN_FINDER_DOMAIN_NAME']
     auth = {:username => ENV['ORPHAN_FINDER_USERNAME'], :password => ENV['ORPHAN_FINDER_PASSWORD']}
-    HTTParty.delete(base_uri +
-      "/api/organizations/#{space.organization.guid}/spaces/#{space.guid}/appdirect_orphans/#{instance_name}",
-      {:basic_auth => auth})
+    delete_orphans_url = base_uri +
+      "/api/organizations/#{space.organization.guid}/spaces/#{space.guid}/appdirect_orphans/#{instance_name}"
+    response = HTTParty.delete(delete_orphans_url, { :basic_auth => auth})
+
+    debug(:delete, delete_orphans_url)
+    debug(:response, response.inspect)
   end
 
   private
