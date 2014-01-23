@@ -72,13 +72,10 @@ describe "Managing a Service", :appdirect => true, :cf => true do
         env["#{service_name}-n/a"].first['credentials']['dummy'].should == 'value'
       end
 
-      puts "Sending value #{DATADOG_SUCCESS} to nyet.services.health service:service-management"
       monitoring.record_metric("services.health", DATADOG_SUCCESS, dog_tags)
     rescue CantUploadToCf, CfHelpers::CantStartApp, CfHelpers::CantConnectToCf
-      puts "Sending value #{DATADOG_CF_DOWN} to nyet.services.health service:service-management"
       monitoring.record_metric("services.health", DATADOG_CF_DOWN, dog_tags)
     rescue Exception => e
-      puts "Sending value #{DATADOG_FAILURE} to nyet.services.health service:service-management"
       monitoring.record_metric("services.health", DATADOG_FAILURE, dog_tags)
       raise e
     end
