@@ -61,7 +61,7 @@ describe "Managing a Service", :appdirect => true, :cf => true do
             runner.with_timeout 180 do
               runner.should say "Uploading #{app_name}... OK"
             end
-          rescue SignalException
+          rescue SignalException, RSpec::Expectations::ExpectationNotMetError
             raise CantUploadToCf
           end
         end
