@@ -18,8 +18,8 @@ class AdminUser
   def create_org(regular_user)
     raise ArgumentError, "only one organization can be created" if @org
 
-    raise ArgumentError, "did not find paid quota" \
-      unless quota = client.quota_definition_by_name("paid")
+    quota = client.quota_definition_by_name("paid") || client.quota_definition_by_name("default")
+    raise ArgumentError, "did not find paid or default quota" unless quota
 
     debug(:create, @org = client.organization.tap do |org|
       org.name = "nyet-org-#{SecureRandom.uuid}"
