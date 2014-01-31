@@ -77,7 +77,7 @@ describe 'Enforcing MySQL quota', :service => true do
 end
 
 describe 'Using a new service instance', :service => true do
-  let(:app_name) { 'mysql' }
+  let(:app_name) { 'mysql-v2' }
   let(:namespace) { 'mysql' }
   let(:plan_name) { '100mb' }
   let(:service_name) { 'p-mysql' }
