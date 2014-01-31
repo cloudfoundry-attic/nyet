@@ -84,7 +84,12 @@ class RegularUser
   def clean_up_service_instance_from_previous_run(space, name)
     if service_instance = space.service_instance_by_name(name)
       debug(:delete, service_instance)
-      service_instance.delete!(recursive: true)
+      begin
+        service_instance.delete!(recursive: true)
+      rescue CFoundry::ServerError => e
+        raise e unless e.message =~ /Subscription already deleted/
+        debug(:delete, "Tried to delete service instance #{service_instance.guid}, but it has already been removed from the cloud controller")
+      end
     end
   end
 
