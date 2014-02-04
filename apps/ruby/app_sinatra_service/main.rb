@@ -5,6 +5,7 @@ require 'bundler'
 require 'mail'
 require 'net/http'
 require 'net/smtp'
+require 'fog'
 
 Bundler.require
 
@@ -201,6 +202,26 @@ get '/service/mongodb/:service_name/:key' do
   value
 end
 
+post '/service/blobstore/:service_name/:key' do
+  value = request.env["rack.input"].read
+  bucket = load_blobstore(params[:service_name])
+
+  bucket.files.create(
+      key: params[:key],
+      body: value,
+      public: true
+  )
+
+  value
+end
+
+get '/service/blobstore/:service_name/:key' do
+  bucket = load_blobstore(params[:service_name])
+  value = bucket.files.get(params[:key]).body
+
+  value
+end
+
 post '/service/smtp/:service_name' do
   begin
     prms = params
@@ -306,6 +327,27 @@ def load_mongodb(service_name)
   db.authenticate(uri.user, uri.password)
   db
 end
+
+def load_blobstore(service_name)
+  blobstore_service = load_service_by_name(service_name)
+  uri = URI(blobstore_service.fetch('uri'))
+
+  bucket_name = uri.path.chomp("/").reverse.chomp("/").reverse
+
+  fog_options = {
+      provider: 'AWS',
+      path_style: true,
+      host: uri.host,
+      port: uri.port,
+      scheme: uri.scheme,
+      aws_access_key_id: uri.user,
+      aws_secret_access_key: uri.password
+  }
+  client = Fog::Storage.new(fog_options)
+  bucket = client.directories.get(bucket_name)
+  bucket
+end
+
 
 def load_service_by_name(service_name)
   services = JSON.parse(ENV['VCAP_SERVICES'])
