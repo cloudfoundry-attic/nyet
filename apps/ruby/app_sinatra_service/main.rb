@@ -331,6 +331,8 @@ end
 def load_blobstore(service_name)
   blobstore_service = load_service_by_name(service_name)
   uri = URI(blobstore_service.fetch('uri'))
+  key = blobstore_service.fetch('access_key_id')
+  secret = blobstore_service.fetch('secret_access_key')
 
   bucket_name = uri.path.chomp("/").reverse.chomp("/").reverse
 
@@ -340,8 +342,8 @@ def load_blobstore(service_name)
       host: uri.host,
       port: uri.port,
       scheme: uri.scheme,
-      aws_access_key_id: uri.user,
-      aws_secret_access_key: uri.password
+      aws_access_key_id: key,
+      aws_secret_access_key: secret
   }
   client = Fog::Storage.new(fog_options)
   bucket = client.directories.get(bucket_name)
