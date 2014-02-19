@@ -316,7 +316,7 @@ end
 
 def load_redis(service_name)
   redis_service = load_service_by_name(service_name)
-  Redis.new(:host => redis_service['hostname'], :port => redis_service['port'].to_i, :password => redis_service['password'])
+  Redis.new(:host => redis_service['hostname'] || redis_service["host"], :port => redis_service['port'].to_i, :password => redis_service['password'])
 end
 
 def load_mongodb(service_name)
