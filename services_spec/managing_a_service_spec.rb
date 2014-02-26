@@ -36,11 +36,6 @@ describe "Managing a Service", :appdirect => true, :cf => true do
         BlueShell::Runner.run("#{cf_bin} stop #{persistent_app_name} --trace 2>>#{tmp_dir}/cf_trace.log") do |runner|
           runner.should say "OK"
         end
-
-        set_app_signature_env_variable(persistent_app_name)
-        start_app(persistent_app_name)
-        env = get_env(persistent_app_name, space, service_instance_name)
-        env["#{service_name}-n/a"].first['credentials']['dummy'].should == 'value'
       end
       monitoring.record_metric("services.health", DATADOG_SUCCESS, dog_tags)
     rescue Exception => e
