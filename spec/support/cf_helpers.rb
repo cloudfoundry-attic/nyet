@@ -143,11 +143,12 @@ module CfHelpers
       runner.with_timeout 180 do
         runner.should say "Checking status of app '#{app_name}'"
       end
-      runner.should say "1 of 1 instances running"
-      runner.should say "Push successful"
+      runner.with_timeout 180 do
+        runner.should say "1 of 1 instances running"
+      end
     end
   rescue RSpec::Expectations::ExpectationNotMetError => err
-    raise CantStartApp
+    raise CantStartApp.new("#{err.class.inspect}: #{err.message}")
   end
 
   def get_env(app_name, space, service_instance_name)
