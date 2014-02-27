@@ -1,4 +1,5 @@
-require "support/test_env"
+require 'support/test_env'
+require 'support/cf_helpers'
 
 module ServiceHelper
   def self.included(base)
@@ -59,6 +60,8 @@ module ServiceHelper
   rescue => e
     monitoring.record_metric("services.health", 0, dog_tags)
     raise e
+  ensure
+    clean_up_app(app_name)
   end
 
   def use_managed_service_instance(guid, &block)

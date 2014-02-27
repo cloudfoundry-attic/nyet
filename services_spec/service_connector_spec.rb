@@ -10,6 +10,7 @@ describe "Service Connector", cf: true do
 
   it "allows the user to push an app with a newly created user provided service instance and bind it" do
     prep_workspace_for_cf_push
+    clean_up_app(app_name)
 
     app_url = ""
     Dir.chdir(test_app_path) do

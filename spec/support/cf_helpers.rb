@@ -31,8 +31,6 @@ module CfHelpers
         end
 
         clean_up_service_instance(service_instance_name)
-        regular_user.clean_up_route_from_previous_run(app_name)
-        clean_up_app(app_name)
       end
     end
   end
@@ -49,8 +47,6 @@ module CfHelpers
     login
 
     clean_up_service_instance(service_instance_name)
-    regular_user.clean_up_route_from_previous_run(app_name)
-    clean_up_app(app_name)
   end
 
 
@@ -112,6 +108,7 @@ module CfHelpers
   end
 
   def clean_up_app(app_name)
+    regular_user.clean_up_route_from_previous_run(app_name)
     if app = space.app_by_name(app_name)
       app.delete!(recursive: true)
     end
