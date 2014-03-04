@@ -42,7 +42,6 @@ describe "Managing a Service", :appdirect => true, :cf => true do
       monitoring.record_metric("services.health", DATADOG_SUCCESS, dog_tags)
     rescue CfHelpers::CantStartApp, CfHelpers::CantConnectToCf => e
       monitoring.record_metric("services.health", DATADOG_CF_DOWN, dog_tags)
-      raise e
     rescue Exception => e
       monitoring.record_metric("services.health", DATADOG_FAILURE, dog_tags)
       raise e
