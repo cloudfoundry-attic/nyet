@@ -46,6 +46,8 @@ describe "Managing a Service", :appdirect => true, :cf => true do
         else
           v1_service.first['credentials']['dummy'].should == 'value'
         end
+      end
+
       monitoring.record_metric("services.health", DATADOG_SUCCESS, dog_tags)
     rescue CfHelpers::CantStartApp, CfHelpers::CantConnectToCf => e
       monitoring.record_metric("services.health", DATADOG_CF_DOWN, dog_tags)
