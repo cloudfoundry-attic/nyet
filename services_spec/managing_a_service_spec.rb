@@ -37,8 +37,15 @@ describe "Managing a Service", :appdirect => true, :cf => true do
         set_app_signature_env_variable(persistent_app_name)
         start_app(persistent_app_name)
         env = get_env(persistent_app_name, space, service_instance_name)
-        env[service_name].first['credentials']['dummy'].should == 'value'
-      end
+
+        v2_service = env[service_name]
+        v1_service = env["#{service_name}-n/a"]
+
+        if v2_service
+          v2_service.first['credentials']['dummy'].should == 'value'
+        else
+          v1_service.first['credentials']['dummy'].should == 'value'
+        end
       monitoring.record_metric("services.health", DATADOG_SUCCESS, dog_tags)
     rescue CfHelpers::CantStartApp, CfHelpers::CantConnectToCf => e
       monitoring.record_metric("services.health", DATADOG_CF_DOWN, dog_tags)
