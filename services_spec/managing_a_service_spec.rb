@@ -9,7 +9,7 @@ describe "Managing a Service", :appdirect => true, :cf => true do
   let(:plan_name) { "small" }
   let(:service_provider_prefix) { ENV["NYET_SERVICE_PROVIDER_PREFIX"] || '' }
   let(:service_name) { "#{service_provider_prefix}dummy-dev" }
-  let(:service_instance_name) { "nyet-smoke-test-service-instance" }
+  let(:service_instance_name) { "nyet-smoke-test-service-instance2" }
   let(:persistent_app_name) { "nyet-smoke-test-app" }
   let(:dog_tags) { { service: 'service-management' } }
 
