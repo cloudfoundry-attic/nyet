@@ -98,7 +98,7 @@ describe "Loggregator", component: 'loggregator' do
     password = ENV['NYET_REGULAR_PASSWORD']
     api_endpoint = ENV['NYET_TARGET']
 
-    `gcf api #{api_endpoint}`
+    `gcf api --skip-ssl-validation #{api_endpoint}`
     `gcf auth #{username} #{password}`
     `gcf target -o #{@org.name} -s #{@space.name}`
   end
